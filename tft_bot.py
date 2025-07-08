@@ -74,6 +74,12 @@ class tft_stuff_class():
         augs = [d['name'] for d in data['data'].values()]
         return augs
     
+    def get_current_game(self, puuid):
+        url = f"https://americas.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
+        game = call_api(url)
+        print(game)
+
+
     def get_user_last_game(self, puuid):
         url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         games = call_api(url)
@@ -118,7 +124,11 @@ async def background_loop():
     await client.wait_until_ready()
     #channel = client.get_channel(channel_id)
     while True:
-        await asyncio.sleep(1)
+        puuids = sql_stuff.get_all_puuids()
+        for puuid in puuids:
+            tft_stuff.get_current_game(puuid)
+            await asyncio.sleep(3)
+
 
 
 @tree.command(name = "register", description = "Register your account")
