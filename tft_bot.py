@@ -36,7 +36,7 @@ class sql_stuff_class():
             return False
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select exists(select * from users where disc_id=%s)", (disc_id,))
+            cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
             result = cursor.fetchone()[0]
             print(result)
             if result == 0:
