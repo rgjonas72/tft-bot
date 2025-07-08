@@ -52,10 +52,13 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users")
             rows = cursor.fetchall()
-        
-        print(rows)
+        return rows
 
-
+    def get_all_puuids(self):
+        users = self.get_all_users()
+        puuids = [u[3] for u in users]
+        print(puuids)
+        return puuids
 
 class tft_stuff_class():
     def __init__(self, version='15.9.1', current_set='14'):
@@ -136,6 +139,7 @@ async def register(
 @tree.command(name = "get_users", description = "Get list of users")
 async def first_command(interaction):
     sql_stuff.get_all_users()
+    sql_stuff.get_all_puuids()
     await interaction.response.send_message("test")
 
 async def rps_autocomplete(interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
