@@ -13,6 +13,7 @@ def call_api(url):
         'X-Riot-Token': riot_api_key
     }
     response = requests.get(url, headers=headers)
+
     if response.status_code == 200:
         return response.json()
     else:
@@ -76,6 +77,7 @@ class tft_stuff_class():
     
     def get_current_game(self, puuid):
         url = f"https://americas.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
+        print(url)
         game = call_api(url)
         print(game)
 
