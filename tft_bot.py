@@ -79,7 +79,7 @@ class tft_stuff_class():
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
         print(url)
         game = call_api(url)
-        print(game)
+        return game
 
 
     def get_user_last_game(self, puuid):
@@ -131,6 +131,7 @@ async def background_loop():
         for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
+            print(response)
             if response != False:
                 disc_id = player[0]
                 await message_user_newgame(disc_id)
