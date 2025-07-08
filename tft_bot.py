@@ -31,6 +31,7 @@ class sql_stuff_class():
     
     def add_user(self, disc_id, summoner_name, riot_id):
         puuid = self.tft_stuff.get_user_puuid(summoner_name, riot_id)
+        print(puuid)
         if puuid == False:
             return False
         self.cnx.reconnect()
@@ -70,7 +71,7 @@ class tft_stuff_class():
         augs = [d['name'] for d in data['data'].values()]
         return augs
     
-    def get_user_last_game(self, puuid='q-MM0r_oPHvU5YWtq366Y2a0_faxYl_yr-y0VhAhP81VcNxEZyA-FqhxUAsvGq5hvJjAuaV6CKQbog'):
+    def get_user_last_game(self, puuid):
         url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         games = call_api(url)
         if games is False:
