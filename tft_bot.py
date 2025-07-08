@@ -135,7 +135,7 @@ async def register(
 
 @tree.command(name = "get_users", description = "Get list of users")
 async def first_command(interaction):
-    #sql_stuff.get_all_users()
+    sql_stuff.get_all_users()
     await interaction.response.send_message("test")
 
 async def rps_autocomplete(interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
