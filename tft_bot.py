@@ -38,7 +38,7 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from users where disc_id=%s)", (disc_id,))
             result = cursor.fetchone()[0]
-
+            print(result)
             if result == 0:
                 cursor.execute("insert into users values (%s, %s, %s, %s, NULL)", (disc_id, summoner_name, riot_id, puuid,))
                 self.cnx.commit()
@@ -133,14 +133,9 @@ async def register(
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
-
-@tree.command(name = "test", description = "Test message")
-@app_commands.choices(choices=[app_commands.Choice(name=i, value=i) for i in range(20)])
-async def first_command(interaction, choices: app_commands.Choice[int]):
-    await interaction.user.send("Test")
-
 @tree.command(name = "get_users", description = "Get list of users")
 async def first_command(interaction):
+    sql_stuff.get_all_users()
     await interaction.response.send_message("test")
 
 async def rps_autocomplete(interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
