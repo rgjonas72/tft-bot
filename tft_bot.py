@@ -126,9 +126,9 @@ async def background_loop():
     await client.wait_until_ready()
     #channel = client.get_channel(channel_id)
     while True:
-        users = sql_stuff.get_all_users()
+        players = sql_stuff.get_all_users()
         #puuids = sql_stuff.get_all_puuids()
-        for player in player:
+        for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
             if response != False:
