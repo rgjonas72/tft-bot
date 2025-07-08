@@ -126,12 +126,19 @@ async def background_loop():
     await client.wait_until_ready()
     #channel = client.get_channel(channel_id)
     while True:
-        puuids = sql_stuff.get_all_puuids()
-        for puuid in puuids:
-            tft_stuff.get_current_game(puuid)
+        users = sql_stuff.get_all_users()
+        #puuids = sql_stuff.get_all_puuids()
+        for player in player:
+            puuid = player[3]
+            response = tft_stuff.get_current_game(puuid)
+            if response != False:
+                disc_id = player[0]
+                await message_user_newgame(disc_id)
             await asyncio.sleep(3)
 
-
+async def message_user_newgame(disc_id):
+    user = await client.fetch_user(disc_id)
+    await user.send("In a game!")
 
 @tree.command(name = "register", description = "Register your account")
 @app_commands.describe(
