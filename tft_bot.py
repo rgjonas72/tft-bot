@@ -8,7 +8,7 @@ import requests
 import mysql.connector
 
 def call_api(url):
-    riot_api_key = open('tokens/riot_api_key.txt', 'r').readline()
+    riot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
     headers = {
         'X-Riot-Token': riot_api_key
     }
@@ -26,7 +26,7 @@ class sql_stuff_class():
 
     def get_cnx(self):
         db_name = 'tft'
-        cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline(),host='127.0.0.1', database=db_name)
+        cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
         return cnx
     
     def add_user(self, disc_id, summoner_name, riot_id):
@@ -128,7 +128,7 @@ async def register(
     riot_id: app_commands.Range[str, 1, 5]
     ):
     if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
-        await interaction.response.send_message(f'Register {summoner_name}#{riot_id}!')
+        await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
