@@ -41,7 +41,7 @@ class sql_stuff_class():
             result = cursor.fetchone()[0]
             print(result)
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, NULL)", (disc_id, summoner_name, riot_id, puuid,))
+                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL)", (disc_id, summoner_name, riot_id, puuid,))
                 self.cnx.commit()
                 return True
             else:
@@ -60,6 +60,19 @@ class sql_stuff_class():
         puuids = [u[3] for u in users]
         print(puuids)
         return puuids
+    
+    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=None, units=None):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
+            result = cursor.fetchone()[0]
+            print(result)
+            if result == 0:
+                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL)", (disc_id, game_id, game_id, puuid,))
+                self.cnx.commit()
+                return True
+            else:
+                return False
 
 class tft_stuff_class():
     def __init__(self, version='15.9.1', current_set='14'):
@@ -134,6 +147,7 @@ async def background_loop():
             print(response)
             if response != False:
                 disc_id = player[0]
+                await sql_stuff.add_new_game()
                 await message_user_newgame(disc_id)
             await asyncio.sleep(3)
 
