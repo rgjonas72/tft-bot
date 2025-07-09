@@ -53,11 +53,35 @@ class sql_stuff_class():
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
+            cursor.execute("select * from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
+            row = cursor.fetchone()
+            if row:
+                return [row[3], row[6]]
             cursor.execute("select * from users where disc_id=%s order by last_game_date asc LIMIT 1", (discord_id,))
-            result = cursor.fetchall()
+            row = cursor.fetchone()
+            if row: 
+                return [row[3], row[6]]
+        return False
+    
+    def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None):
+        self.cnx.reconnect()
+        if not augment1 and not augment2 and not augment3:
+            return "No augments entered."
+        
+        with self.cnx.cursor() as cursor:
+            if augment1:
+                cursor.execute("update games set aug1=%s where game_id=%s and puuid=%s", (augment1, game_id, puuid, ))
+            if augment2:
+                cursor.execute("update games set aug2=%s where game_id=%s and puuid=%s", (augment2, game_id, puuid, ))
+            if augment3:
+                cursor.execute("update games set aug3=%s where game_id=%s and puuid=%s", (augment3, game_id, puuid, ))
+            # Grab all saved augments
+            cursor.execute("select aug1, aug2, aug3 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
+            saved_aug1, saved_aug2, saved_aug3 = cursor.fetchone()
+            self.cnx.commit()
 
-        print(result)
-        return result
+        output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}'
+        return output
 
     def get_all_users(self):
         self.cnx.reconnect()
@@ -103,7 +127,7 @@ class sql_stuff_class():
             cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=NOW() where puuid=%s', (puuid, game_id))
             # Update game record
             units += [None] * (10 - len(units)) # Extend units length to 10
-            cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s", (placement, *units, game_id))
+            cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (placement, *units, game_id, puuid))
             self.cnx.commit()
 
 
@@ -370,10 +394,14 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
 
 async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
     if not game_id:
-        sql_stuff.get_user_latest_game(interaction.user.id)
+        puuid_game_id = sql_stuff.get_user_latest_game(interaction.user.id)
+        if not puuid_game_id: interaction.response.send_message('No game ID provided and no default game found.')
+        puuid, game_id = puuid_game_id
+
+    output = sql_stuff.input_augments(game_id, puuid, augment1, augment2, augment3)
     #if augment1: await interaction.response.send_message(augment1)
     #await interaction.user.send()
-    await interaction.response.send_message('testing')
+    await interaction.response.send_message(output)
 
 @tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(something=rps_autocomplete)
