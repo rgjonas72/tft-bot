@@ -35,14 +35,12 @@ class sql_stuff_class():
     
     def add_user(self, disc_id, summoner_name, riot_id):
         puuid = self.tft_stuff.get_user_puuid(summoner_name, riot_id)
-        print(puuid)
         if puuid == False:
             return False
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
             result = cursor.fetchone()[0]
-            print(result)
             if result == 0:
                 cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL, NULL)", (disc_id, summoner_name, riot_id, puuid,))
                 self.cnx.commit()
@@ -53,21 +51,22 @@ class sql_stuff_class():
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select * from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
+            cursor.execute("select puuid, current_game_id from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
             row = cursor.fetchone()
             if row:
-                return [row[3], row[6]]
-            cursor.execute("select * from users where disc_id=%s order by last_game_date desc LIMIT 1", (discord_id,))
+                puuid, current_game_id = row
+                return [puuid, current_game_id]
+            cursor.execute("select puuid, last_game_id from users where disc_id=%s order by last_game_date desc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
-                return [row[3], row[4]]
+                puuid, last_game_id = row
+                return [puuid, last_game_id]
         return False
     
     def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None):
         self.cnx.reconnect()
         if not augment1 and not augment2 and not augment3:
             return "No augments entered."
-        print(game_id, puuid)
         with self.cnx.cursor() as cursor:
             if augment1:
                 cursor.execute("update games set aug1=%s where game_id=%s and puuid=%s", (augment1, game_id, puuid, ))
@@ -77,9 +76,7 @@ class sql_stuff_class():
                 cursor.execute("update games set aug3=%s where game_id=%s and puuid=%s", (augment3, game_id, puuid, ))
             # Grab all saved augments
             cursor.execute("select aug1, aug2, aug3 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
-            print(f"select aug1, aug2, aug3 from games where game_id={game_id} and puuid={puuid}")
             row = cursor.fetchone()
-            print(row)
             self.cnx.commit()
         saved_aug1, saved_aug2, saved_aug3 = row
         output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}'
@@ -90,7 +87,6 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users")
             rows = cursor.fetchall()
-            #print(rows)
         return rows
     
     def get_all_users_outofgame(self):
@@ -98,13 +94,11 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users where current_game_id is NULL")
             rows = cursor.fetchall()
-            #print(rows)
         return rows
 
     def get_all_puuids(self):
         users = self.get_all_users()
-        puuids = [u[3] for u in users]
-        #print(puuids)
+        puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
     def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(3)], units=[None for _ in range(10)]):
@@ -112,7 +106,6 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
             result = cursor.fetchone()[0]
-            #print(result)
             if result == 0:
                 augments += [None] * (3 - len(augments)) # Extend augments length to 3
                 units += [None] * (10 - len(units)) # Extend units length to 10
@@ -142,10 +135,9 @@ class sql_stuff_class():
     def get_current_game(self, puuid):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select * from users where puuid=%s", (puuid, ))
-            result = cursor.fetchone()
-        print(result)
-        return result[6]
+            cursor.execute("select current_game_id from users where puuid=%s", (puuid, ))
+            result = cursor.fetchone()[0]
+        return result
 
     def get_active_games(self):
         self.cnx.reconnect()
@@ -171,22 +163,8 @@ class tft_stuff_class():
     
     def get_current_game(self, puuid):
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
-        #print(url)
         game = call_api(url)
         return game
-
-
-    def get_user_last_game(self, puuid):
-        url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
-        games = call_api(url)
-        if games is False:
-            return "Error getting latest games."
-        for game_id in games:
-            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/{game_id}'
-            game = call_api(url)
-            #print(game)
-            #print('-------------------------')
-            #print(game['info']['tft_game_type'], game['info']['tft_set_number'])
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
         url = f'https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summoner_name}/{riot_id}'
@@ -272,16 +250,13 @@ class tft_stuff_class():
 
 tft_stuff = tft_stuff_class()
 sql_stuff = sql_stuff_class(tft_stuff)
-#tft_stuff.get_user_last_game(puuid)
-#quit()
 
-#cnx = get_cnx()
 guild_id = 1391926028536123403
 intents = discord.Intents.all()
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-auth_users = [231554084782604288, 196404822063316992]
+auth_users = [196404822063316992]
 
 @client.event
 async def on_ready():
