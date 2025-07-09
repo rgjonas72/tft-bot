@@ -53,6 +53,7 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users")
             rows = cursor.fetchall()
+            print(rows)
         return rows
 
     def get_all_puuids(self):
@@ -147,7 +148,7 @@ async def background_loop():
             print(response)
             if response != False:
                 disc_id = player[0]
-                await sql_stuff.add_new_game()
+                #await sql_stuff.add_new_game()
                 await message_user_newgame(disc_id)
             await asyncio.sleep(3)
 
