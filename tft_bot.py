@@ -343,10 +343,7 @@ async def message_user_game_ended(disc_id, game_id, embed):
     await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
 @tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
-@app_commands.describe(
-    summoner_name="Summoner name",
-    riot_id="Riot ID"
-)
+@app_commands.describe(summoner_name="Summoner name", riot_id="Riot ID")
 async def register(
     interaction: discord.Interaction,
     summoner_name: app_commands.Range[str, 1, 16],
