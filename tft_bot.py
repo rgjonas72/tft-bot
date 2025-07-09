@@ -211,6 +211,7 @@ class tft_stuff_class():
             (p for p in game_json['info']['participants'] if p['puuid'] == puuid),
             None
         )
+        print(matched_participant)
         units = matched_participant['units']
         unit_pics = []
         for unit in units:
