@@ -343,12 +343,12 @@ async def second_commad(interaction: discord.Interaction, something: str):
 @app_commands.autocomplete(augment1=rps_autocomplete)
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
-@app_commands.describe(gameID="Game ID (will automatically use current/last game)")
-async def input_augments(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, gameID: int):
+@app_commands.describe(game_id="Game ID (will automatically use current/last game)")
+async def input_augments(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, game_id: int):
     await interaction.message.reply(augment1)
     await interaction.message.reply(augment2)
     await interaction.message.reply(augment3)
-    await interaction.message.reply(gameID)
+    await interaction.message.reply(game_id)
     #await interaction.user.send()
 
 @tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
