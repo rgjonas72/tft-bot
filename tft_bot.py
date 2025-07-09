@@ -390,10 +390,10 @@ async def input_augments(interaction: discord.Interaction, augment1: Optional[st
     #await interaction.user.send()
     await interaction.response.send_message(output)
 
-@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
+@tree.command(name = "register_account", description = "Register your account", guild=discord.Object(id=guild_id))
 @app_commands.describe(summoner_name="Summoner name",
                        riot_id="Riot ID")
-async def register(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
+async def register_account(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
     if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
         await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
     else:
