@@ -151,6 +151,7 @@ async def background_loop():
                 #await sql_stuff.add_new_game()
                 await message_user_newgame(disc_id)
             await asyncio.sleep(3)
+        await asyncio.sleep(2)
 
 async def message_user_newgame(disc_id):
     user = await client.fetch_user(disc_id)
