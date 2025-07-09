@@ -8,6 +8,7 @@ import requests
 import mysql.connector
 from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
 
 def call_api(url):
     riot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
@@ -207,8 +208,10 @@ class tft_stuff_class():
         for index, unit in enumerate(units):
             full.paste(unit, ((gap+image_width)*index + placement_gap, 0))
 
-
-        return full
+        with BytesIO() as image_binary:
+            full.save(image_binary, 'PNG')
+            image_binary.seek(0)
+            return image_binary
 
     def get_user_unit_info(self, puuid, game_json):
         #print(game_json)
@@ -300,7 +303,7 @@ async def message_user_newgame(disc_id, game_id):
 
 async def message_user_game_ended(disc_id, game_id, embed):
     user = await client.fetch_user(disc_id)
-    await user.send(f"Game ended! Game ID: {game_id}", embed=embed)
+    await user.send(f"Game ended! Game ID: {game_id}", file=embed)
 
 @tree.command(name = "register", description = "Register your account")
 @app_commands.describe(
