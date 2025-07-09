@@ -308,7 +308,7 @@ async def message_user_game_ended(disc_id, game_id, embed):
     user = await client.fetch_user(disc_id)
     await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
-@tree.command(name = "register", description = "Register your account")
+@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
 @app_commands.describe(
     summoner_name="Summoner name",
     riot_id="Riot ID"
@@ -316,14 +316,14 @@ async def message_user_game_ended(disc_id, game_id, embed):
 async def register(
     interaction: discord.Interaction,
     summoner_name: app_commands.Range[str, 1, 16],
-    riot_id: app_commands.Range[str, 1, 5]
+    riot_id: app_commands.Range[str, 1, 5],
     ):
     if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
         await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
-@tree.command(name = "get_users", description = "Get list of users")
+@tree.command(name = "get_users", description = "Get list of users", guild=discord.Object(id=guild_id))
 async def first_command(interaction):
     sql_stuff.get_all_users()
     sql_stuff.get_all_puuids()
@@ -334,12 +334,12 @@ async def rps_autocomplete(interaction: discord.Interaction, current: str) -> Li
     choices = [app_commands.Choice(name=choice, value=choice) for choice in choices if current.lower() in choice.lower()][:25]
     return choices
 
-@tree.command(name="abc", description = "ABC")
+@tree.command(name="abc", description = "ABC", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(something=rps_autocomplete)
 async def second_commad(interaction: discord.Interaction, something: str):
     await interaction.user.send(something)
 
-@tree.command(name="input_augments", description = "Input your augments")
+@tree.command(name="input_augments", description = "Input your augments", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(augment1=rps_autocomplete)
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
@@ -351,7 +351,7 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
     await interaction.message.reply(gameID)
     #await interaction.user.send()
 
-@tree.command(name="testagain", description = "ABC")
+@tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(something=rps_autocomplete)
 async def second_commad(interaction: discord.Interaction, something: str):
     await interaction.user.send(something)
