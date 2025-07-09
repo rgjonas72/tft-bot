@@ -344,12 +344,17 @@ async def second_commad(interaction: discord.Interaction, something: str):
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
 @app_commands.describe(gameID="Game ID (will automatically use current/last game)")
-async def second_commad(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, gameID: int):
+async def input_augments(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, gameID: int):
     await interaction.message.reply(augment1)
     await interaction.message.reply(augment2)
     await interaction.message.reply(augment3)
     await interaction.message.reply(gameID)
     #await interaction.user.send()
+
+@tree.command(name="testagain", description = "ABC")
+@app_commands.autocomplete(something=rps_autocomplete)
+async def second_commad(interaction: discord.Interaction, something: str):
+    await interaction.user.send(something)
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()
