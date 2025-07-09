@@ -252,7 +252,7 @@ auth_users = [231554084782604288, 196404822063316992]
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=guild_id))
-    #client.loop.create_task(new_games_loop())
+    client.loop.create_task(new_games_loop())
     client.loop.create_task(ended_games_loop())
     print("Ready!")
 
@@ -338,6 +338,18 @@ async def rps_autocomplete(interaction: discord.Interaction, current: str) -> Li
 @app_commands.autocomplete(something=rps_autocomplete)
 async def second_commad(interaction: discord.Interaction, something: str):
     await interaction.user.send(something)
+
+@tree.command(name="input_augments", description = "Input your augments")
+@app_commands.autocomplete(augment1=rps_autocomplete)
+@app_commands.autocomplete(augment2=rps_autocomplete)
+@app_commands.autocomplete(augment3=rps_autocomplete)
+@app_commands.describe(gameID="Game ID (will automatically use current/last game)")
+async def second_commad(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, gameID: int):
+    await interaction.message.reply(augment1)
+    await interaction.message.reply(augment2)
+    await interaction.message.reply(augment3)
+    await interaction.message.reply(gameID)
+    #await interaction.user.send()
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()
