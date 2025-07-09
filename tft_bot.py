@@ -3,7 +3,7 @@ from discord import app_commands
 from discord.ui import Select, View
 from discord.ext import commands
 import asyncio
-from typing import List
+from typing import List, Optional 
 import requests
 import mysql.connector
 from datetime import datetime
@@ -345,6 +345,22 @@ async def second_commad(interaction: discord.Interaction, something: str):
 @app_commands.autocomplete(augment3=rps_autocomplete)
 @app_commands.describe(game_id="Game ID (will automatically use current/last game)")
 async def input_augments(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, game_id: int):
+    await interaction.message.reply(augment1)
+    await interaction.message.reply(augment2)
+    await interaction.message.reply(augment3)
+    await interaction.message.reply(game_id)
+    #await interaction.user.send()
+
+@tree.command(name="input_augments_test", description = "Input your augments", guild=discord.Object(id=guild_id))
+@app_commands.describe(game_id="Game ID (will automatically use current/last game)",
+                       augment1="Augment 1",
+                       augment2="Augment 2",
+                       augment3="Augment 3")
+@app_commands.autocomplete(augment1=rps_autocomplete)
+@app_commands.autocomplete(augment2=rps_autocomplete)
+@app_commands.autocomplete(augment3=rps_autocomplete)
+
+async def input_augments(interaction: discord.Interaction, augment1: Optional[str], augment2: Optional[str], augment3: Optional[str], game_id: Optional[int]):
     await interaction.message.reply(augment1)
     await interaction.message.reply(augment2)
     await interaction.message.reply(augment3)
