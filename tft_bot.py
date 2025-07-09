@@ -242,7 +242,7 @@ auth_users = [231554084782604288, 196404822063316992]
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=guild_id))
-    client.loop.create_task(new_games_loop())
+    #client.loop.create_task(new_games_loop())
     client.loop.create_task(ended_games_loop())
     print("Ready!")
 
