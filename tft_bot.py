@@ -10,7 +10,7 @@ from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 
-def call_api(url):
+def call_api(url, quiet=False):
     riot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
     headers = {
         'X-Riot-Token': riot_api_key
@@ -20,7 +20,7 @@ def call_api(url):
     if response.status_code == 200:
         return response.json()
     else:
-        print(response.json())
+        if not quiet: print(response.json())
         return False
 
 class sql_stuff_class():
@@ -163,7 +163,7 @@ class tft_stuff_class():
     
     def get_current_game(self, puuid):
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
-        game = call_api(url)
+        game = call_api(url, quiet=True)
         return game
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
