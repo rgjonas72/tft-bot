@@ -80,6 +80,8 @@ class sql_stuff_class():
             result = cursor.fetchone()[0]
             #print(result)
             if result == 0:
+                augments += [None] * (3 - len(augments)) # Extend augments length to 3
+                units += [None] * (10 - len(units)) # Extend units length to 10
                 cursor.execute("insert into games values (%s, %s, %s, %s, NULL, NULL)", (disc_id, puuid, game_id, patch, game_date, placement, *augments, *units))
                 self.cnx.commit()
                 return True
@@ -92,8 +94,7 @@ class sql_stuff_class():
             # Update user's current game
             cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
             # Update game record
-            print(placement, units, game_id)
-            print((placement, *units, game_id))
+            units += [None] * (10 - len(units)) # Extend units length to 10
             cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s", (placement, *units, game_id))
             self.cnx.commit()
 
