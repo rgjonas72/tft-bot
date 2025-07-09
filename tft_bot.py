@@ -207,6 +207,7 @@ class tft_stuff_class():
         return full
 
     def get_user_unit_info(self, puuid, game_json):
+        print(game_json)
         matched_participant = next(
             (p for p in game_json['info']['participants'] if p['puuid'] == puuid),
             None
@@ -282,7 +283,7 @@ async def ended_games_loop():
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
             sql_stuff.update_game_on_finish(puuid, game_id, placement, units)
             await message_user_game_ended(disc_id, game_id, full_pic)
-
+        await asyncio.sleep(3)
 
 
 async def message_user_newgame(disc_id, game_id):
