@@ -211,11 +211,11 @@ class tft_stuff_class():
         
         #full.save('test.png')
 
-        with BytesIO() as image_binary:
-            full.save(image_binary, 'PNG')
-            return image_binary
-            image_binary.seek(0)
-            return image_binary
+        image_binary = BytesIO()
+        full.save(image_binary, 'PNG')
+        #return image_binary
+        image_binary.seek(0)
+        return image_binary
 
     def get_user_unit_info(self, puuid, game_json):
         #print(game_json)
