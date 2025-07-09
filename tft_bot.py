@@ -106,6 +106,7 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("select * from users where puuid=%s", (puuid, ))
             result = cursor.fetchone()[0]
+        print(result)
         return result[5]
 
     def get_active_games(self):
