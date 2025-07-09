@@ -99,7 +99,7 @@ class sql_stuff_class():
     def update_user_current_game(self, puuid, game_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("update users set current_game_id=%s where puuid=%s)", (game_id, puuid, ))
+            cursor.execute("update users set current_game_id=%s where puuid=%s", (game_id, puuid, ))
 
     def get_current_game(self, puuid):
         self.cnx.reconnect()
@@ -111,7 +111,7 @@ class sql_stuff_class():
     def get_active_games(self):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select * from games where placement is NULL)")
+            cursor.execute("select * from games where placement is NULL")
             rows = cursor.fetchall()
         return rows
 
