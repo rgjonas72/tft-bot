@@ -53,8 +53,8 @@ class sql_stuff_class():
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select exists(select * from users where discord_id=%s)", (discord_id,))
-            result = cursor.fetchall()
+            cursor.execute("select exists(select * from users where discord_id=%s order by last_game_date asc)", (discord_id,))
+            result = cursor.fetchone()
 
         print(result)
         return result
