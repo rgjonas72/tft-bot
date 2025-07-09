@@ -218,9 +218,13 @@ class tft_stuff_class():
         )
         print(matched_participant)
         units = matched_participant['units']
+        print('---------Units-----------')
+        print(units)
+        
         unit_pics = []
         for unit in units:
             unit_pics.append(self.construct_champ(unit['character_id'], unit['itemNames']))
+        
         placement = matched_participant['placement']
         full_pic = self.create_full_pic(unit_pics, placement)
         return units, placement, full_pic
@@ -285,7 +289,7 @@ async def ended_games_loop():
             disc_id = active_game[0]
             puuid = active_game[1]
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
-            sql_stuff.update_game_on_finish(puuid, game_id, placement, units)
+            #sql_stuff.update_game_on_finish(puuid, game_id, placement, units)
             await message_user_game_ended(disc_id, game_id, full_pic)
         await asyncio.sleep(3)
 
