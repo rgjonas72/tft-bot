@@ -55,7 +55,7 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users")
             rows = cursor.fetchall()
-            print(rows)
+            #print(rows)
         return rows
     
     def get_all_users_outofgame(self):
@@ -63,13 +63,13 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT * FROM users where current_game_id is NULL")
             rows = cursor.fetchall()
-            print(rows)
+            #print(rows)
         return rows
 
     def get_all_puuids(self):
         users = self.get_all_users()
         puuids = [u[3] for u in users]
-        print(puuids)
+        #print(puuids)
         return puuids
     
     def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(3)], units=[None for _ in range(10)]):
@@ -77,7 +77,7 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
             result = cursor.fetchone()[0]
-            print(result)
+            #print(result)
             if result == 0:
                 cursor.execute("insert into games values (%s, %s, %s, %s, NULL, NULL)", (disc_id, puuid, game_id, patch, game_date, placement, *augments, *units))
                 self.cnx.commit()
@@ -251,7 +251,7 @@ async def new_games_loop():
         for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
-            print(response)
+            #print(response)
             if response != False:
                 # Check if game in database already
                 game_id = response['gameId']
