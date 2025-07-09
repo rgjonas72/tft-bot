@@ -209,6 +209,7 @@ class tft_stuff_class():
             full.paste(unit, ((gap+image_width)*index + placement_gap, 0))
 
         
+        full.save('test.png')
 
         with BytesIO() as image_binary:
             full.save(image_binary, 'PNG')
