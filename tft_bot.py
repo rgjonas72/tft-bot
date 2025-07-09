@@ -379,16 +379,6 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
 @app_commands.autocomplete(augment1=rps_autocomplete)
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
-
-@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
-@app_commands.describe(summoner_name="Summoner name", 
-                       riot_id="Riot ID")
-async def register(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
-    if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
-        await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
-    else:
-        await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
-
 async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
     if not game_id:
         puuid_game_id = sql_stuff.get_user_latest_game(interaction.user.id)
@@ -399,6 +389,15 @@ async def input_augments(interaction: discord.Interaction, augment1: Optional[st
     #if augment1: await interaction.response.send_message(augment1)
     #await interaction.user.send()
     await interaction.response.send_message(output)
+
+@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
+@app_commands.describe(summoner_name="Summoner name",
+                       riot_id="Riot ID")
+async def register(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
+    if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
+        await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
+    else:
+        await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
 @tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(something=rps_autocomplete)
