@@ -278,7 +278,7 @@ sql_stuff = sql_stuff_class(tft_stuff)
 #cnx = get_cnx()
 guild_id = 1391926028536123403
 intents = discord.Intents.all()
-client = discord.Client(command_prefix='.', intents=intents)
+client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
 auth_users = [231554084782604288, 196404822063316992]
