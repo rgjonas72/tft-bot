@@ -60,7 +60,7 @@ class sql_stuff_class():
             cursor.execute("select * from users where disc_id=%s order by last_game_date asc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
-                return [row[3], row[5]]
+                return [row[3], row[4]]
         return False
     
     def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None):
@@ -143,7 +143,7 @@ class sql_stuff_class():
             cursor.execute("select * from users where puuid=%s", (puuid, ))
             result = cursor.fetchone()
         print(result)
-        return result[5]
+        return result[6]
 
     def get_active_games(self):
         self.cnx.reconnect()
