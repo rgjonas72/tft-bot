@@ -211,7 +211,7 @@ class tft_stuff_class():
         return full
 
     def get_user_unit_info(self, puuid, game_json):
-        print(game_json)
+        #print(game_json)
         matched_participant = next(
             (p for p in game_json['info']['participants'] if p['puuid'] == puuid),
             None
