@@ -132,7 +132,7 @@ class tft_stuff_class():
     
     def get_current_game(self, puuid):
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
-        print(url)
+        #print(url)
         game = call_api(url)
         return game
 
@@ -145,9 +145,9 @@ class tft_stuff_class():
         for game_id in games:
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/{game_id}'
             game = call_api(url)
-            print(game)
-            print('-------------------------')
-            print(game['info']['tft_game_type'], game['info']['tft_set_number'])
+            #print(game)
+            #print('-------------------------')
+            #print(game['info']['tft_game_type'], game['info']['tft_set_number'])
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
         url = f'https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summoner_name}/{riot_id}'
