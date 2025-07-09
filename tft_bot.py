@@ -67,7 +67,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         if not augment1 and not augment2 and not augment3:
             return "No augments entered."
-        
+        print(game_id, puuid)
         with self.cnx.cursor() as cursor:
             if augment1:
                 cursor.execute("update games set aug1=%s where game_id=%s and puuid=%s", (augment1, game_id, puuid, ))
