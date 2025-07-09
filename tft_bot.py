@@ -44,12 +44,20 @@ class sql_stuff_class():
             result = cursor.fetchone()[0]
             print(result)
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL)", (disc_id, summoner_name, riot_id, puuid,))
+                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL, NULL)", (disc_id, summoner_name, riot_id, puuid,))
                 self.cnx.commit()
                 return True
             else:
                 return False
         
+    def get_user_latest_game(self, discord_id):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select exists(select * from users where discord_id=%s)", (discord_id,))
+            result = cursor.fetchall()
+
+        print(result)
+        return result
 
     def get_all_users(self):
         self.cnx.reconnect()
@@ -92,7 +100,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game
-            cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
+            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=NOW() where puuid=%s', (puuid, game_id))
             # Update game record
             units += [None] * (10 - len(units)) # Extend units length to 10
             cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s", (placement, *units, game_id))
@@ -361,11 +369,11 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
 @app_commands.autocomplete(augment3=rps_autocomplete)
 
 async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
-    if augment1: await interaction.response.send_message(augment1)
-    if augment2: await interaction.response.send_message(augment2)
-    if augment3: await interaction.response.send_message(augment3)
-    if game_id: await interaction.response.send_message(game_id)
+    if not game_id:
+        sql_stuff.get_user_latest_game(interaction.user.id)
+    #if augment1: await interaction.response.send_message(augment1)
     #await interaction.user.send()
+    await interaction.response.send_message('testing')
 
 @tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
 @app_commands.autocomplete(something=rps_autocomplete)
