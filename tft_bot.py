@@ -342,15 +342,6 @@ async def message_user_game_ended(disc_id, game_id, embed):
     user = await client.fetch_user(disc_id)
     await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
-
-@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
-#@app_commands.describe(summoner_name="Summoner name", riot_id="Riot ID")
-async def register(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
-    if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
-        await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
-    else:
-        await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
-
 @tree.command(name = "get_users", description = "Get list of users", guild=discord.Object(id=guild_id))
 async def first_command(interaction):
     sql_stuff.get_all_users()
@@ -379,6 +370,7 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
     await interaction.message.reply(game_id)
     #await interaction.user.send()
 
+
 @tree.command(name="input_augments_test", description = "Input your augments", guild=discord.Object(id=guild_id))
 @app_commands.describe(game_id="Game ID (will automatically use current/last game)",
                        augment1="Augment 1",
@@ -387,6 +379,15 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
 @app_commands.autocomplete(augment1=rps_autocomplete)
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
+
+@tree.command(name = "register", description = "Register your account", guild=discord.Object(id=guild_id))
+@app_commands.describe(summoner_name="Summoner name", 
+                       riot_id="Riot ID")
+async def register(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
+    if sql_stuff.add_user(interaction.user.id, summoner_name, riot_id):
+        await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
+    else:
+        await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
 async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
     if not game_id:
