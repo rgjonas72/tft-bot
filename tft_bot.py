@@ -6,6 +6,8 @@ import asyncio
 from typing import List
 import requests
 import mysql.connector
+from datetime import datetime
+from PIL import Image, ImageDraw, ImageFont
 
 def call_api(url):
     riot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
@@ -55,6 +57,14 @@ class sql_stuff_class():
             rows = cursor.fetchall()
             print(rows)
         return rows
+    
+    def get_all_users_outofgame(self):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("SELECT * FROM users where current_game_id is NULL")
+            rows = cursor.fetchall()
+            print(rows)
+        return rows
 
     def get_all_puuids(self):
         users = self.get_all_users()
@@ -62,24 +72,55 @@ class sql_stuff_class():
         print(puuids)
         return puuids
     
-    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=None, units=None):
+    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(3)], units=[None for _ in range(10)]):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
+            cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
             result = cursor.fetchone()[0]
             print(result)
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL)", (disc_id, game_id, game_id, puuid,))
+                cursor.execute("insert into games values (%s, %s, %s, %s, NULL, NULL)", (disc_id, puuid, game_id, patch, game_date, placement, *augments, *units))
                 self.cnx.commit()
                 return True
             else:
                 return False
+            
+    def update_game_on_finish(self, puuid, game_id, placement, units):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            # Update user's current game
+            cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
+            # Update game record
+            cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s", (placement, *units, game_id))
+            self.cnx.commit()
+
+
+
+    def update_user_current_game(self, puuid, game_id):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("update users set current_game_id=%s where puuid=%s)", (game_id, puuid, ))
+
+    def get_current_game(self, puuid):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select * from users where puuid=%s)", (puuid, ))
+            result = cursor.fetchone()[0]
+        return result[5]
+
+    def get_active_games(self):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select * from games where placement is NULL)")
+            rows = cursor.fetchall()
+        return rows
 
 class tft_stuff_class():
-    def __init__(self, version='15.9.1', current_set='14'):
+    def __init__(self, version='15.9.1', current_set='14', patch='14.7'):
         self.version = version
         self.augments = self.get_augs(version)
         self.current_set=current_set
+        self.patch = patch
 
     def get_augs(self, version):
         # URL of the JSON
@@ -114,7 +155,69 @@ class tft_stuff_class():
         if not response:
             return False
         return response['puuid']
+    
+    def get_game(self, game_id):
+        url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
+        response = call_api(url)
+        if not response:
+            return False
+        return response
+    
+    def construct_champ(self, champ, items, image_size=48):
+        # Load your images
+        main = Image.open(f"champs/{champ}.png")
+        items_array = []
+        for item in items:
+            items_array.append(Image.open(f"items/{item}.png"))
 
+
+        # Create a new image with the right dimensions
+        total_width = image_size*3
+        total_height = image_size*4
+
+        # Resize bottom images to match heights if needed
+        main = main.resize((image_size*3, image_size*3))
+
+
+        combined = Image.new("RGBA", (total_width, total_height), (0, 0, 0, 0))
+
+        # Paste the top image
+        combined.paste(main, (0, 0))
+
+        # Paste bottom images next to each other
+        for index, item in enumerate(items_array):  
+            combined.paste(item, (image_size*index, main.height))
+        return combined
+    
+    def create_full_pic(self, units, placement, image_width=144, image_height=192, gap=5, placement_gap = 125):
+        full = Image.new("RGBA", ((image_width+gap)*10 + placement_gap, image_height), (0, 0, 0, 0))
+
+        ImageDraw.Draw(full  # Image
+            ).text(
+            (5, 20),  # Coordinates
+            "#" + str(placement),  # Text
+            (255, 255, 255),  # Color
+            font = ImageFont.truetype("arial.ttf", 100)
+        )
+        # Paste the top image
+        for index, unit in enumerate(units):
+            full.paste(unit, ((gap+image_width)*index + placement_gap, 0))
+
+
+        return full
+
+    def get_user_unit_info(self, puuid, game_json):
+        matched_participant = next(
+            (p for p in game_json['info']['participants'] if p['puuid'] == puuid),
+            None
+        )
+        units = matched_participant['units']
+        unit_pics = []
+        for unit in units:
+            unit_pics.append(self.construct_champ(unit['character_id'], unit['itemNames']))
+        placement = matched_participant['placement']
+        full_pic = self.create_full_pic(unit_pics, placement)
+        return units, placement, full_pic
 
 
 tft_stuff = tft_stuff_class()
@@ -133,29 +236,61 @@ auth_users = [231554084782604288, 196404822063316992]
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=guild_id))
-    client.loop.create_task(background_loop())
+    client.loop.create_task(new_games_loop())
+    client.loop.create_task(ended_games_loop())
     print("Ready!")
 
-async def background_loop():
+async def new_games_loop():
     await client.wait_until_ready()
     #channel = client.get_channel(channel_id)
     while True:
-        players = sql_stuff.get_all_users()
+        players = sql_stuff.get_all_users_outofgame()
         #puuids = sql_stuff.get_all_puuids()
         for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
             print(response)
             if response != False:
+                # Check if game in database already
+                game_id = response['gameId']
+                if game_id == sql_stuff.get_current_game(puuid):
+                    await asyncio.sleep(3)
+                    continue
+                # Add new game if not already in database
                 disc_id = player[0]
-                #await sql_stuff.add_new_game()
-                await message_user_newgame(disc_id)
+                patch = tft_stuff.patch
+                game_date = datetime.now()
+                sql_stuff.update_user_current_game(puuid, game_id)
+                sql_stuff.add_new_game(disc_id, puuid, game_id, patch, game_date)
+                await message_user_newgame(disc_id, game_id)
             await asyncio.sleep(3)
         await asyncio.sleep(2)
 
-async def message_user_newgame(disc_id):
+async def ended_games_loop():
+    await client.wait_until_ready()
+    while True:
+        active_games = sql_stuff.get_active_games()
+        for active_game in active_games:
+            game_id = active_game[2]
+            tft_game = tft_stuff.get_game(game_id)
+            if tft_game == False:
+                await asyncio.sleep(3)
+                continue
+            disc_id = active_game[0]
+            puuid = active_game[1]
+            units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
+            sql_stuff.update_game_on_finish(puuid, game_id, placement, units)
+            await message_user_game_ended(disc_id, game_id, full_pic)
+
+
+
+async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
-    await user.send("In a game!")
+    await user.send(f"In a game! Game ID: {game_id}")
+
+async def message_user_game_ended(disc_id, game_id, embed):
+    user = await client.fetch_user(disc_id)
+    await user.send(f"Game ended! Game ID: {game_id}", embed=embed)
 
 @tree.command(name = "register", description = "Register your account")
 @app_commands.describe(
