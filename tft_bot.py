@@ -230,7 +230,9 @@ class tft_stuff_class():
         
         placement = matched_participant['placement']
         full_pic = self.create_full_pic(unit_pics, placement)
-        return units, placement, full_pic
+        
+        units_only = [u['character_id'] for u in units]
+        return units_only, placement, full_pic
 
 
 tft_stuff = tft_stuff_class()
