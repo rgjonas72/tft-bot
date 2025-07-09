@@ -57,7 +57,7 @@ class sql_stuff_class():
             row = cursor.fetchone()
             if row:
                 return [row[3], row[6]]
-            cursor.execute("select * from users where disc_id=%s order by last_game_date asc LIMIT 1", (discord_id,))
+            cursor.execute("select * from users where disc_id=%s order by last_game_date desc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
                 return [row[3], row[4]]
