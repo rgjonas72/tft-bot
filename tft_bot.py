@@ -53,8 +53,8 @@ class sql_stuff_class():
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select * from users where disc_id=%s order by last_game_date asc", (discord_id,))
-            result = cursor.fetchone()
+            cursor.execute("select top(1) from users where disc_id=%s order by last_game_date asc", (discord_id,))
+            result = cursor.fetchall()
 
         print(result)
         return result
