@@ -360,11 +360,11 @@ async def input_augments(interaction: discord.Interaction, augment1: str, augmen
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
 
-async def input_augments(interaction: discord.Interaction, augment1: Optional[str], augment2: Optional[str], augment3: Optional[str], game_id: Optional[int]):
-    await interaction.message.reply(augment1)
-    await interaction.message.reply(augment2)
-    await interaction.message.reply(augment3)
-    await interaction.message.reply(game_id)
+async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
+    if augment1: await interaction.message.reply(augment1)
+    if augment2: await interaction.message.reply(augment2)
+    if augment3: await interaction.message.reply(augment3)
+    if game_id: await interaction.message.reply(game_id)
     #await interaction.user.send()
 
 @tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
