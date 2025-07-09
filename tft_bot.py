@@ -77,7 +77,9 @@ class sql_stuff_class():
                 cursor.execute("update games set aug3=%s where game_id=%s and puuid=%s", (augment3, game_id, puuid, ))
             # Grab all saved augments
             cursor.execute("select aug1, aug2, aug3 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
-            row = cursor.fetchone()[0]
+            print(f"select aug1, aug2, aug3 from games where game_id={game_id} and puuid={puuid}")
+            row = cursor.fetchone()
+            print(row)
             self.cnx.commit()
         saved_aug1, saved_aug2, saved_aug3 = row
         output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}'
