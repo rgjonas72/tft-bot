@@ -104,7 +104,7 @@ class sql_stuff_class():
     def get_current_game(self, puuid):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select * from users where puuid=%s)", (puuid, ))
+            cursor.execute("select * from users where puuid=%s", (puuid, ))
             result = cursor.fetchone()[0]
         return result[5]
 
