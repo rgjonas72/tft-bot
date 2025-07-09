@@ -208,8 +208,11 @@ class tft_stuff_class():
         for index, unit in enumerate(units):
             full.paste(unit, ((gap+image_width)*index + placement_gap, 0))
 
+        
+
         with BytesIO() as image_binary:
             full.save(image_binary, 'PNG')
+            return image_binary.getvalue()
             image_binary.seek(0)
             return image_binary
 
