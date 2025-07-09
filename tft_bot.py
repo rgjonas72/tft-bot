@@ -56,10 +56,12 @@ class sql_stuff_class():
             cursor.execute("select * from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
             row = cursor.fetchone()
             if row:
+                print('Got into first if', row)
                 return [row[3], row[6]]
             cursor.execute("select * from users where disc_id=%s order by last_game_date asc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
+                print('Got into second if', row)
                 return [row[3], row[6]]
         return False
     
