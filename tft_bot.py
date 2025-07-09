@@ -91,6 +91,8 @@ class sql_stuff_class():
             # Update user's current game
             cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
             # Update game record
+            print(placement, units, game_id)
+            print((placement, *units, game_id))
             cursor.execute("update games set placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s", (placement, *units, game_id))
             self.cnx.commit()
 
