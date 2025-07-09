@@ -105,7 +105,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select * from users where puuid=%s", (puuid, ))
-            result = cursor.fetchone()[0]
+            result = cursor.fetchone()
         print(result)
         return result[5]
 
