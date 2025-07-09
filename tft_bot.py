@@ -198,7 +198,7 @@ class tft_stuff_class():
             (5, 20),  # Coordinates
             "#" + str(placement),  # Text
             (255, 255, 255),  # Color
-            font = ImageFont.truetype("arial.ttf", 100)
+            font = ImageFont.truetype("DejaVuSans.ttf", 100)
         )
         # Paste the top image
         for index, unit in enumerate(units):
