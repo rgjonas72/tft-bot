@@ -307,7 +307,7 @@ async def message_user_newgame(disc_id, game_id):
 
 async def message_user_game_ended(disc_id, game_id, embed):
     user = await client.fetch_user(disc_id)
-    await user.send(f"Game ended! Game ID: {game_id}", file=embed)
+    await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
 @tree.command(name = "register", description = "Register your account")
 @app_commands.describe(
