@@ -166,7 +166,7 @@ class tft_stuff_class():
         return augs
     
     def get_current_game(self, puuid):
-        print(url)
+        print(puuid)
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
         game = call_api(url, quiet=False)
         print(game)
