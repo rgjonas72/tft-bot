@@ -261,7 +261,8 @@ auth_users = [196404822063316992]
 
 @client.event
 async def on_ready():
-    await tree.sync(guild=discord.Object(id=guild_id))
+    #await tree.sync(guild=discord.Object(id=guild_id))
+    await tree.sync()
     client.loop.create_task(new_games_loop())
     client.loop.create_task(ended_games_loop())
     print("Ready!")
@@ -318,36 +319,14 @@ async def message_user_game_ended(disc_id, game_id, embed):
     user = await client.fetch_user(disc_id)
     await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
-@tree.command(name = "get_users", description = "Get list of users", guild=discord.Object(id=guild_id))
-async def first_command(interaction):
-    sql_stuff.get_all_users()
-    sql_stuff.get_all_puuids()
-    await interaction.response.send_message("test")
 
 async def rps_autocomplete(interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
     choices = tft_stuff.augments
     choices = [app_commands.Choice(name=choice, value=choice) for choice in choices if current.lower() in choice.lower()][:25]
     return choices
 
-@tree.command(name="abc", description = "ABC", guild=discord.Object(id=guild_id))
-@app_commands.autocomplete(something=rps_autocomplete)
-async def second_commad(interaction: discord.Interaction, something: str):
-    await interaction.user.send(something)
 
-@tree.command(name="input_augments", description = "Input your augments", guild=discord.Object(id=guild_id))
-@app_commands.autocomplete(augment1=rps_autocomplete)
-@app_commands.autocomplete(augment2=rps_autocomplete)
-@app_commands.autocomplete(augment3=rps_autocomplete)
-@app_commands.describe(game_id="Game ID (will automatically use current/last game)")
-async def input_augments(interaction: discord.Interaction, augment1: str, augment2: str, augment3: str, game_id: int):
-    await interaction.message.reply(augment1)
-    await interaction.message.reply(augment2)
-    await interaction.message.reply(augment3)
-    await interaction.message.reply(game_id)
-    #await interaction.user.send()
-
-
-@tree.command(name="input_augments_test", description = "Input your augments", guild=discord.Object(id=guild_id))
+@tree.command(name="input_augments", description = "Input your augments")
 @app_commands.describe(game_id="Game ID (will automatically use current/last game)",
                        augment1="Augment 1",
                        augment2="Augment 2",
@@ -366,7 +345,7 @@ async def input_augments(interaction: discord.Interaction, augment1: Optional[st
     #await interaction.user.send()
     await interaction.response.send_message(output)
 
-@tree.command(name = "register_account", description = "Register your account", guild=discord.Object(id=guild_id))
+@tree.command(name = "register_account", description = "Register your account")
 @app_commands.describe(summoner_name="Summoner name",
                        riot_id="Riot ID")
 async def register_account(interaction: discord.Interaction, summoner_name: app_commands.Range[str, 1, 16], riot_id: app_commands.Range[str, 1, 5]):
@@ -374,11 +353,6 @@ async def register_account(interaction: discord.Interaction, summoner_name: app_
         await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
-
-@tree.command(name="testagain", description = "ABC", guild=discord.Object(id=guild_id))
-@app_commands.autocomplete(something=rps_autocomplete)
-async def second_commad(interaction: discord.Interaction, something: str):
-    await interaction.user.send(something)
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()
