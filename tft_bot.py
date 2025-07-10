@@ -280,7 +280,7 @@ async def new_games_loop():
         for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
-            #print(response)
+            print(response)
             if response != False:
                 # Check if game in database already
                 game_id = response['gameId']
