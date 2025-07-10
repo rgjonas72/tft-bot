@@ -131,6 +131,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("update users set current_game_id=%s where puuid=%s", (game_id, puuid, ))
+            self.cnx.commit()
 
     def get_current_game(self, puuid):
         self.cnx.reconnect()
