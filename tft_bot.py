@@ -63,9 +63,9 @@ class sql_stuff_class():
                 return [puuid, last_game_id]
         return False
     
-    def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None):
+    def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None, augment4=None):
         self.cnx.reconnect()
-        if not augment1 and not augment2 and not augment3:
+        if not augment1 and not augment2 and not augment3 and not augment4:
             return "No augments entered."
         with self.cnx.cursor() as cursor:
             if augment1:
@@ -74,12 +74,14 @@ class sql_stuff_class():
                 cursor.execute("update games set aug2=%s where game_id=%s and puuid=%s", (augment2, game_id, puuid, ))
             if augment3:
                 cursor.execute("update games set aug3=%s where game_id=%s and puuid=%s", (augment3, game_id, puuid, ))
+            if augment4:
+                cursor.execute("update games set aug4=%s where game_id=%s and puuid=%s", (augment4, game_id, puuid, ))
             # Grab all saved augments
-            cursor.execute("select aug1, aug2, aug3 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
+            cursor.execute("select aug1, aug2, aug3, aug4 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
             row = cursor.fetchone()
             self.cnx.commit()
-        saved_aug1, saved_aug2, saved_aug3 = row
-        output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}'
+        saved_aug1, saved_aug2, saved_aug3, saved_aug4 = row
+        output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}\nAugment 4: {saved_aug4}'
         return output
 
     def get_all_users(self):
@@ -101,15 +103,15 @@ class sql_stuff_class():
         puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
-    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(3)], units=[None for _ in range(10)]):
+    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
             result = cursor.fetchone()[0]
             if result == 0:
-                augments += [None] * (3 - len(augments)) # Extend augments length to 3
+                augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (10 - len(units)) # Extend units length to 10
-                cursor.execute("insert into games values (%s, %s, %s, %s, NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (disc_id, puuid, game_id, patch, placement, *augments, *units))
+                cursor.execute("insert into games values (%s, %s, %s, %s, NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (disc_id, puuid, game_id, patch, placement, *augments, *units))
                 self.cnx.commit()
                 return True
             else:
@@ -330,19 +332,19 @@ async def rps_autocomplete(interaction: discord.Interaction, current: str) -> Li
 @app_commands.describe(game_id="Game ID (will automatically use current/last game)",
                        augment1="Augment 1",
                        augment2="Augment 2",
-                       augment3="Augment 3")
+                       augment3="Augment 3",
+                       augment4="Augment 4")
 @app_commands.autocomplete(augment1=rps_autocomplete)
 @app_commands.autocomplete(augment2=rps_autocomplete)
 @app_commands.autocomplete(augment3=rps_autocomplete)
-async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, game_id: Optional[int]=None):
+@app_commands.autocomplete(augment4=rps_autocomplete)
+async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, augment4: Optional[str]=None, game_id: Optional[int]=None):
     if not game_id:
         puuid_game_id = sql_stuff.get_user_latest_game(interaction.user.id)
         if not puuid_game_id: interaction.response.send_message('No game ID provided and no default game found.')
         puuid, game_id = puuid_game_id
 
-    output = sql_stuff.input_augments(game_id, puuid, augment1, augment2, augment3)
-    #if augment1: await interaction.response.send_message(augment1)
-    #await interaction.user.send()
+    output = sql_stuff.input_augments(game_id, puuid, augment1, augment2, augment3, augment4)
     await interaction.response.send_message(output)
 
 @tree.command(name = "register_account", description = "Register your account")
