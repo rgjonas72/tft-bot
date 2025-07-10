@@ -121,7 +121,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game
-            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=NOW() where puuid=%s', (puuid, game_id))
+            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=NOW() where puuid=%s', (puuid, game_id, ))
             # Update game record
             units += [None] * (10 - len(units)) # Extend units length to 10
             cursor.execute("update games set game_date=NOW(), placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (placement, *units, game_id, puuid))
