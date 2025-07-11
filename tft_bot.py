@@ -328,6 +328,7 @@ async def ended_games_loop():
 async def catchup_missed_games():
     users = sql_stuff.get_all_users()
     for user in users:
+        disc_id = user[0]
         puuid = user[3]
         last_game_id = user[4]
 
@@ -342,7 +343,13 @@ async def catchup_missed_games():
         for game_id in reversed(missed_games):
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
             game = call_api(url)
-            print('MISSED:', game_id, user[1])
+
+            game_date = datetime.fromtimestamp(game['info']['game_datetime'])
+            units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, game)
+            #sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
+            sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
+            #disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)])
+            await message_user_game_ended(196404822063316992, game_id, full_pic)
 
 async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
