@@ -344,7 +344,10 @@ async def catchup_missed_games():
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
             game = call_api(url)
 
-            game_date = datetime.fromtimestamp(game['info']['game_datetime'])
+            game_date = datetime.fromtimestamp(game['info']['game_datetime']/1000)
+            print(game_date)
+            continue
+
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, game)
             #sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
             sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
