@@ -117,15 +117,15 @@ class sql_stuff_class():
             else:
                 return False
             
-    def update_game_on_finish(self, puuid, game_id, placement, units):
+    def update_game_on_finish(self, puuid, game_id, placement, units, game_date):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game
-            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=NOW() where puuid=%s', (game_id, puuid, ))
+            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=%s where puuid=%s', (game_id, game_date, puuid, ))
 
             # Update game record
             units += [None] * (10 - len(units)) # Extend units length to 10
-            cursor.execute("update games set game_date=NOW(), placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (placement, *units, game_id, puuid))
+            cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid))
             self.cnx.commit()
 
 
@@ -268,6 +268,7 @@ auth_users = [196404822063316992]
 async def on_ready():
     #await tree.sync(guild=discord.Object(id=guild_id))
     await tree.sync()
+    await catchup_missed_games()
     client.loop.create_task(new_games_loop())
     client.loop.create_task(ended_games_loop())
     print("Ready!")
@@ -311,11 +312,31 @@ async def ended_games_loop():
                 continue
             disc_id = active_game[0]
             puuid = active_game[1]
+            game_date = datetime.fromtimestamp(active_game['info']['game_datetime'])
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
-            sql_stuff.update_game_on_finish(puuid, game_id, placement, units)
+            sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
             await message_user_game_ended(disc_id, game_id, full_pic)
         await asyncio.sleep(3)
 
+async def catchup_missed_games():
+    users = sql_stuff.get_all_users()
+    for user in users:
+        puuid = user[3]
+        last_game_id = user[4]
+
+
+        games_url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
+        game_ids = call_api(games_url)
+        clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
+
+        missed_games = clean_ids[:clean_ids.index(last_game_id) + 1]
+
+        print(missed_games)
+
+        for game_id in reversed(missed_games):
+            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
+            game = call_api(url)
+            print('MISSED:', game_id)
 
 async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
