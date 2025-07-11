@@ -342,7 +342,7 @@ async def catchup_missed_games():
         for game_id in reversed(missed_games):
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
             game = call_api(url)
-            print('MISSED:', game_id)
+            print('MISSED:', game_id, user[1])
 
 async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
