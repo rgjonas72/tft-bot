@@ -35,6 +35,7 @@ class sql_stuff_class():
     
     def add_user(self, disc_id, summoner_name, riot_id):
         puuid = self.tft_stuff.get_user_puuid(summoner_name, riot_id)
+        latest_game_id = self.tft_stuff.get_latest_game_id(puuid)
         if puuid == False:
             return False
         self.cnx.reconnect()
@@ -42,7 +43,7 @@ class sql_stuff_class():
             cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
             result = cursor.fetchone()[0]
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, NULL, NULL)", (disc_id, summoner_name, riot_id, puuid,))
+                cursor.execute("insert into users values (%s, %s, %s, %s, %s, NOW(), NULL)", (disc_id, summoner_name, riot_id, puuid, latest_game_id,))
                 self.cnx.commit()
                 return True
             else:
@@ -171,6 +172,12 @@ class tft_stuff_class():
         game = call_api(url, quiet=False)
         print(game)
         return game
+    
+    def get_latest_game_id(self, puuid):
+        url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
+        games = call_api(url)
+        latest_game = int(games[0].split('NA1_')[1]) # Isolate game ID from NA1_ and make int
+        return latest_game
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
         url = f'https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summoner_name}/{riot_id}'
@@ -323,7 +330,6 @@ async def catchup_missed_games():
     for user in users:
         puuid = user[3]
         last_game_id = user[4]
-
 
         games_url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         game_ids = call_api(games_url)
