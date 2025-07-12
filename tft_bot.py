@@ -94,6 +94,16 @@ class sql_stuff_class():
         saved_aug1, saved_aug2, saved_aug3, saved_aug4 = row
         output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}\nAugment 4: {saved_aug4}'
         return output
+    
+    def get_augments_by_gameid(self, game_id, puuid):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+        # Grab all saved augments
+            cursor.execute("select aug1, aug2, aug3, aug4 from games where game_id=%s and puuid=%s", (game_id, puuid, ))
+            row = cursor.fetchone()
+        saved_aug1, saved_aug2, saved_aug3, saved_aug4 = row
+        output = f'Saved augments for game ID {game_id}:\nAugment 1: {saved_aug1}\nAugment 2: {saved_aug2}\nAugment 3: {saved_aug3}\nAugment 4: {saved_aug4}'
+        return output
 
     def get_all_users(self):
         self.cnx.reconnect()
@@ -337,7 +347,7 @@ async def ended_games_loop():
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
             sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
             disc_id = sql_stuff.get_discord_id_from_puuid(puuid)
-            await message_user_game_ended(disc_id, game_id, full_pic)
+            await message_user_game_ended(disc_id, game_id, full_pic, puuid)
         await asyncio.sleep(3)
         await catchup_missed_games()
         await asyncio.sleep(2)
@@ -369,7 +379,8 @@ async def catchup_missed_games():
             #sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
             sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
             #disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)])
-            await message_user_game_ended(196404822063316992, game_id, full_pic)
+            await message_user_game_ended(disc_id, game_id, full_pic, puuid)
+            asyncio.sleep(2)
 
 
 
@@ -377,8 +388,9 @@ async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
     await user.send(f"In a game! Game ID: {game_id}")
 
-async def message_user_game_ended(disc_id, game_id, embed):
+async def message_user_game_ended(disc_id, game_id, embed, puuid):
     user = await client.fetch_user(disc_id)
+    augments = await sql_stuff.get_augments_by_gameid(game_id, puuid)
     await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
 
 
