@@ -49,6 +49,16 @@ class sql_stuff_class():
             else:
                 return False
         
+    def get_discord_id_from_puuid(self, puuid):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("SELECT * FROM users where puuid=%s", (puuid, ))
+            row = cursor.fetchone()
+        if row:
+            return row[0]
+        else:
+            return None
+
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
@@ -104,7 +114,7 @@ class sql_stuff_class():
         puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
-    def add_new_game(self, disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
+    def add_new_game(self, disc_id, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
@@ -112,7 +122,7 @@ class sql_stuff_class():
             if result == 0:
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (10 - len(units)) # Extend units length to 10
-                cursor.execute("insert into games values (%s, %s, %s, %s, NULL, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (disc_id, puuid, game_id, patch, placement, *augments, *units))
+                cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units))
                 self.cnx.commit()
                 return True
             else:
@@ -300,9 +310,8 @@ async def new_games_loop():
                 # Add new game if not already in database
                 disc_id = player[0]
                 patch = tft_stuff.patch
-                game_date = datetime.now()
                 sql_stuff.update_user_current_game(puuid, game_id)
-                sql_stuff.add_new_game(disc_id, puuid, game_id, patch, game_date)
+                sql_stuff.add_new_game(disc_id, puuid, game_id, patch)
                 await message_user_newgame(disc_id, game_id)
             await asyncio.sleep(3)
         await asyncio.sleep(2)
@@ -312,16 +321,16 @@ async def ended_games_loop():
     while True:
         active_games = sql_stuff.get_active_games()
         for active_game in active_games:
-            game_id = active_game[2]
+            game_id = active_game[1]
             tft_game = tft_stuff.get_game(game_id)
             if tft_game == False:
                 await asyncio.sleep(3)
                 continue
-            disc_id = active_game[0]
-            puuid = active_game[1]
-            game_date = datetime.fromtimestamp(active_game['info']['game_datetime'])
+            puuid = active_game[0]
+            game_date = datetime.fromtimestamp(tft_game['info']['game_datetime']/1000)
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
             sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
+            disc_id = sql_stuff.get_discord_id_from_puuid(puuid)
             await message_user_game_ended(disc_id, game_id, full_pic)
         await asyncio.sleep(3)
 
@@ -347,8 +356,6 @@ async def catchup_missed_games():
             game = call_api(url)
 
             game_date = datetime.fromtimestamp(game['info']['game_datetime']/1000)
-            print(game_date)
-            continue
 
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, game)
             #sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
