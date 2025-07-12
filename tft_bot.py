@@ -386,8 +386,8 @@ async def message_user_newgame(disc_id, game_id):
 
 async def message_user_game_ended(disc_id, game_id, embed, puuid):
     user = await client.fetch_user(disc_id)
-    augments = await sql_stuff.get_augments_by_gameid(game_id, puuid)
-    await user.send(f"Game ended! Game ID: {game_id}", file=discord.File(fp=embed, filename='image.png'))
+    augments = sql_stuff.get_augments_by_gameid(game_id, puuid)
+    await user.send(f"Game ended! Game ID: {game_id}\n{augments}", file=discord.File(fp=embed, filename='image.png'))
 
 
 async def rps_autocomplete(interaction: discord.Interaction, current: str) -> List[app_commands.Choice[str]]:
