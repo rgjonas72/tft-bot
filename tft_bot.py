@@ -171,6 +171,14 @@ class sql_stuff_class():
             cursor.execute("select * from games where placement is NULL")
             rows = cursor.fetchall()
         return rows
+    
+    def get_user_game_ids(self, puuid):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select game_id from games where puuid=%s", (puuid,))
+            rows = cursor.fetchall()
+        game_ids = [row[0] for row in rows]
+        return game_ids
 
 class tft_stuff_class():
     def __init__(self, version='15.13.1', current_set='14', patch='14.7'):
@@ -243,7 +251,7 @@ class tft_stuff_class():
         return combined
     
     def create_full_pic(self, units, placement, image_width=144, image_height=192, gap=5, placement_gap = 125):
-        full = Image.new("RGBA", ((image_width+gap)*min(10, len(units)) + placement_gap, image_height), (0, 0, 0, 0))
+        full = Image.new("RGBA", ((image_width+gap)*max(10, len(units)) + placement_gap, image_height), (0, 0, 0, 0))
 
         ImageDraw.Draw(full  # Image
             ).text(
@@ -354,17 +362,20 @@ async def catchup_missed_games():
     for user in users:
         disc_id = user[0]
         puuid = user[3]
-        last_game_id = user[4]
+        user_first_game_id = user[5]
 
         games_url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         game_ids = call_api(games_url)
         clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
 
-        if last_game_id in clean_ids:
-            missed_games = clean_ids[:clean_ids.index(last_game_id)]
+        if user_first_game_id in clean_ids:
+            missed_games = clean_ids[:clean_ids.index(user_first_game_id)]
         else:
             missed_games = clean_ids
 
+        existing_game_ids = sql_stuff.get_user_game_ids(puuid)
+
+        missed_games = [gid for gid in missed_games if gid not in existing_game_ids]
 
         for game_id in reversed(missed_games):
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
