@@ -162,7 +162,7 @@ class sql_stuff_class():
         return rows
 
 class tft_stuff_class():
-    def __init__(self, version='15.9.1', current_set='14', patch='14.7'):
+    def __init__(self, version='15.13.1', current_set='14', patch='14.7'):
         self.version = version
         self.augments = self.get_augs(version)
         self.current_set=current_set
@@ -208,7 +208,8 @@ class tft_stuff_class():
         main = Image.open(f"champs/{champ}.png")
         items_array = []
         for item in items:
-            items_array.append(Image.open(f"items/{item}.png"))
+            #items_array.append(Image.open(f"items/{item}.png"))
+            items_array.append(Image.open(BytesIO(requests.get(f'https://ddragon.leagueoflegends.com/cdn/{self.version}/img/tft-item/{item}.png').content)))
 
 
         # Create a new image with the right dimensions
