@@ -336,9 +336,11 @@ async def catchup_missed_games():
         game_ids = call_api(games_url)
         clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
 
-        missed_games = clean_ids[:clean_ids.index(last_game_id) + 1]
+        if last_game_id in clean_ids:
+            missed_games = clean_ids[:clean_ids.index(last_game_id) + 1]
+        else:
+            missed_games = clean_ids
 
-        print(missed_games)
 
         for game_id in reversed(missed_games):
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
