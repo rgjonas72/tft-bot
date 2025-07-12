@@ -43,7 +43,7 @@ class sql_stuff_class():
             cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
             result = cursor.fetchone()[0]
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, %s, NOW(), NULL)", (disc_id, summoner_name, riot_id, puuid, latest_game_id,))
+                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, %s)", (disc_id, summoner_name, riot_id, puuid, latest_game_id, ))
                 self.cnx.commit()
                 return True
             else:
@@ -67,7 +67,7 @@ class sql_stuff_class():
             if row:
                 puuid, current_game_id = row
                 return [puuid, current_game_id]
-            cursor.execute("select puuid, last_game_id from users where disc_id=%s order by last_game_date desc LIMIT 1", (discord_id,))
+            cursor.execute("select g.puuid, g.game_id from games g inner join users u on g.puuid=u.puuid where disc_id=%s order by game_date desc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
                 puuid, last_game_id = row
@@ -133,10 +133,6 @@ class sql_stuff_class():
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (10 - len(units)) # Extend units length to 10
                 cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units))
-                print(placement)
-                if placement is not None:
-                    print('In if placement')
-                    cursor.execute('update users set last_game_id=%s, last_game_date=%s where puuid=%s', (game_id, game_date, puuid, ))
                 self.cnx.commit()
                 return True
             else:
@@ -146,7 +142,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game
-            cursor.execute('update users set current_game_id=NULL, last_game_id=%s, last_game_date=%s where puuid=%s', (game_id, game_date, puuid, ))
+            cursor.execute('update users set current_game_id=NULL where puuid=%s', (game_id, game_date, puuid, ))
 
             # Update game record
             units += [None] * (10 - len(units)) # Extend units length to 10
