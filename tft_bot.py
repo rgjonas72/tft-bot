@@ -133,7 +133,7 @@ class sql_stuff_class():
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (13 - len(units)) # Extend units length to 13
                 print((puuid, game_id, patch, game_date, placement, *augments, *units, ))
-                cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, ))
+                cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, ))
                 self.cnx.commit()
                 return True
             else:
