@@ -123,6 +123,8 @@ class sql_stuff_class():
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (10 - len(units)) # Extend units length to 10
                 cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units))
+                if placement:
+                    cursor.execute('update users set last_game_id=%s, last_game_date=%s where puuid=%s', (game_id, game_date, puuid, ))
                 self.cnx.commit()
                 return True
             else:
@@ -335,6 +337,8 @@ async def ended_games_loop():
             disc_id = sql_stuff.get_discord_id_from_puuid(puuid)
             await message_user_game_ended(disc_id, game_id, full_pic)
         await asyncio.sleep(3)
+        await catchup_missed_games()
+        await asyncio.sleep(2)
 
 async def catchup_missed_games():
     users = sql_stuff.get_all_users()
@@ -364,6 +368,8 @@ async def catchup_missed_games():
             sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
             #disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)])
             await message_user_game_ended(196404822063316992, game_id, full_pic)
+
+
 
 async def message_user_newgame(disc_id, game_id):
     user = await client.fetch_user(disc_id)
