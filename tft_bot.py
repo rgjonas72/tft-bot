@@ -123,7 +123,8 @@ class sql_stuff_class():
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (10 - len(units)) # Extend units length to 10
                 cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units))
-                if placement:
+                print(placement)
+                if placement is not None:
                     print('In if placement')
                     cursor.execute('update users set last_game_id=%s, last_game_date=%s where puuid=%s', (game_id, game_date, puuid, ))
                 self.cnx.commit()
