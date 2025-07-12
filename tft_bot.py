@@ -354,7 +354,7 @@ async def catchup_missed_games():
         clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
 
         if last_game_id in clean_ids:
-            missed_games = clean_ids[:clean_ids.index(last_game_id) + 1]
+            missed_games = clean_ids[:clean_ids.index(last_game_id)]
         else:
             missed_games = clean_ids
 
