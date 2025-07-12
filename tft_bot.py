@@ -377,7 +377,7 @@ async def catchup_missed_games():
             sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
             #disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)])
             await message_user_game_ended(disc_id, game_id, full_pic, puuid)
-            asyncio.sleep(2)
+            await asyncio.sleep(2)
 
 
 
