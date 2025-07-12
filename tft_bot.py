@@ -205,7 +205,8 @@ class tft_stuff_class():
     
     def construct_champ(self, champ, items, image_size=48):
         # Load your images
-        main = Image.open(f"champs/{champ}.png")
+        #main = Image.open(f"champs/{champ}.png")
+        main = Image.open(BytesIO(requests.get(f"https://cdn.metatft.com/cdn-cgi/image/width=48,height=48,format=auto/https://cdn.metatft.com/file/metatft/champions/{champ.lower()}.png")))
         items_array = []
         for item in items:
             #items_array.append(Image.open(f"items/{item}.png"))
