@@ -209,7 +209,7 @@ class tft_stuff_class():
         items_array = []
         for item in items:
             #items_array.append(Image.open(f"items/{item}.png"))
-            items_array.append(Image.open(BytesIO(requests.get(f'https://ddragon.leagueoflegends.com/cdn/{self.version}/img/tft-item/{item}.png').content)))
+            items_array.append(Image.open(BytesIO(requests.get(f'https://ddragon.leagueoflegends.com/cdn/{self.version}/img/tft-item/{item}.png').content)).resize((48, 48)))
 
 
         # Create a new image with the right dimensions
