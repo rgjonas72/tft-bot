@@ -124,14 +124,14 @@ class sql_stuff_class():
         puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
-    def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
+    def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(13)]):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
             result = cursor.fetchone()[0]
             if result == 0:
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
-                units += [None] * (10 - len(units)) # Extend units length to 10
+                units += [None] * (13 - len(units)) # Extend units length to 13
                 print((puuid, game_id, patch, game_date, placement, *augments, *units, ))
                 cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, ))
                 self.cnx.commit()
@@ -146,7 +146,7 @@ class sql_stuff_class():
             cursor.execute('update users set current_game_id=NULL where puuid=%s', (game_id, game_date, puuid, ))
 
             # Update game record
-            units += [None] * (10 - len(units)) # Extend units length to 10
+            units += [None] * (13 - len(units)) # Extend units length to 10
             cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid))
             self.cnx.commit()
 
@@ -243,7 +243,7 @@ class tft_stuff_class():
         return combined
     
     def create_full_pic(self, units, placement, image_width=144, image_height=192, gap=5, placement_gap = 125):
-        full = Image.new("RGBA", ((image_width+gap)*10 + placement_gap, image_height), (0, 0, 0, 0))
+        full = Image.new("RGBA", ((image_width+gap)*min(10, len(units)) + placement_gap, image_height), (0, 0, 0, 0))
 
         ImageDraw.Draw(full  # Image
             ).text(
