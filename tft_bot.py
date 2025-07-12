@@ -114,7 +114,7 @@ class sql_stuff_class():
         puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
-    def add_new_game(self, disc_id, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
+    def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)]):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
@@ -311,7 +311,7 @@ async def new_games_loop():
                 disc_id = player[0]
                 patch = tft_stuff.patch
                 sql_stuff.update_user_current_game(puuid, game_id)
-                sql_stuff.add_new_game(disc_id, puuid, game_id, patch)
+                sql_stuff.add_new_game(puuid, game_id, patch)
                 await message_user_newgame(disc_id, game_id)
             await asyncio.sleep(3)
         await asyncio.sleep(2)
