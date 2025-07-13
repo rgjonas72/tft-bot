@@ -119,9 +119,9 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             #cursor.execute("SELECT * FROM users where current_game_id is NULL")
-            cursor.execute("SELECT distinct g.puuid, u.disc_id FROM games g inner join users u on g.puuid=u.puuid where placement is null")
-            rows = cursor.fetchall()
-        return rows
+            #cursor.execute("SELECT distinct g.puuid, u.disc_id FROM games g inner join users u on g.puuid=u.puuid where placement is null")
+            cursor.execute("SELECT distinct u.puuid, u.disc_id FROM users u LEFT JOIN games g ON u.puuid = g.puuid GROUP BY u.puuid HAVING COUNT(g.puuid) = 0 OR SUM(CASE WHEN g.placement IS NULL THEN 1 ELSE 0 END) = 0;")
+
 
     def get_all_puuids(self):
         users = self.get_all_users()
