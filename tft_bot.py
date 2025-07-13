@@ -132,7 +132,7 @@ class sql_stuff_class():
             if result == 0:
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (13 - len(units)) # Extend units length to 13
-                print((puuid, game_id, patch, game_date, placement, *augments, *units, ))
+                #print((puuid, game_id, patch, game_date, placement, *augments, *units, ))
                 cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, ))
                 self.cnx.commit()
                 return True
@@ -143,7 +143,7 @@ class sql_stuff_class():
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game
-            cursor.execute('update users set current_game_id=NULL where puuid=%s', (game_id, game_date, puuid, ))
+            cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
 
             # Update game record
             units += [None] * (13 - len(units)) # Extend units length to 10
@@ -196,10 +196,10 @@ class tft_stuff_class():
         return augs
     
     def get_current_game(self, puuid):
-        print(puuid)
+        #print(puuid)
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
         game = call_api(url, quiet=False)
-        print(game)
+        #print(game)
         return game
     
     def get_latest_game_id(self, puuid):
@@ -316,12 +316,12 @@ async def new_games_loop():
     #channel = client.get_channel(channel_id)
     while True:
         players = sql_stuff.get_all_users_outofgame()
-        print(players)
+        #print(players)
         #puuids = sql_stuff.get_all_puuids()
         for player in players:
             puuid = player[3]
             response = tft_stuff.get_current_game(puuid)
-            print(response)
+            #print(response)
             if response != False:
                 # Check if game in database already
                 game_id = response['gameId']
