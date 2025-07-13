@@ -279,6 +279,7 @@ class tft_stuff_class():
             (p for p in game_json['info']['participants'] if p['puuid'] == puuid),
             None
         )
+        print(matched_participant)
         units = matched_participant['units']
         unit_pics = []
         for unit in units:
@@ -377,6 +378,7 @@ async def catchup_missed_games():
         missed_games = [gid for gid in missed_games if gid not in existing_game_ids]
 
         for game_id in reversed(missed_games):
+            print(game_id)
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
             game = call_api(url)
 
