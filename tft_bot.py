@@ -43,7 +43,7 @@ class sql_stuff_class():
             cursor.execute("select exists(select * from users where puuid=%s)", (puuid,))
             result = cursor.fetchone()[0]
             if result == 0:
-                cursor.execute("insert into users values (%s, %s, %s, %s, NULL, %s)", (disc_id, summoner_name, riot_id, puuid, latest_game_id, ))
+                cursor.execute("insert into users values (%s, %s, %s, %s, %s)", (disc_id, summoner_name, riot_id, puuid, latest_game_id, ))
                 self.cnx.commit()
                 return True
             else:
@@ -62,12 +62,15 @@ class sql_stuff_class():
     def get_user_latest_game(self, discord_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select puuid, current_game_id from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
+            #cursor.execute("select puuid, current_game_id from users where disc_id=%s and current_game_id is not NULL", (discord_id,))
+            # Check if there is a current game with no placement saved
+            cursor.execute("select g.puuid, game_id from games g inner join users u on g.puuid=u.puuid where disc_id=%s and placement is NULL", (discord_id,))
             row = cursor.fetchone()
             if row:
                 puuid, current_game_id = row
                 return [puuid, current_game_id]
-            cursor.execute("select g.puuid, g.game_id from games g inner join users u on g.puuid=u.puuid where disc_id=%s order by game_date desc LIMIT 1", (discord_id,))
+            # If did not get a row, get latest game
+            cursor.execute("select g.puuid, g.game_id from games g inner join users u on g.puuid=u.puuid where disc_id=%s and game_date is not NULL order by game_date desc LIMIT 1", (discord_id,))
             row = cursor.fetchone()
             if row: 
                 puuid, last_game_id = row
@@ -115,7 +118,8 @@ class sql_stuff_class():
     def get_all_users_outofgame(self):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("SELECT * FROM users where current_game_id is NULL")
+            #cursor.execute("SELECT * FROM users where current_game_id is NULL")
+            cursor.execute("SELECT distinct g.puuid, u.disc_id FROM games g inner join users u on g.puuid=u.puuid where placement is null")
             rows = cursor.fetchall()
         return rows
 
@@ -142,28 +146,23 @@ class sql_stuff_class():
     def update_game_on_finish(self, puuid, game_id, placement, units, game_date):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            # Update user's current game
-            cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
+            # Update user's current game --------- NO LONGER NEEDED -----------
+            #cursor.execute('update users set current_game_id=NULL where puuid=%s', (puuid, ))
 
             # Update game record
             units += [None] * (13 - len(units)) # Extend units length to 10
             cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid))
             self.cnx.commit()
-
-
-
-    def update_user_current_game(self, puuid, game_id):
+    
+    def check_current_game_exists(self, puuid, game_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("update users set current_game_id=%s where puuid=%s", (game_id, puuid, ))
-            self.cnx.commit()
-
-    def get_current_game(self, puuid):
-        self.cnx.reconnect()
-        with self.cnx.cursor() as cursor:
-            cursor.execute("select current_game_id from users where puuid=%s", (puuid, ))
+            cursor.execute("select exists(select * from games where puuid=%s and game_id=%s)", (puuid, game_id,))
             result = cursor.fetchone()[0]
-        return result
+            if result == 0:
+                return False
+            else:
+                return True
 
     def get_active_games(self):
         self.cnx.reconnect()
@@ -319,19 +318,19 @@ async def new_games_loop():
         #print(players)
         #puuids = sql_stuff.get_all_puuids()
         for player in players:
-            puuid = player[3]
+            puuid = player[0]
             response = tft_stuff.get_current_game(puuid)
             #print(response)
             if response != False:
                 # Check if game in database already
                 game_id = response['gameId']
-                if game_id == sql_stuff.get_current_game(puuid):
+                if sql_stuff.check_current_game_exists(puuid, game_id):
                     await asyncio.sleep(3)
                     continue
                 # Add new game if not already in database
-                disc_id = player[0]
+                disc_id = player[1]
                 patch = tft_stuff.patch
-                sql_stuff.update_user_current_game(puuid, game_id)
+                #sql_stuff.update_user_current_game(puuid, game_id)
                 sql_stuff.add_new_game(puuid, game_id, patch)
                 await message_user_newgame(disc_id, game_id)
             await asyncio.sleep(3)
@@ -362,7 +361,7 @@ async def catchup_missed_games():
     for user in users:
         disc_id = user[0]
         puuid = user[3]
-        user_first_game_id = user[5]
+        user_first_game_id = user[4]
 
         games_url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         game_ids = call_api(games_url)
