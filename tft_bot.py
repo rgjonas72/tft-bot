@@ -10,19 +10,6 @@ from datetime import datetime
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 
-def call_api(url, quiet=False):
-    riot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
-    headers = {
-        'X-Riot-Token': riot_api_key
-    }
-    response = requests.get(url, headers=headers)
-
-    if response.status_code == 200:
-        return response.json()
-    else:
-        if not quiet: print(response.json())
-        return False
-
 class sql_stuff_class():
     def __init__(self, tft_stuff):
         self.cnx = self.get_cnx()
@@ -181,16 +168,36 @@ class sql_stuff_class():
         return game_ids
 
 class tft_stuff_class():
-    def __init__(self, version='15.13.1', current_set='14', patch='14.7'):
-        self.version = version
-        self.augments = self.get_augs(version)
-        self.current_set=current_set
-        self.patch = patch
+    def __init__(self):
+        self.update_bot_info()
+
+    def update_bot_info(self):
+        db_name = 'tft'
+        cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
+        with cnx.cursor() as cursor:
+            cursor.execute("SELECT * FROM users where puuid=%s", (puuid, ))
+            row = cursor.fetchone()
+        self.patch, self.version, self.riot_api_key = row
+        self.augments = self.get_augs(self.version)
+
+
+    def call_api(self, url, quiet=False):
+        #iot_api_key = open('tokens/riot_api_key.txt', 'r').readline().strip()
+        headers = {
+            'X-Riot-Token': self.riot_api_key
+        }
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            if not quiet: print(response.json())
+            return False
 
     def get_augs(self, version):
         # URL of the JSON
         url = f"https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/tft-augments.json"
-        data = call_api(url)
+        data = self.call_api(url)
 
         augs = [d['name'] for d in data['data'].values()]
         return augs
@@ -198,26 +205,26 @@ class tft_stuff_class():
     def get_current_game(self, puuid):
         #print(puuid)
         url = f"https://na1.api.riotgames.com/lol/spectator/tft/v5/active-games/by-puuid/{puuid}"
-        game = call_api(url, quiet=False)
+        game = self.call_api(url, quiet=False)
         #print(game)
         return game
     
     def get_latest_game_id(self, puuid):
         url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
-        games = call_api(url)
+        games = self.call_api(url)
         latest_game = int(games[0].split('NA1_')[1]) # Isolate game ID from NA1_ and make int
         return latest_game
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
         url = f'https://{region}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{summoner_name}/{riot_id}'
-        response = call_api(url)
+        response = self.call_api(url)
         if not response:
             return False
         return response['puuid']
     
     def get_game(self, game_id):
         url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
-        response = call_api(url)
+        response = self.call_api(url)
         if not response:
             return False
         return response
@@ -273,6 +280,11 @@ class tft_stuff_class():
         #return image_binary
         image_binary.seek(0)
         return image_binary
+    
+    def get_game_ids(self, puuid):
+        url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
+        game_ids = self.call_api(url)
+        return game_ids
 
     def get_user_unit_info(self, puuid, game_json):
         #print(game_json)
@@ -365,8 +377,8 @@ async def catchup_missed_games():
         puuid = user[3]
         user_first_game_id = user[4]
 
-        games_url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
-        game_ids = call_api(games_url)
+        game_ids = tft_stuff.get_game_ids(puuid)
+
         clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
 
         if user_first_game_id in clean_ids:
@@ -379,9 +391,7 @@ async def catchup_missed_games():
         missed_games = [gid for gid in missed_games if gid not in existing_game_ids]
 
         for game_id in reversed(missed_games):
-            print(game_id)
-            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
-            game = call_api(url)
+            game = tft_stuff.get_game(game_id)
 
             game_date = datetime.fromtimestamp(game['info']['game_datetime']/1000)
 
