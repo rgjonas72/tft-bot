@@ -139,7 +139,7 @@ class sql_stuff_class():
 
             # Update game record
             units += [None] * (13 - len(units)) # Extend units length to 10
-            cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid))
+            cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s, unit11=%s, unit12=%s, unit13=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid, ))
             self.cnx.commit()
     
     def check_current_game_exists(self, puuid, game_id):
