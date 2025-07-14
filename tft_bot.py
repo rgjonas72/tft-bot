@@ -175,7 +175,7 @@ class tft_stuff_class():
         db_name = 'tft'
         cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
         with cnx.cursor() as cursor:
-            cursor.execute("SELECT * FROM users where puuid=%s", (puuid, ))
+            cursor.execute("SELECT * FROM bot_info")
             row = cursor.fetchone()
         self.patch, self.version, self.riot_api_key = row
         self.augments = self.get_augs(self.version)
