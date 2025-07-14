@@ -35,6 +35,17 @@ class sql_stuff_class():
                 return True
             else:
                 return False
+            
+    def update_bot_info(self, patch, api_version, riot_api_key):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            if patch:
+                cursor.execute("update bot_info set patch=%s", (patch, ))
+            if api_version:
+                cursor.execute("update bot_info set api_version=%s", (api_version, ))
+            if riot_api_key:
+                cursor.execute("update bot_info set riot_api_key=%s", (riot_api_key, ))
+            self.cnx.commit()
         
     def get_discord_id_from_puuid(self, puuid):
         self.cnx.reconnect()
@@ -447,6 +458,16 @@ async def register_account(interaction: discord.Interaction, summoner_name: app_
         await interaction.response.send_message(f'Registered {summoner_name}#{riot_id}!')
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
+
+@tree.command(name = "update_bot_info", description = "Update patch/api key", guild=discord.Object(id=guild_id))
+async def first_command(interaction, user: discord.Member, patch: Optional[str]=None, api_version: Optional[str]=None, riot_api_key: Optional[str]=None):
+    if interaction.user.id not in auth_users:
+        await interaction.response.send_message(f"Not allowed to update.", ephemeral=True)
+
+    sql_stuff.update_bot_info(patch, api_version, riot_api_key)
+    tft_stuff.update_bot_info()
+    await interaction.response.send_message(f"Updated bot info", ephemeral=True)
+
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()
