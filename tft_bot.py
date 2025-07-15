@@ -202,7 +202,7 @@ class tft_stuff_class():
         if response.status_code == 200:
             return response.json()
         else:
-            if not quiet: print(response.json())
+            if not quiet: print(url, response.json())
             return False
 
     def get_augs(self, version):
