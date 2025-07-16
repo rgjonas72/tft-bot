@@ -173,5 +173,4 @@ class sql_stuff_class():
         with self.cnx.cursor() as cursor:
             cursor.execute("SELECT round(avg(placement), 1) FROM games WHERE aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s", (*[augment]*4,))
             avp = cursor.fetchone()[0]
-        print(avp)
         return avp

@@ -15,6 +15,9 @@ class tft_stuff_class():
             row = cursor.fetchone()
         self.patch, self.version, self.riot_api_key = row
         self.augments = self.get_augs(self.version)
+        augments_json_url = f"https://ddragon.leagueoflegends.com/cdn/{self.version}/data/en_US/tft-augments.json"
+        augments_json_response = requests.get(augments_json_url)
+        self.augments_json = augments_json_response.json()
 
 
     def call_api(self, url, quiet=False):
@@ -139,3 +142,51 @@ class tft_stuff_class():
         
         units_only = [u['character_id'] for u in units]
         return units_only, placement, full_pic
+    
+    def create_augment_stats_pic(self, augment, avp):
+        augment_img = self.get_augment_img(augment)
+
+        full = Image.new("RGB", ((400, 150)), (29,29,29))
+        full.paste(augment_img, (0, 0))
+        # Add text for AVP
+        ImageDraw.Draw(full  # Image
+            ).text(
+            (140, 45),  # Coordinates
+            "AVP: " + str(avp),  # Text
+            (255, 255, 255),  # Color
+            #font = ImageFont.load_default()
+            font = ImageFont.truetype("arial.ttf", 60)
+        )
+        # Add text for augment name
+        region = ((5, 130, 128, 150))
+        box_width = region[2]-region[0]
+        box_height = region[3]-region[1]
+        draw = ImageDraw.Draw(full)
+        draw.rectangle(region, width=0)
+        text = "This is some\nexample text"
+        font_size = 40
+        max_font_size = 40
+        min_font_size = 6
+        # Find the largest font size that fits in the box
+        for font_size in range(max_font_size, min_font_size - 1, -1):
+            font = ImageFont.truetype("arial.ttf", font_size)
+            bbox = draw.multiline_textbbox((0, 0), augment, font=font, spacing=0)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+            if text_width <= box_width and text_height <= box_height:
+                break  # Found the best size that fits
+        text_x = 5 + (box_width - text_width) // 2
+        text_y = 120 + (box_height - text_height) // 2
+        draw.multiline_text((text_x, text_y), augment, font=font, fill="white", spacing=0)
+        image_binary = BytesIO()
+        full.save(image_binary, 'PNG')
+        #return image_binary
+        image_binary.seek(0)
+        return image_binary
+
+    def get_augment_img(self, augment):
+        for aug_json in self.augments_json["data"].values():
+            if aug_json["name"] == augment:
+                image_full = aug_json["image"]["full"]
+                return Image.open(BytesIO(requests.get(f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}").content))
+        return None
