@@ -157,7 +157,7 @@ async def register_account(interaction: discord.Interaction, summoner_name: app_
 @app_commands.describe(patch="TFT Patch",
                        api_version="API Version",
                        riot_api_key="Riot API Key")
-async def first_command(interaction: discord.Member, patch: Optional[str]=None, api_version: Optional[str]=None, riot_api_key: Optional[str]=None):
+async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None, api_version: Optional[str]=None, riot_api_key: Optional[str]=None):
     if interaction.user.id not in auth_users:
         await interaction.response.send_message(f"Not allowed to update.", ephemeral=True)
 
@@ -168,7 +168,7 @@ async def first_command(interaction: discord.Member, patch: Optional[str]=None, 
 @tree.command(name="augment_stats", description = "Check augment stats", guild=discord.Object(id=guild_id))
 @app_commands.describe(augment="Augment to check stats on")
 @app_commands.autocomplete(augment=rps_autocomplete)
-async def first_command(interaction: discord.Member, augment: Optional[str]=None):
+async def augment_stats(interaction: discord.Member, augment: Optional[str]=None):
     if augment:
         sql_stuff.get_augment_stats(augment)
     await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
