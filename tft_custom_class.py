@@ -163,10 +163,8 @@ class tft_stuff_class():
         box_height = region[3]-region[1]
         draw = ImageDraw.Draw(full)
         draw.rectangle(region, width=0)
-        text = "This is some\nexample text"
-        font_size = 40
         max_font_size = 40
-        min_font_size = 8
+        min_font_size = 7
         # Find the largest font size that fits in the box
         for font_size in range(max_font_size, min_font_size - 1, -1):
             font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", font_size)
