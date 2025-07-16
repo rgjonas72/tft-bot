@@ -105,7 +105,7 @@ class tft_stuff_class():
             "#" + str(placement),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default(100)
-            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 45)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 90)
             #font = ImageFont.truetype("DejaVuSans.ttf", 100)
         )
         # Paste the top image
