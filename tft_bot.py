@@ -170,7 +170,9 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 @app_commands.autocomplete(augment=rps_autocomplete)
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None):
     if augment:
-        sql_stuff.get_augment_stats(augment)
+        avp=sql_stuff.get_augment_stats(augment)
+        embed = tft_stuff.create_augment_stats_pic(augment, avp)
+        await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
     await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
 
 
