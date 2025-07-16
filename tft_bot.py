@@ -21,8 +21,8 @@ auth_users = [196404822063316992]
 
 @client.event
 async def on_ready():
-    #await tree.sync(guild=discord.Object(id=guild_id))
-    await tree.sync()
+    await tree.sync(guild=discord.Object(id=guild_id))
+    #await tree.sync()
     await catchup_missed_games()
     client.loop.create_task(new_games_loop())
     client.loop.create_task(ended_games_loop())
