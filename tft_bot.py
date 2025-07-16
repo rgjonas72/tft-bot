@@ -127,7 +127,7 @@ class sql_stuff_class():
         puuids = [u[3] for u in users] # Element 3 is each user's puuid
         return puuids
     
-    def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(13)]):
+    def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(13)], queue_id=None):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
@@ -136,13 +136,13 @@ class sql_stuff_class():
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
                 units += [None] * (13 - len(units)) # Extend units length to 13
                 #print((puuid, game_id, patch, game_date, placement, *augments, *units, ))
-                cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, ))
+                cursor.execute("insert into games values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (puuid, game_id, patch, game_date, placement, *augments, *units, queue_id, ))
                 self.cnx.commit()
                 return True
             else:
                 return False
             
-    def update_game_on_finish(self, puuid, game_id, placement, units, game_date):
+    def update_game_on_finish(self, puuid, game_id, placement, units, game_date, queue_id):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             # Update user's current game --------- NO LONGER NEEDED -----------
@@ -150,7 +150,7 @@ class sql_stuff_class():
 
             # Update game record
             units += [None] * (13 - len(units)) # Extend units length to 10
-            cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s, unit11=%s, unit12=%s, unit13=%s where game_id=%s and puuid=%s", (game_date, placement, *units, game_id, puuid, ))
+            cursor.execute("update games set game_date=%s, placement=%s, unit1=%s, unit2=%s, unit3=%s, unit4=%s, unit5=%s, unit6=%s, unit7=%s, unit8=%s, unit9=%s, unit10=%s, unit11=%s, unit12=%s, unit13=%s, queue_id=%s where game_id=%s and puuid=%s", (game_date, placement, *units, queue_id, game_id, puuid, ))
             self.cnx.commit()
     
     def check_current_game_exists(self, puuid, game_id):
@@ -374,7 +374,8 @@ async def ended_games_loop():
             puuid = active_game[0]
             game_date = datetime.fromtimestamp(tft_game['info']['game_datetime']/1000)
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
-            sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
+            queue_id = tft_game['info']['queue_id']
+            sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date, queue_id)
             disc_id = sql_stuff.get_discord_id_from_puuid(puuid)
             await message_user_game_ended(disc_id, game_id, full_pic, puuid)
         await asyncio.sleep(3)
@@ -407,8 +408,9 @@ async def catchup_missed_games():
             game_date = datetime.fromtimestamp(game['info']['game_datetime']/1000)
 
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, game)
+            queue_id = game['info']['queue_id']
             #sql_stuff.update_game_on_finish(puuid, game_id, placement, units, game_date)
-            sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units)
+            sql_stuff.add_new_game(puuid, game_id, tft_stuff.patch, game_date, placement, units=units, queue_id=queue_id)
             #disc_id, puuid, game_id, patch, game_date, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(10)])
             await message_user_game_ended(disc_id, game_id, full_pic, puuid)
             await asyncio.sleep(2)
@@ -459,7 +461,7 @@ async def register_account(interaction: discord.Interaction, summoner_name: app_
     else:
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
-@tree.command(name = "update_bot_info", description = "Update patch/api key", guild=discord.Object(id=guild_id))
+@tree.command(name="update_bot_info", description = "Update patch/api key", guild=discord.Object(id=guild_id))
 async def first_command(interaction, user: discord.Member, patch: Optional[str]=None, api_version: Optional[str]=None, riot_api_key: Optional[str]=None):
     if interaction.user.id not in auth_users:
         await interaction.response.send_message(f"Not allowed to update.", ephemeral=True)
