@@ -101,11 +101,11 @@ class tft_stuff_class():
 
         ImageDraw.Draw(full  # Image
             ).text(
-            (5, 20),  # Coordinates
+            (5, 60),  # Coordinates
             "#" + str(placement),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default(100)
-            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 90)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 65)
             #font = ImageFont.truetype("DejaVuSans.ttf", 100)
         )
         # Paste the top image
