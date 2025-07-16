@@ -154,7 +154,7 @@ async def register_account(interaction: discord.Interaction, summoner_name: app_
         await interaction.response.send_message(f'Failed to register {summoner_name}#{riot_id}.')
 
 @tree.command(name="update_bot_info", description = "Update patch/api key", guild=discord.Object(id=guild_id))
-@app_commands.describe(summoner_name="TFT Patch",
+@app_commands.describe(patch="TFT Patch",
                        api_version="API Version",
                        riot_api_key="Riot API Key")
 async def first_command(interaction: discord.Member, patch: Optional[str]=None, api_version: Optional[str]=None, riot_api_key: Optional[str]=None):
