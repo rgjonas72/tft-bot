@@ -152,7 +152,7 @@ class tft_stuff_class():
         ImageDraw.Draw(full  # Image
             ).text(
             (140, 50),  # Coordinates
-            "AVP: " + "N/A" if avp is None else str(avp),  # Text
+            "AVP: " + ("N/A" if avp is None else str(avp)),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default()
             font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 45)
