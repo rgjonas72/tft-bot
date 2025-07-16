@@ -173,7 +173,8 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         avp=sql_stuff.get_augment_stats(augment)
         embed = tft_stuff.create_augment_stats_pic(augment, avp)
         await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
-    await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
+    else:
+        await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
 
 
 # Run the bot

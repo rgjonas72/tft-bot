@@ -151,11 +151,11 @@ class tft_stuff_class():
         # Add text for AVP
         ImageDraw.Draw(full  # Image
             ).text(
-            (140, 45),  # Coordinates
-            "AVP: " + str(avp),  # Text
+            (140, 50),  # Coordinates
+            "AVP: " + "N/A" if avp is None else str(avp),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default()
-            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 40)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 45)
         )
         # Add text for augment name
         region = ((5, 130, 128, 150))
