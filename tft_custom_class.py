@@ -155,7 +155,7 @@ class tft_stuff_class():
             "AVP: " + str(avp),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default()
-            font = ImageFont.truetype("RaceSport-BWPLV.ttf", 60)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 60)
         )
         # Add text for augment name
         region = ((5, 130, 128, 150))
@@ -169,7 +169,7 @@ class tft_stuff_class():
         min_font_size = 6
         # Find the largest font size that fits in the box
         for font_size in range(max_font_size, min_font_size - 1, -1):
-            font = ImageFont.truetype("RaceSport-BWPLV.ttf", font_size)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", font_size)
             bbox = draw.multiline_textbbox((0, 0), augment, font=font, spacing=0)
             text_width = bbox[2] - bbox[0]
             text_height = bbox[3] - bbox[1]
