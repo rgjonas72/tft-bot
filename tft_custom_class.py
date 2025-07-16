@@ -166,7 +166,7 @@ class tft_stuff_class():
         text = "This is some\nexample text"
         font_size = 40
         max_font_size = 40
-        min_font_size = 10
+        min_font_size = 8
         # Find the largest font size that fits in the box
         for font_size in range(max_font_size, min_font_size - 1, -1):
             font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", font_size)
