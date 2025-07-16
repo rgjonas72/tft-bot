@@ -155,7 +155,7 @@ class tft_stuff_class():
             "AVP: " + str(avp),  # Text
             (255, 255, 255),  # Color
             #font = ImageFont.load_default()
-            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 60)
+            font = ImageFont.truetype("fonts/RaceSport-BWPLV.ttf", 40)
         )
         # Add text for augment name
         region = ((5, 130, 128, 150))
