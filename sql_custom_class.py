@@ -167,3 +167,11 @@ class sql_stuff_class():
             rows = cursor.fetchall()
         game_ids = [row[0] for row in rows]
         return game_ids
+
+    def get_augment_stats(self, augment):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("SELECT avg(placement) FROM games WHERE aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s", (*[augment]*4,))
+            avp = cursor.fetchone()[0]
+        print(avp)
+        return avp
