@@ -212,6 +212,6 @@ class sql_stuff_class():
         print(full_report)
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
-        df = df.sort_values(by="avg_placement", na_position='last')
+        df = df.sort_values(by="AVP", na_position='last')
         print(df)
         return rows
