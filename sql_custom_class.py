@@ -224,3 +224,4 @@ class sql_stuff_class():
         print(out)
 
         embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
+        return embed
