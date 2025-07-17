@@ -200,4 +200,13 @@ class sql_stuff_class():
         print(self.tft_stuff.augments)
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         print(augment_stats)
+        full_report = []
+        for aug in self.tft_stuff.augments:
+            stats = augment_stats.get(aug)
+            if stats:
+                full_report.append((aug, stats["avg_placement"], stats["count"]))
+            else:
+                full_report.append((aug, None, 0))  # Or 0.0, or 'N/A' as desired
+        print('----------------------')
+        print(full_report)
         return rows
