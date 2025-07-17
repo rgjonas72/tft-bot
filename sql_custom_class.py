@@ -215,15 +215,15 @@ class sql_stuff_class():
         return pagination
     
     def get_all_augments_embed(self, df, interaction: discord.Interaction):
-        #df=df.head(10)
         ar = df.to_numpy()
+        """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
         for row in ar:
             print(row)
             out.append("{: <25} {: <4} {: <4}".format(*row))
         header, data = '\n'.join(out).split('\n', 1)
-
-        print(out)
+        """
+        header="{: <25} {: <4} {: <4}".format(*df.columns)
         #print(header, data)
         #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
         #data = out[1:]
