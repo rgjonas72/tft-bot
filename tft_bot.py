@@ -7,7 +7,6 @@ from typing import List, Optional
 from datetime import datetime
 from tft_custom_class import tft_stuff_class
 from sql_custom_class import sql_stuff_class
-from pagination import Pagination
 
 tft_stuff = tft_stuff_class()
 sql_stuff = sql_stuff_class(tft_stuff)

@@ -1,7 +1,6 @@
 import mysql.connector
 import pandas as pd
 import discord
-from discord.ext import commands, pages
 from pagination import Pagination
 
 class sql_stuff_class():
