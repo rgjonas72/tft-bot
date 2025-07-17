@@ -2,6 +2,7 @@ import requests
 import mysql.connector
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
+import discord
 
 class tft_stuff_class():
     def __init__(self):
@@ -145,8 +146,8 @@ class tft_stuff_class():
         return units_only, placement, full_pic
     
     def create_augment_stats_pic(self, augment, avp):
-        augment_img = self.get_augment_img(augment)
-
+        augment_img_url, _ = self.get_augment_img_desc(augment)
+        augment_img = Image.open(BytesIO(requests.get(augment_img_url).content))
         full = Image.new("RGB", ((400, 150)), (29,29,29))
         full.paste(augment_img, (0, 0))
         # Add text for AVP
@@ -183,9 +184,20 @@ class tft_stuff_class():
         image_binary.seek(0)
         return image_binary
 
-    def get_augment_img(self, augment):
+    def get_augment_img_desc(self, augment):
         for aug_json in self.augments_json["data"].values():
             if aug_json["name"] == augment:
                 image_full = aug_json["image"]["full"]
-                return Image.open(BytesIO(requests.get(f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}").content))
-        return None
+                description = aug_json["description"]
+                return [f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}", description]
+        return [None, None]
+
+    def get_augment_stats_embed(self, augment, avp, games):
+        augment_img, description = self.get_augment_img_desc(augment)
+        embed = discord.Embed(
+            title=augment,
+            description=description,
+            color=discord.Color.blue()
+        )
+        embed.set_thumbnail(url=augment_img)
+        return embed

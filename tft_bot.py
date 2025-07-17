@@ -170,9 +170,11 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 @app_commands.autocomplete(augment=rps_autocomplete)
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None):
     if augment:
-        avp=sql_stuff.get_augment_stats(augment)
-        embed = tft_stuff.create_augment_stats_pic(augment, avp)
-        await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
+        avp, games=sql_stuff.get_augment_stats(augment)
+        #embed = tft_stuff.create_augment_stats_pic(augment, avp)
+        #await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
+        embed = tft_stuff.get_augment_stats_embed(augment, avp, games)
+        await interaction.response.send_message(embed=embed)
     else:
         await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
 
