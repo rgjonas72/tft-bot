@@ -165,9 +165,11 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
     await interaction.response.send_message(f"Updated bot info", ephemeral=True)
 
 @tree.command(name="augment_stats", description = "Check augment stats", guild=discord.Object(id=guild_id))
-@app_commands.describe(augment="Augment to check stats on")
+@app_commands.describe(augment="Augment to check stats on",
+                       user="Specify augment stats to user")
 @app_commands.autocomplete(augment=rps_autocomplete)
-async def augment_stats(interaction: discord.Member, augment: Optional[str]=None):
+async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None):
+    print(user.id)
     if augment:
         avp, games=sql_stuff.get_augment_stats(augment)
         #embed = tft_stuff.create_augment_stats_pic(augment, avp)
