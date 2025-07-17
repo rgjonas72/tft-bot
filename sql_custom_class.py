@@ -209,17 +209,17 @@ class sql_stuff_class():
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
-        df["AVP"] = df["AVP"].fillna("N/A")
+        df["AVP"] = df["AVP"].round(1).fillna("N/A")
         embed = self.get_all_augments_embed(df)
         return embed
     
     def get_all_augments_embed(self, df):
         df=df.head(10)
         ar = df.to_numpy()
-        out = ["{: <16} {: <4} {: <4}".format(*df.columns)]
+        out = ["{: <20} {: <4} {: <4}".format(*df.columns)]
         for row in ar:
             print(row)
-            out.append("{: <16} {: <4} {: <4}".format(*row))
+            out.append("{: <20} {: <4} {: <4}".format(*row))
         header, data = '\n'.join(out).split('\n', 1)
 
         print(out)
