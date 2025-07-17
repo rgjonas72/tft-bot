@@ -224,7 +224,7 @@ class sql_stuff_class():
         header, data = '\n'.join(out).split('\n', 1)
 
         print(out)
-        print(header, data)
+        #print(header, data)
         #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
 
         num_elements = 10
