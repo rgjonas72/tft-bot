@@ -214,6 +214,7 @@ class sql_stuff_class():
         return embed
     
     def get_all_augments_embed(self, df):
+        df=df.head(10)
         ar = df.to_numpy()
         out = ["{: <16} {: <4} {: <4}".format(*df.columns)]
         for row in ar:
