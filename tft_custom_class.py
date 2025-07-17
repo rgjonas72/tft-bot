@@ -194,9 +194,13 @@ class tft_stuff_class():
 
     def get_augment_stats_embed(self, augment, avp, games):
         augment_img, description = self.get_augment_img_desc(augment)
+        if avp is None: 
+            avp_str = ""
+        else:
+            avp_str = f"\nAVP: {avp}\nGames: {games}"
         embed = discord.Embed(
             title=augment,
-            description=description,
+            description=description + avp_str,
             color=discord.Color.blue()
         )
         embed.set_thumbnail(url=augment_img)
