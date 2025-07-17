@@ -209,6 +209,7 @@ class sql_stuff_class():
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
+        df["AVP"] = df["AVP"].fillna("N/A")
         embed = self.get_all_augments_embed(df)
         return embed
     
