@@ -227,7 +227,7 @@ class sql_stuff_class():
         #print(header, data)
         #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
         #data = out[1:]
-        num_elements = 20
+        num_elements = 30
         async def get_page(page: int):
             emb = discord.Embed(title="Augment Stats", description=f"```yaml\n{header}``` ```\n")
             offset = (page-1) * num_elements
