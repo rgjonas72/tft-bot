@@ -1,6 +1,8 @@
 import mysql.connector
 import pandas as pd
 import discord
+from discord.ext import commands, pages
+from pagination import Pagination
 
 class sql_stuff_class():
     def __init__(self, tft_stuff):
@@ -181,7 +183,7 @@ class sql_stuff_class():
         avp, games = row
         return avp, games
     
-    def get_all_augment_stats(self):
+    def get_all_augment_stats(self, interaction: discord.Interaction):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             cursor.execute("""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
@@ -210,10 +212,10 @@ class sql_stuff_class():
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
         df["AVP"] = df["AVP"].fillna("N/A")
-        embed = self.get_all_augments_embed(df)
-        return embed
+        pagination = self.get_all_augments_embed(df, interaction)
+        return pagination
     
-    def get_all_augments_embed(self, df):
+    def get_all_augments_embed(self, df, interaction: discord.Interaction):
         df=df.head(10)
         ar = df.to_numpy()
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
@@ -223,6 +225,41 @@ class sql_stuff_class():
         header, data = '\n'.join(out).split('\n', 1)
 
         print(out)
+        print(header, data)
+        #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
 
-        embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
-        return embed
+        num_elements = 10
+        async def get_page(page: int):
+            emb = discord.Embed(title="Augment Stats", description="```yaml\n{header}```\n")
+            offset = (page-1) * num_elements
+            for d in data[offset:offset+L]:
+                emb.description += f"{d}\n"
+            #emb.set_author(name=f"Requested by {interaction.user}")
+            n = Pagination.compute_total_pages(len(data), num_elements)
+            emb.set_footer(text=f"Page {page} from {n}")
+            return emb, n
+
+        return Pagination(interaction, get_page)
+
+'''
+class PaginationView(discord.ui.View):
+    current_page: int=1
+    sep: int=5
+
+    async def send(self, ctx):
+        self.message = await ctx.send(view=self)
+
+    async def create_embed(self, data):
+        embed = discord.Embed(color=0x151a26, title="Test")
+        for item in data:
+            embed.a
+    
+    @discord.ui.button(label=">",
+                       style=discord.ButtonStyle.primary)
+    async def next_button(self, interaction:discord.Integration, button: discord.ui.Button):
+        await interaction.response.defer()
+        self.current_page += 1
+        until_item = self.current_page + self.sep
+        from_item = until_item - self.sep
+        self.data[from_item:until_item]
+'''

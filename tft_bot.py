@@ -7,7 +7,7 @@ from typing import List, Optional
 from datetime import datetime
 from tft_custom_class import tft_stuff_class
 from sql_custom_class import sql_stuff_class
-
+from pagination import Pagination
 
 tft_stuff = tft_stuff_class()
 sql_stuff = sql_stuff_class(tft_stuff)
@@ -176,8 +176,10 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         embed = tft_stuff.get_augment_stats_embed(augment, avp, games)
         await interaction.response.send_message(embed=embed)
     else:
-        embed = sql_stuff.get_all_augment_stats()
-        await interaction.response.send_message(embed=embed)
+        #embed = sql_stuff.get_all_augment_stats()
+        pagination = sql_stuff.get_all_augment_stats(interaction)
+        await pagination.navegate()
+        #await interaction.response.send_message(embed=embed)
 
 
 # Run the bot
