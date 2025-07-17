@@ -184,7 +184,7 @@ class sql_stuff_class():
     def get_all_augment_stats(self):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("""SELECT augment, AVG(placement), count(*) AS avg_placement
+            cursor.execute("""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
                 FROM (
                     SELECT aug1 AS augment, placement FROM games
                     UNION ALL
@@ -209,7 +209,7 @@ class sql_stuff_class():
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
-        df["AVP"] = df["AVP"].round(1).fillna("N/A")
+        df["AVP"] = df["AVP"].fillna("N/A")
         embed = self.get_all_augments_embed(df)
         return embed
     
