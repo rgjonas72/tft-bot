@@ -235,7 +235,7 @@ class sql_stuff_class():
                 emb.description += "{: <25} {: <4} {: <4}\n".format(*d)
             emb.description += "```"
             #emb.set_author(name=f"Requested by {interaction.user}")
-            n = Pagination.compute_total_pages(len(data), num_elements)
+            n = Pagination.compute_total_pages(len(ar), num_elements)
             emb.set_footer(text=f"Page {page} from {n}")
             return emb, n
 
