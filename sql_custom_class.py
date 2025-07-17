@@ -195,7 +195,9 @@ class sql_stuff_class():
                 WHERE augment IS NOT NULL
                 GROUP BY augment
                 order by avg_placement asc""")
-            rows = dict(cursor.fetchall())
+            rows = cursor.fetchall()
         print(rows)
         print(self.tft_stuff.augments)
+        augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
+        print(augment_stats)
         return rows
