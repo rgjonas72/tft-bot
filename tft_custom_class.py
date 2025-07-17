@@ -197,10 +197,10 @@ class tft_stuff_class():
         if avp is None: 
             avp_str = ""
         else:
-            avp_str = f"\nAVP: {avp}\nGames: {games}"
+            avp_str = f" - [AVP: {avp}] [Games: {games}]"
         embed = discord.Embed(
-            title=augment,
-            description=description + avp_str,
+            title=augment + avp_str,
+            description=description,
             color=discord.Color.blue()
         )
         embed.set_thumbnail(url=augment_img)
