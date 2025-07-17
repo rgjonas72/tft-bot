@@ -1,4 +1,5 @@
 import mysql.connector
+import pandas as pd
 
 class sql_stuff_class():
     def __init__(self, tft_stuff):
@@ -209,4 +210,8 @@ class sql_stuff_class():
                 full_report.append((aug, None, 0))  # Or 0.0, or 'N/A' as desired
         print('----------------------')
         print(full_report)
+        
+        df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
+        df = df.sort_values(by="avg_placement", na_position='last')
+        print(df)
         return rows
