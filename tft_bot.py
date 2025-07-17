@@ -176,8 +176,8 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         embed = tft_stuff.get_augment_stats_embed(augment, avp, games)
         await interaction.response.send_message(embed=embed)
     else:
-        augment_stats = sql_stuff.get_all_augment_stats()
-        await interaction.response.send_message(f"End of augment_stats", ephemeral=True)
+        embed = sql_stuff.get_all_augment_stats()
+        await interaction.response.send_message(embed=embed)
 
 
 # Run the bot

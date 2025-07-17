@@ -1,5 +1,6 @@
 import mysql.connector
 import pandas as pd
+import discord
 
 class sql_stuff_class():
     def __init__(self, tft_stuff):
@@ -213,5 +214,18 @@ class sql_stuff_class():
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
-        print(df)
-        return rows
+        embed = self.get_all_augments_embed(df)
+        return embed
+    
+    def get_all_augments_embed(self, df):
+        ar = df.to_numpy()
+        out = ["{: <16} {: <4} {: <4}".format(*df.columns)]
+        if len(df.index) == 0:
+            out = out[0]
+            embed = discord.Embed(color=0x70ac64, description=f"```{out}```")
+            return embed
+        for row in ar:
+            out.append("{: <16} {: <4} {: <4}".format(*row))
+        header, data = '\n'.join(out).split('\n', 1)
+
+        embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
