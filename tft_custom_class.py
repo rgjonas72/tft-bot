@@ -197,7 +197,7 @@ class tft_stuff_class():
         if avp is None: 
             avp_str = ""
         else:
-            avp_str = f" - [AVP: {avp}] [Games: {games}]"
+            avp_str = f" - [AVP: {avp}]  [Games: {games}]"
         embed = discord.Embed(
             title=augment + avp_str,
             description=description,

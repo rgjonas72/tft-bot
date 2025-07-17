@@ -178,3 +178,24 @@ class sql_stuff_class():
             return None, None
         avp, games = row
         return avp, games
+    
+    def get_all_augment_stats(self):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("""SELECT augment, AVG(placement), count(*) AS avg_placement
+                FROM (
+                    SELECT aug1 AS augment, placement FROM games
+                    UNION ALL
+                    SELECT aug2 AS augment, placement FROM games
+                    UNION ALL
+                    SELECT aug3 AS augment, placement FROM games
+                    UNION ALL
+                    SELECT aug4 AS augment, placement FROM games
+                ) AS all_augments
+                WHERE augment IS NOT NULL
+                GROUP BY augment
+                order by avg_placement asc""")
+            rows = dict(cursor.fetchall())
+        print(rows)
+        print(self.tft_stuff.augments)
+        return rows
