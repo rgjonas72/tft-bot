@@ -215,7 +215,7 @@ class sql_stuff_class():
         return pagination
     
     def get_all_augments_embed(self, df, interaction: discord.Interaction):
-        df=df.head(10)
+        #df=df.head(10)
         ar = df.to_numpy()
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
         for row in ar:
@@ -231,7 +231,7 @@ class sql_stuff_class():
         async def get_page(page: int):
             emb = discord.Embed(title="Augment Stats", description="```yaml\n{header}```\n")
             offset = (page-1) * num_elements
-            for d in data[offset:offset+L]:
+            for d in data[offset:offset+num_elements]:
                 emb.description += f"{d}\n"
             #emb.set_author(name=f"Requested by {interaction.user}")
             n = Pagination.compute_total_pages(len(data), num_elements)
