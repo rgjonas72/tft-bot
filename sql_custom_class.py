@@ -198,10 +198,7 @@ class sql_stuff_class():
                 GROUP BY augment
                 order by avg_placement asc""")
             rows = cursor.fetchall()
-        print(rows)
-        print(self.tft_stuff.augments)
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
-        print(augment_stats)
         full_report = []
         for aug in self.tft_stuff.augments:
             stats = augment_stats.get(aug)
@@ -209,8 +206,6 @@ class sql_stuff_class():
                 full_report.append((aug, stats["avg_placement"], stats["count"]))
             else:
                 full_report.append((aug, None, 0))  # Or 0.0, or 'N/A' as desired
-        print('----------------------')
-        print(full_report)
         
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
@@ -220,12 +215,11 @@ class sql_stuff_class():
     def get_all_augments_embed(self, df):
         ar = df.to_numpy()
         out = ["{: <16} {: <4} {: <4}".format(*df.columns)]
-        if len(df.index) == 0:
-            out = out[0]
-            embed = discord.Embed(color=0x70ac64, description=f"```{out}```")
-            return embed
         for row in ar:
+            print(row)
             out.append("{: <16} {: <4} {: <4}".format(*row))
         header, data = '\n'.join(out).split('\n', 1)
+
+        print(out)
 
         embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
