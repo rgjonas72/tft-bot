@@ -226,13 +226,13 @@ class sql_stuff_class():
         print(out)
         #print(header, data)
         #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
-        data = out[1:]
+        #data = out[1:]
         num_elements = 10
         async def get_page(page: int):
             emb = discord.Embed(title="Augment Stats", description=f"```yaml\n{header}```\n")
             offset = (page-1) * num_elements
-            for d in data[offset:offset+num_elements]:
-                emb.description += f"{d}\n"
+            for d in ar[offset:offset+num_elements]:
+                emb.description += "{: <25} {: <4} {: <4}\n".format(*d)
             #emb.set_author(name=f"Requested by {interaction.user}")
             n = Pagination.compute_total_pages(len(data), num_elements)
             emb.set_footer(text=f"Page {page} from {n}")
