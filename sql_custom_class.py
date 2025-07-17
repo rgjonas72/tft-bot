@@ -216,10 +216,10 @@ class sql_stuff_class():
     def get_all_augments_embed(self, df):
         df=df.head(10)
         ar = df.to_numpy()
-        out = ["{: <20} {: <4} {: <4}".format(*df.columns)]
+        out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
         for row in ar:
             print(row)
-            out.append("{: <20} {: <4} {: <4}".format(*row))
+            out.append("{: <25} {: <4} {: <4}".format(*row))
         header, data = '\n'.join(out).split('\n', 1)
 
         print(out)
