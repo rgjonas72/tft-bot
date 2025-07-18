@@ -294,7 +294,7 @@ class sql_stuff_class():
                     ) AS all_augments
                     WHERE augment IS NOT NULL
                     GROUP BY augment
-                order by avg_placement asc""", (*included_users, *excluded_users, ))
+                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ))
             rows = cursor.fetchall()
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         full_report = []
