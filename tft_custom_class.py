@@ -3,7 +3,7 @@ import mysql.connector
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import discord
-from typing import List
+
 
 class tft_stuff_class():
     def __init__(self):
@@ -217,78 +217,24 @@ class tft_stuff_class():
         embed.set_thumbnail(url=augment_img)
         return embed
     
-    def get_augment_stats_embed_old(self, augment, avp, games, user):
+    
+    
+    def get_augment_stats_embed_filter(self, augment, avp, games, included_users, excluded_users, client):
         augment_img, description = self.get_augment_img_desc(augment)
-        if avp is None: 
-            avp_str = ""
-        else:
-            avp_str = f" | AVP: {avp} | Games: {games}"
-            if user:
-                avp_str += f' | Stats for: {user.name}'
+
         embed = discord.Embed(
-            title=augment + avp_str,
-            description=description,
+            title=augment,
+            #description=description,
             color=discord.Color.blue()
         )
+        embed.add_field(name='Augment Description', value=description)
+        if avp:
+            avp_text = f"AVP: {avp}\nGames: {games}"
+            name = 'Stats'
+            if len(included_users) > 1:
+                name += ' | Includes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in included_users])
+            if len(excluded_users) > 1:
+                name += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in excluded_users])
+            embed.add_field(name=name, value=avp_text)
         embed.set_thumbnail(url=augment_img)
         return embed
-    
-
-class IncludeSelect(discord.ui.Select):
-    def __init__(self, members: List[discord.Member]):
-        options = [
-            discord.SelectOption(label=member.name, value=str(member.id))
-            for member in members[:25]
-        ]
-        super().__init__(
-            placeholder="Users to INCLUDE",
-            min_values=0,
-            max_values=min(5, len(options)),
-            options=options,
-            custom_id="include_select"
-        )
-
-    async def callback(self, interaction: discord.Interaction):
-        self.view.included_users = self.values
-        await interaction.response.defer()  # No message, just acknowledge
-
-class ExcludeSelect(discord.ui.Select):
-    def __init__(self, members: List[discord.Member]):
-        options = [
-            discord.SelectOption(label=member.name, value=str(member.id))
-            for member in members[:25]
-        ]
-        super().__init__(
-            placeholder="Users to EXCLUDE",
-            min_values=0,
-            max_values=min(5, len(options)),
-            options=options,
-            custom_id="exclude_select"
-        )
-
-    async def callback(self, interaction: discord.Interaction):
-        self.view.excluded_users = self.values
-        await interaction.response.defer()  # No message, just acknowledge
-
-class DualUserSelectView(discord.ui.View):
-    def __init__(self, members: List[discord.Member]):
-        super().__init__(timeout=120)
-        self.included_users = []
-        self.excluded_users = []
-        self.members_dict = {str(m.id): m for m in members}
-
-        self.add_item(IncludeSelect(members))
-        self.add_item(ExcludeSelect(members))
-
-    @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-    async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        included_mentions = [self.members_dict[uid].mention for uid in self.included_users]
-        excluded_mentions = [self.members_dict[uid].mention for uid in self.excluded_users]
-
-        # You can now use these lists however you like
-        await interaction.response.send_message(
-            f"✅ Included: {', '.join(included_mentions) or 'None'}\n❌ Excluded: {', '.join(excluded_mentions) or 'None'}",
-            ephemeral=True
-        )
-        self.stop()  # Optional: ends the view
-

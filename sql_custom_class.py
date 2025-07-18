@@ -2,6 +2,7 @@ import mysql.connector
 import pandas as pd
 import discord
 from pagination import Pagination
+from typing import List
 
 class sql_stuff_class():
     def __init__(self, tft_stuff):
@@ -184,6 +185,27 @@ class sql_stuff_class():
             return None, None
         avp, games = row
         return avp, games
+
+    def get_augment_stats_filter(self, augment, include_users, exclude_users):
+        self.cnx.reconnect()
+        if len(include_users) > 0:
+            placeholders = ','.join(['%s'] * len(include_users))
+            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders}))"
+        else:
+            include_str = ""
+        if len(exclude_users) > 0:
+            placeholders = ','.join(['%s'] * len(exclude_users))
+            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
+        else:
+            exclude_str = ""
+        with self.cnx.cursor() as cursor:
+            cursor.execute(f"SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE (aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s) {include_str} {exclude_str}", (*[augment]*4, *include_users, *exclude_users, ))
+            row = cursor.fetchone()
+        print(row)
+        if row is None:
+            return None, None
+        avp, games = row
+        return avp, games
     
     def get_all_augment_stats(self, interaction: discord.Interaction, user):
         self.cnx.reconnect()
@@ -232,6 +254,48 @@ class sql_stuff_class():
         pagination = self.get_all_augments_embed(df, interaction, user)
         return pagination
     
+    def get_all_augment_stats_filter(self, interaction: discord.Interaction, included_users, excluded_users, client):
+        self.cnx.reconnect()
+        if len(included_users) > 0:
+            placeholders = ','.join(['%s'] * len(included_users))
+            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders}))"
+        else:
+            include_str = ""
+        if len(excluded_users) > 0:
+            placeholders = ','.join(['%s'] * len(excluded_users))
+            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
+        else:
+            exclude_str = ""
+        with self.cnx.cursor() as cursor:
+            cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
+                    FROM (
+                        SELECT aug1 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug2 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug3 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug4 AS augment, placement FROM games where true {include_str} {exclude_str}
+                    ) AS all_augments
+                    WHERE augment IS NOT NULL
+                    GROUP BY augment
+                order by avg_placement asc""", (*included_users, *excluded_users, ))
+            rows = cursor.fetchall()
+        augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
+        full_report = []
+        for aug in self.tft_stuff.augments:
+            stats = augment_stats.get(aug)
+            if stats:
+                full_report.append((aug, stats["avg_placement"], stats["count"]))
+            else:
+                full_report.append((aug, None, 0))  # Or 0.0, or 'N/A' as desired
+        
+        df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
+        df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
+        df["AVP"] = df["AVP"].fillna("N/A")
+        pagination = self.get_all_augments_embed_filter(df, interaction, included_users, excluded_users)
+        return pagination
+    
     def get_all_augments_embed(self, df, interaction: discord.Interaction, user):
         user = user
         ar = df.to_numpy()
@@ -262,26 +326,110 @@ class sql_stuff_class():
             return emb, n
 
         return Pagination(interaction, get_page)
-
-'''
-class PaginationView(discord.ui.View):
-    current_page: int=1
-    sep: int=5
-
-    async def send(self, ctx):
-        self.message = await ctx.send(view=self)
-
-    async def create_embed(self, data):
-        embed = discord.Embed(color=0x151a26, title="Test")
-        for item in data:
-            embed.a
     
-    @discord.ui.button(label=">",
-                       style=discord.ButtonStyle.primary)
-    async def next_button(self, interaction:discord.Integration, button: discord.ui.Button):
-        await interaction.response.defer()
-        self.current_page += 1
-        until_item = self.current_page + self.sep
-        from_item = until_item - self.sep
-        self.data[from_item:until_item]
-'''
+    def get_all_augments_embed_filter(self, df, interaction: discord.Interaction, included_users, excluded_users, client):
+        user = user
+        ar = df.to_numpy()
+        """
+        out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
+        for row in ar:
+            print(row)
+            out.append("{: <25} {: <4} {: <4}".format(*row))
+        header, data = '\n'.join(out).split('\n', 1)
+        """
+        header="{: <25} {: <4} {: <4}".format(*df.columns)
+        #print(header, data)
+        #embed = discord.Embed(color=0x151a26, description=f"```yaml\n{header}``` ```\n{data}```")
+        #data = out[1:]
+        num_elements = 25
+        async def get_page(page: int):
+            title = "Augment Stats"
+            if len(included_users) > 1:
+                title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in included_users])
+            if len(excluded_users) > 1:
+                title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in excluded_users])
+            if user:
+                title += f' for {user.name}'
+            emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
+            offset = (page-1) * num_elements
+            for d in ar[offset:offset+num_elements]:
+                emb.description += "{: <25} {: <4} {: <4}\n".format(*d)
+            emb.description += "```"
+            #emb.set_author(name=f"Requested by {interaction.user}")
+            n = Pagination.compute_total_pages(len(ar), num_elements)
+            emb.set_footer(text=f"Page {page} from {n}")
+            return emb, n
+
+        return Pagination(interaction, get_page)
+
+class IncludeSelect(discord.ui.Select):
+    def __init__(self, members: List[discord.Member]):
+        options = [
+            discord.SelectOption(label=member.name, value=str(member.id))
+            for member in members[:25]
+        ]
+        super().__init__(
+            placeholder="Users to INCLUDE",
+            min_values=0,
+            max_values=min(5, len(options)),
+            options=options,
+            custom_id="include_select"
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.included_users = self.values
+        await interaction.response.defer()  # No message, just acknowledge
+
+class ExcludeSelect(discord.ui.Select):
+    def __init__(self, members: List[discord.Member]):
+        options = [
+            discord.SelectOption(label=member.name, value=str(member.id))
+            for member in members[:25]
+        ]
+        super().__init__(
+            placeholder="Users to EXCLUDE",
+            min_values=0,
+            max_values=min(5, len(options)),
+            options=options,
+            custom_id="exclude_select"
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.excluded_users = self.values
+        await interaction.response.defer()  # No message, just acknowledge
+
+class FilterView(discord.ui.View):
+    def __init__(self, members: List[discord.Member], augment, client):
+        super().__init__(timeout=120)
+        self.augment = augment
+        self.client = client
+        self.included_users = []
+        self.excluded_users = []
+        self.members_dict = {str(m.id): m for m in members}
+
+        self.add_item(IncludeSelect(members))
+        self.add_item(ExcludeSelect(members))
+
+    @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
+    async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        included_mentions = [self.members_dict[uid].mention for uid in self.included_users]
+        excluded_mentions = [self.members_dict[uid].mention for uid in self.excluded_users]
+
+        if self.augment:
+            avp, games=self.get_augment_stats_filter(self.augment, included_mentions, excluded_mentions)
+            #embed = tft_stuff.create_augment_stats_pic(augment, avp)
+            #await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
+            embed = self.tft_stuff.get_augment_stats_embed_filter(self.augment, avp, games, included_mentions, excluded_mentions, self.client)
+            await interaction.response.send_message(embed=embed)
+        else:
+            #embed = sql_stuff.get_all_augment_stats()
+            pagination = self.get_all_augment_stats_filter(interaction, included_mentions, excluded_mentions, self.client)
+            await pagination.navegate()
+        '''
+        # You can now use these lists however you like
+        await interaction.response.send_message(
+            f"✅ Included: {', '.join(included_mentions) or 'None'}\n❌ Excluded: {', '.join(excluded_mentions) or 'None'}",
+            ephemeral=True
+        )
+        '''
+        self.stop()  # Optional: ends the view

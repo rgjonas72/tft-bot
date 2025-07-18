@@ -7,6 +7,7 @@ from typing import List, Optional
 from datetime import datetime
 from tft_custom_class import tft_stuff_class
 from sql_custom_class import sql_stuff_class
+from sql_custom_class import FilterView
 
 tft_stuff = tft_stuff_class()
 sql_stuff = sql_stuff_class(tft_stuff)
@@ -170,9 +171,15 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
                        more_filters="Choose to enable more filtering")
 @app_commands.autocomplete(augment=rps_autocomplete)
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, more_filters: bool=False):
-    #if more_filters:
-
-    if augment:
+    if more_filters:
+        members = [m for m in interaction.guild.members if not m.bot]
+        view = FilterView(members, augment, client)
+        await interaction.response.send_message(
+            "Select users to include or exclude, then press Submit.",
+            view=view,
+            ephemeral=True
+        )
+    elif augment:
         avp, games=sql_stuff.get_augment_stats(augment, user)
         #embed = tft_stuff.create_augment_stats_pic(augment, avp)
         #await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
@@ -184,11 +191,10 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         await pagination.navegate()
         #await interaction.response.send_message(embed=embed)
 
-from tft_custom_class import DualUserSelectView
+'''
 @tree.command(name="test2", description="Select multiple users via menu", guild=discord.Object(id=guild_id))
 async def select_users(interaction: discord.Interaction):
-    members = [m for m in interaction.guild.members if not m.bot]
-    view = DualUserSelectView(members)
+    
 
     await interaction.response.send_message(
         "Select users to include or exclude, then press Submit.",
@@ -202,6 +208,7 @@ async def select_users(interaction: discord.Interaction):
 
     print(included_ids, excluded_ids)
     await interaction.response.send_message("End of test", ephemeral=True)
+'''
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()
