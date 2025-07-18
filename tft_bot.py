@@ -169,16 +169,15 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
                        user="Specify augment stats to user")
 @app_commands.autocomplete(augment=rps_autocomplete)
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None):
-    print(user.id)
     if augment:
-        avp, games=sql_stuff.get_augment_stats(augment)
+        avp, games=sql_stuff.get_augment_stats(augment, user)
         #embed = tft_stuff.create_augment_stats_pic(augment, avp)
         #await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
-        embed = tft_stuff.get_augment_stats_embed(augment, avp, games)
+        embed = tft_stuff.get_augment_stats_embed(augment, avp, games, user)
         await interaction.response.send_message(embed=embed)
     else:
         #embed = sql_stuff.get_all_augment_stats()
-        pagination = sql_stuff.get_all_augment_stats(interaction)
+        pagination = sql_stuff.get_all_augment_stats(interaction, user)
         await pagination.navegate()
         #await interaction.response.send_message(embed=embed)
 

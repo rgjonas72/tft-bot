@@ -171,10 +171,13 @@ class sql_stuff_class():
         game_ids = [row[0] for row in rows]
         return game_ids
 
-    def get_augment_stats(self, augment):
+    def get_augment_stats(self, augment, user):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s", (*[augment]*4,))
+            if user:
+                cursor.execute("SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE (aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s) and puuid in (select puuid from users where disc_id=%s)", (*[augment]*4, user.id, ))
+            else:
+                cursor.execute("SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s", (*[augment]*4,))
             row = cursor.fetchone()
         print(row)
         if row is None:
@@ -182,22 +185,37 @@ class sql_stuff_class():
         avp, games = row
         return avp, games
     
-    def get_all_augment_stats(self, interaction: discord.Interaction):
+    def get_all_augment_stats(self, interaction: discord.Interaction, user):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
-                FROM (
-                    SELECT aug1 AS augment, placement FROM games
-                    UNION ALL
-                    SELECT aug2 AS augment, placement FROM games
-                    UNION ALL
-                    SELECT aug3 AS augment, placement FROM games
-                    UNION ALL
-                    SELECT aug4 AS augment, placement FROM games
-                ) AS all_augments
-                WHERE augment IS NOT NULL
-                GROUP BY augment
-                order by avg_placement asc""")
+            if user:
+                cursor.execute("""SELECT augment, AVG(placement), count(*) AS avg_placement
+                    FROM (
+                        SELECT aug1 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
+                        UNION ALL
+                        SELECT aug2 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
+                        UNION ALL
+                        SELECT aug3 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
+                        UNION ALL
+                        SELECT aug4 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
+                    ) AS all_augments
+                    WHERE augment IS NOT NULL
+                    GROUP BY augment
+                order by avg_placement asc""", (*[user.id]*4,))
+            else:
+                cursor.execute("""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
+                    FROM (
+                        SELECT aug1 AS augment, placement FROM games
+                        UNION ALL
+                        SELECT aug2 AS augment, placement FROM games
+                        UNION ALL
+                        SELECT aug3 AS augment, placement FROM games
+                        UNION ALL
+                        SELECT aug4 AS augment, placement FROM games
+                    ) AS all_augments
+                    WHERE augment IS NOT NULL
+                    GROUP BY augment
+                    order by avg_placement asc""")
             rows = cursor.fetchall()
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         full_report = []
@@ -211,10 +229,11 @@ class sql_stuff_class():
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
         df["AVP"] = df["AVP"].fillna("N/A")
-        pagination = self.get_all_augments_embed(df, interaction)
+        pagination = self.get_all_augments_embed(df, interaction, user)
         return pagination
     
-    def get_all_augments_embed(self, df, interaction: discord.Interaction):
+    def get_all_augments_embed(self, df, interaction: discord.Interaction, user):
+        user = user
         ar = df.to_numpy()
         """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
@@ -229,7 +248,10 @@ class sql_stuff_class():
         #data = out[1:]
         num_elements = 25
         async def get_page(page: int):
-            emb = discord.Embed(title="Augment Stats", description=f"```yaml\n{header}``` ```\n")
+            title = "Augment Stats"
+            if user:
+                title += f' for {user.name}'
+            emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
             offset = (page-1) * num_elements
             for d in ar[offset:offset+num_elements]:
                 emb.description += "{: <25} {: <4} {: <4}\n".format(*d)

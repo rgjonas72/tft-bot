@@ -192,12 +192,14 @@ class tft_stuff_class():
                 return [f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}", description]
         return [None, None]
 
-    def get_augment_stats_embed(self, augment, avp, games):
+    def get_augment_stats_embed(self, augment, avp, games, user):
         augment_img, description = self.get_augment_img_desc(augment)
         if avp is None: 
             avp_str = ""
         else:
-            avp_str = f" - [AVP: {avp}]  [Games: {games}]"
+            avp_str = f" | AVP: {avp} | Games: {games}"
+            if user:
+                avp_str += f' | Stats for: {user.name}'
         embed = discord.Embed(
             title=augment + avp_str,
             description=description,
