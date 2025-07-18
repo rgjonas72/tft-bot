@@ -166,9 +166,12 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 
 @tree.command(name="augment_stats", description = "Check augment stats", guild=discord.Object(id=guild_id))
 @app_commands.describe(augment="Augment to check stats on",
-                       user="Specify augment stats to user")
+                       user="Specify augment stats to user",
+                       more_filters="Choose to enable more filtering")
 @app_commands.autocomplete(augment=rps_autocomplete)
-async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None):
+async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, more_filters: bool=False):
+    #if more_filters:
+
     if augment:
         avp, games=sql_stuff.get_augment_stats(augment, user)
         #embed = tft_stuff.create_augment_stats_pic(augment, avp)
@@ -189,6 +192,25 @@ async def select_users(interaction: discord.Interaction):
     await interaction.response.send_message(
         "Select users from the dropdown menu:", view=view, ephemeral=True
     )
+
+from tft_custom_class import DualUserSelectView
+@tree.command(name="test2", description="Select multiple users via menu", guild=discord.Object(id=guild_id))
+async def select_users(interaction: discord.Interaction):
+    members = [m for m in interaction.guild.members if not m.bot]
+    view = DualUserSelectView(members)
+
+    await interaction.response.send_message(
+        "Select users to include or exclude, then press Submit.",
+        view=view,
+        ephemeral=True
+    )
+
+    await view.wait()
+    included_ids = view.included_users
+    excluded_ids = view.excluded_users
+
+    print(included_ids, excluded_ids)
+    await interaction.response.send_message("End of test", ephemeral=True)
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()

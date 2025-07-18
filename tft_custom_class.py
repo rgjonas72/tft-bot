@@ -257,3 +257,54 @@ class UserSelectView(discord.ui.View):
     def __init__(self, members):
         super().__init__(timeout=60)
         self.add_item(UserSelect(members))
+
+class IncludeSelect(discord.ui.Select):
+    def __init__(self, members: List[discord.Member]):
+        options = [
+            discord.SelectOption(label=member.name, value=str(member.id))
+            for member in members[:25]
+        ]
+        super().__init__(
+            placeholder="Users to INCLUDE",
+            min_values=0,
+            max_values=min(5, len(options)),
+            options=options,
+            custom_id="include_select"
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.included_users = self.values
+        await interaction.response.defer()
+
+class ExcludeSelect(discord.ui.Select):
+    def __init__(self, members: List[discord.Member]):
+        options = [
+            discord.SelectOption(label=member.name, value=str(member.id))
+            for member in members[:25]
+        ]
+        super().__init__(
+            placeholder="Users to EXCLUDE",
+            min_values=0,
+            max_values=min(5, len(options)),
+            options=options,
+            custom_id="exclude_select"
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        self.view.excluded_users = self.values
+        await interaction.response.defer()
+
+class DualUserSelectView(discord.ui.View):
+    def __init__(self, members: List[discord.Member]):
+        super().__init__(timeout=120)
+        self.included_users = []
+        self.excluded_users = []
+        self.members_dict = {str(m.id): m for m in members}
+
+        self.add_item(IncludeSelect(members))
+        self.add_item(ExcludeSelect(members))
+
+    @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
+    async def submit_button(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer()
+        self.stop()
