@@ -194,6 +194,26 @@ class tft_stuff_class():
 
     def get_augment_stats_embed(self, augment, avp, games, user):
         augment_img, description = self.get_augment_img_desc(augment)
+        '''if avp is None: 
+            avp_str = ""
+        else:
+            avp_str = f" | AVP: {avp} | Games: {games}"
+            if user:
+                avp_str += f' | Stats for: {user.name}'
+        '''
+        embed = discord.Embed(
+            title=augment,
+            #description=description,
+            color=discord.Color.blue()
+        )
+        embed.add_field(name='Augment Description', value=description)
+        if avp:
+            embed.add_field(name='Stats', description=f"AVP: {avp}\nGames: {games}")
+        embed.set_thumbnail(url=augment_img)
+        return embed
+    
+    def get_augment_stats_embed_old(self, augment, avp, games, user):
+        augment_img, description = self.get_augment_img_desc(augment)
         if avp is None: 
             avp_str = ""
         else:
