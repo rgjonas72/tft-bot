@@ -181,6 +181,11 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         await pagination.navegate()
         #await interaction.response.send_message(embed=embed)
 
+from tft_custom_class import MyUserSelectView
+@tree.command(name="test", description = "Test", guild=discord.Object(id=guild_id))
+async def choose_users(ctx):
+    view = MyUserSelectView()
+    await ctx.send("Please select one or more users:", view=view)
 
 # Run the bot
 disc_token = open('tokens/disc_token.txt', 'r').readline()

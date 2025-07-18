@@ -231,3 +231,10 @@ class tft_stuff_class():
         )
         embed.set_thumbnail(url=augment_img)
         return embed
+    
+
+class MyUserSelectView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        # Add the UserSelect component
+        self.add_item(discord.ui.UserSelect(placeholder="Select users...", min_values=1, max_values=5)) # Adjust min/max as needed
