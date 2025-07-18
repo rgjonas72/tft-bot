@@ -274,7 +274,8 @@ class IncludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.included_users = self.values
-        await interaction.response.defer()
+        # ❌ Don't defer here — let the final submit button handle the response
+        await interaction.edit_original_response(content="Selection updated.", view=self.view)
 
 class ExcludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
@@ -292,7 +293,7 @@ class ExcludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.excluded_users = self.values
-        await interaction.response.defer()
+        await interaction.edit_original_response(content="Selection updated.", view=self.view)
 
 class DualUserSelectView(discord.ui.View):
     def __init__(self, members: List[discord.Member]):
@@ -306,5 +307,6 @@ class DualUserSelectView(discord.ui.View):
 
     @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
     async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        # ✅ This is the only response we allow
         await interaction.response.defer()
         self.stop()
