@@ -233,8 +233,26 @@ class tft_stuff_class():
         return embed
     
 
-class MyUserSelectView(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        # Add the UserSelect component
-        self.add_item(discord.ui.UserSelect(placeholder="Select users...", min_values=1, max_values=5)) # Adjust min/max as needed
+class UserSelect(discord.ui.Select):
+    def __init__(self, members: list[discord.Member]):
+        options = [
+            discord.SelectOption(label=member.name, value=str(member.id))
+            for member in members[:25]  # Discord max: 25 options
+        ]
+        super().__init__(
+            placeholder="Choose users...",
+            min_values=1,
+            max_values=min(5, len(options)),  # Max users you want to allow
+            options=options
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        selected_users = [f"<@{user_id}>" for user_id in self.values]
+        await interaction.response.send_message(
+            f"You selected: {', '.join(selected_users)}", ephemeral=True
+        )
+
+class UserSelectView(discord.ui.View):
+    def __init__(self, members):
+        super().__init__(timeout=60)
+        self.add_item(UserSelect(members))
