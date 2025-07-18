@@ -182,7 +182,7 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         #await interaction.response.send_message(embed=embed)
 
 from tft_custom_class import UserSelectView
-@tree.command(name="test", description="Select multiple users via menu")
+@tree.command(name="test", description="Select multiple users via menu", guild=discord.Object(id=guild_id))
 async def select_users(interaction: discord.Interaction):
     members = [m for m in interaction.guild.members if not m.bot]
     view = UserSelectView(members)
