@@ -234,30 +234,6 @@ class tft_stuff_class():
         return embed
     
 
-class UserSelect(discord.ui.Select):
-    def __init__(self, members: List[discord.Member]):
-        options = [
-            discord.SelectOption(label=member.name, value=str(member.id))
-            for member in members[:25]  # Discord max: 25 options
-        ]
-        super().__init__(
-            placeholder="Choose users...",
-            min_values=1,
-            max_values=min(5, len(options)),  # Max users you want to allow
-            options=options
-        )
-
-    async def callback(self, interaction: discord.Interaction):
-        selected_users = [f"<@{user_id}>" for user_id in self.values]
-        await interaction.response.send_message(
-            f"You selected: {', '.join(selected_users)}", ephemeral=True
-        )
-
-class UserSelectView(discord.ui.View):
-    def __init__(self, members):
-        super().__init__(timeout=60)
-        self.add_item(UserSelect(members))
-
 class IncludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
         options = [
@@ -274,7 +250,7 @@ class IncludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.included_users = self.values
-        await interaction.response.defer()
+        await interaction.response.defer()  # No message, just acknowledge
 
 class ExcludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
@@ -292,7 +268,7 @@ class ExcludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.excluded_users = self.values
-        await interaction.response.defer()
+        await interaction.response.defer()  # No message, just acknowledge
 
 class DualUserSelectView(discord.ui.View):
     def __init__(self, members: List[discord.Member]):
@@ -306,5 +282,13 @@ class DualUserSelectView(discord.ui.View):
 
     @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
     async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        await interaction.response.defer()
-        self.stop()
+        included_mentions = [self.members_dict[uid].mention for uid in self.included_users]
+        excluded_mentions = [self.members_dict[uid].mention for uid in self.excluded_users]
+
+        # You can now use these lists however you like
+        await interaction.response.send_message(
+            f"✅ Included: {', '.join(included_mentions) or 'None'}\n❌ Excluded: {', '.join(excluded_mentions) or 'None'}",
+            ephemeral=True
+        )
+        self.stop()  # Optional: ends the view
+
