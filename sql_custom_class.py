@@ -399,8 +399,10 @@ class ExcludeSelect(discord.ui.Select):
         await interaction.response.defer()  # No message, just acknowledge
 
 class FilterView(discord.ui.View):
-    def __init__(self, members: List[discord.Member], augment, client):
+    def __init__(self, members: List[discord.Member], augment, client, sql_stuff, tft_stuff):
         super().__init__(timeout=120)
+        self.sql_stuff = sql_stuff
+        self.tft_stuff = tft_stuff
         self.augment = augment
         self.client = client
         self.included_users = []

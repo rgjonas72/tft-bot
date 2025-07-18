@@ -173,7 +173,7 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, more_filters: bool=False):
     if more_filters:
         members = [m for m in interaction.guild.members if not m.bot]
-        view = FilterView(members, augment, client)
+        view = FilterView(members, augment, client, sql_stuff, tft_stuff)
         await interaction.response.send_message(
             "Select users to include or exclude, then press Submit.",
             view=view,
