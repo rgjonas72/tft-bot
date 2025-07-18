@@ -184,15 +184,6 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         await pagination.navegate()
         #await interaction.response.send_message(embed=embed)
 
-from tft_custom_class import UserSelectView
-@tree.command(name="test", description="Select multiple users via menu", guild=discord.Object(id=guild_id))
-async def select_users(interaction: discord.Interaction):
-    members = [m for m in interaction.guild.members if not m.bot]
-    view = UserSelectView(members)
-    await interaction.response.send_message(
-        "Select users from the dropdown menu:", view=view, ephemeral=True
-    )
-
 from tft_custom_class import DualUserSelectView
 @tree.command(name="test2", description="Select multiple users via menu", guild=discord.Object(id=guild_id))
 async def select_users(interaction: discord.Interaction):
