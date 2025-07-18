@@ -208,7 +208,7 @@ class tft_stuff_class():
         )
         embed.add_field(name='Augment Description', value=description)
         if avp:
-            embed.add_field(name='Stats', description=f"AVP: {avp}\nGames: {games}")
+            embed.add_field(name='Stats', value=f"AVP: {avp}\nGames: {games}")
         embed.set_thumbnail(url=augment_img)
         return embed
     
