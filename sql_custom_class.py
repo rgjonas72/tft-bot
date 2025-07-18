@@ -266,6 +266,21 @@ class sql_stuff_class():
             exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
         else:
             exclude_str = ""
+
+        print("""SELECT augment, AVG(placement), count(*) AS avg_placement
+                    FROM (
+                        SELECT aug1 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug2 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug3 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        UNION ALL
+                        SELECT aug4 AS augment, placement FROM games where true {include_str} {exclude_str}
+                    ) AS all_augments
+                    WHERE augment IS NOT NULL
+                    GROUP BY augment
+                order by avg_placement asc""")
+        print((*included_users, *excluded_users, ))
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
