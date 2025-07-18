@@ -305,6 +305,6 @@ class DualUserSelectView(discord.ui.View):
         self.add_item(ExcludeSelect(members))
 
     @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
-    async def submit_button(self, interaction: discord.Interaction, button: Button):
+    async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.defer()
         self.stop()
