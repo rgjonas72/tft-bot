@@ -425,7 +425,7 @@ class FilterView(discord.ui.View):
             await interaction.response.send_message(embed=embed)
         else:
             #embed = sql_stuff.get_all_augment_stats()
-            pagination = self.get_all_augment_stats_filter(interaction, included_mentions, excluded_mentions, self.client)
+            pagination = self.sql_stuff.get_all_augment_stats_filter(interaction, included_mentions, excluded_mentions, self.client)
             await pagination.navegate()
         '''
         # You can now use these lists however you like
