@@ -3,6 +3,7 @@ import mysql.connector
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 import discord
+from typing import List
 
 class tft_stuff_class():
     def __init__(self):
@@ -234,7 +235,7 @@ class tft_stuff_class():
     
 
 class UserSelect(discord.ui.Select):
-    def __init__(self, members: list[discord.Member]):
+    def __init__(self, members: List[discord.Member]):
         options = [
             discord.SelectOption(label=member.name, value=str(member.id))
             for member in members[:25]  # Discord max: 25 options
