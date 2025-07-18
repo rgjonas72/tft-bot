@@ -267,7 +267,7 @@ class sql_stuff_class():
         else:
             exclude_str = ""
 
-        print("""SELECT augment, AVG(placement), count(*) AS avg_placement
+        print(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
                         SELECT aug1 AS augment, placement FROM games where true {include_str} {exclude_str}
                         UNION ALL
