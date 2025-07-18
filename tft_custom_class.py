@@ -274,8 +274,7 @@ class IncludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.included_users = self.values
-        # ✅ No response here to avoid conflict
-        # await interaction.response.defer()  # REMOVE THIS
+        await interaction.response.defer()
 
 class ExcludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
@@ -293,8 +292,7 @@ class ExcludeSelect(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         self.view.excluded_users = self.values
-        # ✅ No response here to avoid conflict
-        # await interaction.response.defer()  # REMOVE THIS
+        await interaction.response.defer()
 
 class DualUserSelectView(discord.ui.View):
     def __init__(self, members: List[discord.Member]):
@@ -308,6 +306,5 @@ class DualUserSelectView(discord.ui.View):
 
     @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
     async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        # ✅ This is the only response we allow
         await interaction.response.defer()
         self.stop()
