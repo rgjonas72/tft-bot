@@ -218,7 +218,6 @@ class tft_stuff_class():
         return embed
     
     
-    
     def get_augment_stats_embed_filter(self, augment, avp, games, included_users, excluded_users, client):
         augment_img, description = self.get_augment_img_desc(augment)
 

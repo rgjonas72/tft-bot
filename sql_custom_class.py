@@ -190,16 +190,17 @@ class sql_stuff_class():
         self.cnx.reconnect()
         if len(include_users) > 0:
             placeholders = ','.join(['%s'] * len(include_users))
-            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders}))"
-        else:
-            include_str = ""
-        if len(exclude_users) > 0:
+            filter_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders}))"
+            params = (*[augment]*4, *include_users, )
+        elif len(exclude_users) > 0:
             placeholders = ','.join(['%s'] * len(exclude_users))
-            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
+            filter_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
+            params = (*[augment]*4, *exclude_users, )
         else:
-            exclude_str = ""
+            filter_str = ""
+            params = params = (*[augment]*4, )
         with self.cnx.cursor() as cursor:
-            cursor.execute(f"SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE (aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s) {include_str} {exclude_str}", (*[augment]*4, *include_users, *exclude_users, ))
+            cursor.execute(f"SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE (aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s) {filter_str}", params)
             row = cursor.fetchone()
         print(row)
         if row is None:
@@ -258,29 +259,30 @@ class sql_stuff_class():
         self.cnx.reconnect()
         if len(included_users) > 0:
             placeholders = ','.join(['%s'] * len(included_users))
-            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders})))"
-        else:
-            include_str = ""
-        if len(excluded_users) > 0:
+            filter_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders})))"
+            params = (*[included_users]*4, )
+        elif len(excluded_users) > 0:
             placeholders = ','.join(['%s'] * len(excluded_users))
-            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders})))"
+            filter_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders})))"
+            params = (*[excluded_users]*4, )
         else:
-            exclude_str = ""
-            
+            filter_str = ""
+            params = None
+
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
-                        SELECT aug1 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        SELECT aug1 AS augment, placement FROM games where true {filter_str} 
                         UNION ALL
-                        SELECT aug2 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        SELECT aug2 AS augment, placement FROM games where true {filter_str} 
                         UNION ALL
-                        SELECT aug3 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        SELECT aug3 AS augment, placement FROM games where true {filter_str} 
                         UNION ALL
-                        SELECT aug4 AS augment, placement FROM games where true {include_str} {exclude_str}
+                        SELECT aug4 AS augment, placement FROM games where true {filter_str} 
                     ) AS all_augments
                     WHERE augment IS NOT NULL
                     GROUP BY augment
-                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ), )
+                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ), params )
             rows = cursor.fetchall()
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         full_report = []
