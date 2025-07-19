@@ -269,6 +269,8 @@ class sql_stuff_class():
             filter_str = ""
             params = None
 
+
+
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
@@ -282,7 +284,7 @@ class sql_stuff_class():
                     ) AS all_augments
                     WHERE augment IS NOT NULL
                     GROUP BY augment
-                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ), params )
+                order by avg_placement asc""", params)
             rows = cursor.fetchall()
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         full_report = []
