@@ -199,6 +199,8 @@ class sql_stuff_class():
         else:
             filter_str = ""
             params = params = (*[augment]*4, )
+        print(filter_str)
+        print(params)
         with self.cnx.cursor() as cursor:
             cursor.execute(f"SELECT round(avg(placement), 1) as Placement, count(*) as Games FROM games WHERE (aug1=%s OR aug2=%s OR aug3=%s OR aug4=%s) {filter_str}", params)
             row = cursor.fetchone()
