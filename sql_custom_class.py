@@ -308,7 +308,7 @@ class sql_stuff_class():
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
         df["AVP"] = df["AVP"].fillna("N/A")
-        pagination = self.get_all_augments_embed_filter(df, interaction, included_users, excluded_users)
+        pagination = self.get_all_augments_embed_filter(df, interaction, included_users, excluded_users, client)
         return pagination
     
     def get_all_augments_embed(self, df, interaction: discord.Interaction, user):
