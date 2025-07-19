@@ -343,6 +343,8 @@ class sql_stuff_class():
         num_elements = 25
         async def get_page(page: int):
             title = "Augment Stats"
+            print(included_users)
+            print(excluded_users)
             if len(included_users) > 1:
                 title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in included_users])
             if len(excluded_users) > 1:
