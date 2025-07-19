@@ -258,12 +258,12 @@ class sql_stuff_class():
         self.cnx.reconnect()
         if len(included_users) > 0:
             placeholders = ','.join(['%s'] * len(included_users))
-            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders}))"
+            include_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders})))"
         else:
             include_str = ""
         if len(excluded_users) > 0:
             placeholders = ','.join(['%s'] * len(excluded_users))
-            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders}))"
+            exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders})))"
         else:
             exclude_str = ""
 
