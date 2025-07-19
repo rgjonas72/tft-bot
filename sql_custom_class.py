@@ -319,7 +319,7 @@ class sql_stuff_class():
         async def get_page(page: int):
             title = "Augment Stats"
             if user:
-                title += f' for {user.name}'
+                title += f' for {user.global_name}'
             emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
             offset = (page-1) * num_elements
             for d in ar[offset:offset+num_elements]:
@@ -351,9 +351,9 @@ class sql_stuff_class():
             print(included_users)
             print(excluded_users)
             if len(included_users) > 0:
-                title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in included_users])
+                title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in included_users])
             elif len(excluded_users) > 0:
-                title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in excluded_users])
+                title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in excluded_users])
             #if user:
             #    title += f' for {user.name}'
             emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
@@ -371,7 +371,7 @@ class sql_stuff_class():
 class IncludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
         options = [
-            discord.SelectOption(label=member.name, value=str(member.id))
+            discord.SelectOption(label=member.global_name, value=str(member.id))
             for member in members[:25]
         ]
         super().__init__(
@@ -389,7 +389,7 @@ class IncludeSelect(discord.ui.Select):
 class ExcludeSelect(discord.ui.Select):
     def __init__(self, members: List[discord.Member]):
         options = [
-            discord.SelectOption(label=member.name, value=str(member.id))
+            discord.SelectOption(label=member.global_name, value=str(member.id))
             for member in members[:25]
         ]
         super().__init__(

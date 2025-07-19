@@ -212,7 +212,7 @@ class tft_stuff_class():
             avp_text = f"AVP: {avp}\nGames: {games}"
             name = 'Stats'
             if user:
-                name += f' for {user.name}'
+                name += f' for {user.global_name}'
             embed.add_field(name=name, value=avp_text)
         embed.set_thumbnail(url=augment_img)
         return embed
@@ -231,9 +231,9 @@ class tft_stuff_class():
             avp_text = f"AVP: {avp}\nGames: {games}"
             name = 'Stats'
             if len(included_users) > 0:
-                name += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in included_users])
+                name += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in included_users])
             elif len(excluded_users) > 0:
-                name += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in excluded_users])
+                name += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in excluded_users])
             embed.add_field(name=name, value=avp_text)
         embed.set_thumbnail(url=augment_img)
         return embed
