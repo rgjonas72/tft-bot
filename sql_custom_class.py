@@ -266,7 +266,7 @@ class sql_stuff_class():
             exclude_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders})))"
         else:
             exclude_str = ""
-
+            
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
@@ -328,7 +328,6 @@ class sql_stuff_class():
         return Pagination(interaction, get_page)
     
     def get_all_augments_embed_filter(self, df, interaction: discord.Interaction, included_users, excluded_users, client):
-        user = user
         ar = df.to_numpy()
         """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
