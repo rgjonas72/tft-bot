@@ -260,11 +260,11 @@ class sql_stuff_class():
         if len(included_users) > 0:
             placeholders = ','.join(['%s'] * len(included_users))
             filter_str = f"AND (puuid in (select puuid from users where disc_id in ({placeholders})))"
-            params = (*[included_users]*4, )
+            params = (*(included_users)*4, )
         elif len(excluded_users) > 0:
             placeholders = ','.join(['%s'] * len(excluded_users))
             filter_str = f"AND (puuid not in (select puuid from users where disc_id in ({placeholders})))"
-            params = (*[excluded_users]*4, )
+            params = (*(excluded_users)*4, )
         else:
             filter_str = ""
             params = None
