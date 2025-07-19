@@ -270,7 +270,7 @@ class sql_stuff_class():
             params = None
 
 
-
+        print(params)
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
