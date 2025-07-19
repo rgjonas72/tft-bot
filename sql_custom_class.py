@@ -347,8 +347,8 @@ class sql_stuff_class():
                 title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in included_users])
             if len(excluded_users) > 1:
                 title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in excluded_users])
-            if user:
-                title += f' for {user.name}'
+            #if user:
+            #    title += f' for {user.name}'
             emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
             offset = (page-1) * num_elements
             for d in ar[offset:offset+num_elements]:
