@@ -423,7 +423,7 @@ class FilterView(discord.ui.View):
         excluded_mentions = [int(self.members_dict[uid].mention.strip('<@!>')) for uid in self.excluded_users]
 
         if self.augment:
-            avp, games=self.get_augment_stats_filter(self.augment, included_mentions, excluded_mentions)
+            avp, games=self.sql_stuff.get_augment_stats_filter(self.augment, included_mentions, excluded_mentions)
             #embed = tft_stuff.create_augment_stats_pic(augment, avp)
             #await interaction.response.send_message(file=discord.File(fp=embed, filename='image.png'))
             embed = self.tft_stuff.get_augment_stats_embed_filter(self.augment, avp, games, included_mentions, excluded_mentions, self.client)
