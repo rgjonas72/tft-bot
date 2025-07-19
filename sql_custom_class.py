@@ -267,20 +267,6 @@ class sql_stuff_class():
         else:
             exclude_str = ""
 
-        print(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
-                    FROM (
-                        SELECT aug1 AS augment, placement FROM games where true {include_str} {exclude_str}
-                        UNION ALL
-                        SELECT aug2 AS augment, placement FROM games where true {include_str} {exclude_str}
-                        UNION ALL
-                        SELECT aug3 AS augment, placement FROM games where true {include_str} {exclude_str}
-                        UNION ALL
-                        SELECT aug4 AS augment, placement FROM games where true {include_str} {exclude_str}
-                    ) AS all_augments
-                    WHERE augment IS NOT NULL
-                    GROUP BY augment
-                order by avg_placement asc""")
-        print((*included_users, *excluded_users) * 4 )
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
@@ -312,7 +298,6 @@ class sql_stuff_class():
         return pagination
     
     def get_all_augments_embed(self, df, interaction: discord.Interaction, user):
-        user = user
         ar = df.to_numpy()
         """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
