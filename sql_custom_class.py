@@ -280,7 +280,7 @@ class sql_stuff_class():
                     WHERE augment IS NOT NULL
                     GROUP BY augment
                 order by avg_placement asc""")
-        print((*included_users, *excluded_users, ))
+        print((*included_users, *excluded_users) * 4 )
         with self.cnx.cursor() as cursor:
             cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
@@ -294,7 +294,7 @@ class sql_stuff_class():
                     ) AS all_augments
                     WHERE augment IS NOT NULL
                     GROUP BY augment
-                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ))
+                order by avg_placement asc""", ((*included_users, *excluded_users) * 4 ), )
             rows = cursor.fetchall()
         augment_stats = {row[0]: {"avg_placement": row[1], "count": row[2]} for row in rows}
         full_report = []
@@ -429,8 +429,8 @@ class FilterView(discord.ui.View):
 
     @discord.ui.button(label="Submit", style=discord.ButtonStyle.green)
     async def submit_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-        included_mentions = [self.members_dict[uid].mention for uid in self.included_users]
-        excluded_mentions = [self.members_dict[uid].mention for uid in self.excluded_users]
+        included_mentions = [int(self.members_dict[uid].mention.strip('<@!>')) for uid in self.included_users]
+        excluded_mentions = [int(self.members_dict[uid].mention.strip('<@!>')) for uid in self.excluded_users]
 
         if self.augment:
             avp, games=self.get_augment_stats_filter(self.augment, included_mentions, excluded_mentions)
