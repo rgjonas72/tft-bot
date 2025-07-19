@@ -231,10 +231,10 @@ class tft_stuff_class():
         if avp:
             avp_text = f"AVP: {avp}\nGames: {games}"
             name = 'Stats'
-            if len(included_users) > 1:
-                name += ' | Includes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in included_users])
-            if len(excluded_users) > 1:
-                name += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id) for disc_id in excluded_users])
+            if len(included_users) > 0:
+                name += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in included_users])
+            elif len(excluded_users) > 0:
+                name += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in excluded_users])
             embed.add_field(name=name, value=avp_text)
         embed.set_thumbnail(url=augment_img)
         return embed

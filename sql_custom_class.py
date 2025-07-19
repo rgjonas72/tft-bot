@@ -347,7 +347,7 @@ class sql_stuff_class():
             print(excluded_users)
             if len(included_users) > 0:
                 title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in included_users])
-            if len(excluded_users) > 0:
+            elif len(excluded_users) > 0:
                 title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).name for disc_id in excluded_users])
             #if user:
             #    title += f' for {user.name}'
