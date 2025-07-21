@@ -27,18 +27,18 @@ silver = read_augments('augments/augments_silver', 'Silver')
 gold = read_augments('augments/augments_gold', 'Gold')
 pris = read_augments('augments/augments_prismatic', 'Prismatic')
 
-def get_cnx(self):
+def get_cnx():
     db_name = 'tft'
     cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
     return cnx
 
-def add_augs(self, aug_list):
-    self.cnx.reconnect()
-    with self.cnx.cursor() as cursor:
+def add_augs(cnx, aug_list):
+    cnx.reconnect()
+    with cnx.cursor() as cursor:
         for aug in aug_list:
             cursor.execute("insert into augments values ( %s, %s, %s)", (aug['name'], aug['tier'], aug['description'], ))
-        self.cnx.commit()
-
-add_augs(silver)
-add_augs(gold)
-add_augs(pris)
+        cnx.commit()
+cnx = get_cnx()
+add_augs(cnx, silver)
+add_augs(cnx, gold)
+add_augs(cnx, pris)
