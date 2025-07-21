@@ -12,7 +12,7 @@ def read_augments(file, tier):
     augments = []
     for i in range(0, len(lines), 4):
         name = lines[i+1]
-        tier = lines[i+2]
+        #tier = lines[i+2]
         description = lines[i+3]
         
         augments.append({
