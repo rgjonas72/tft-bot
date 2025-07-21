@@ -86,7 +86,7 @@ async def catchup_missed_games():
 
         game_ids = tft_stuff.get_game_ids(puuid)
 
-        clean_ids = [int(game_id.replace('NA1_', '')) for game_id in game_ids]
+        clean_ids = [int(game_id.split('_')[1]) for game_id in game_ids]
 
         if user_first_game_id in clean_ids:
             missed_games = clean_ids[:clean_ids.index(user_first_game_id)]
