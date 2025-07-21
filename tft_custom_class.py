@@ -36,12 +36,21 @@ class tft_stuff_class():
             return False
 
     def get_augs(self, version):
+        '''
         # URL of the JSON
         url = f"https://ddragon.leagueoflegends.com/cdn/{version}/data/en_US/tft-augments.json"
         data = self.call_api(url)
 
         augs = [d['name'] for d in data['data'].values()]
         return augs
+        '''
+        db_name = 'tft'
+        cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
+        with cnx.cursor() as cursor:
+            cursor.execute("SELECT augment_name FROM augments")
+            rows = cursor.fetchall()
+        augment_names = [row[0] for row in rows]
+        return augment_names
     
     def get_current_game(self, puuid):
         #print(puuid)
@@ -53,7 +62,7 @@ class tft_stuff_class():
     def get_latest_game_id(self, puuid):
         url = f'https://americas.api.riotgames.com/tft/match/v1/matches/by-puuid/{puuid}/ids'
         games = self.call_api(url)
-        latest_game = int(games[0].split('NA1_')[1]) # Isolate game ID from NA1_ and make int
+        latest_game = int(games[0].split('_')[1]) # Isolate game ID from NA1_ and make int
         return latest_game
 
     def get_user_puuid(self, summoner_name, riot_id, region='americas'):
@@ -63,8 +72,11 @@ class tft_stuff_class():
             return False
         return response['puuid']
     
-    def get_game(self, game_id):
-        url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
+    def get_game(self, game_id, pbe=False):
+        if pbe:
+            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/PBE_{game_id}'
+        else:
+            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
         response = self.call_api(url)
         if not response:
             return False
@@ -77,7 +89,8 @@ class tft_stuff_class():
         items_array = []
         for item in items:
             #items_array.append(Image.open(f"items/{item}.png"))
-            items_array.append(Image.open(BytesIO(requests.get(f'https://ddragon.leagueoflegends.com/cdn/{self.version}/img/tft-item/{item}.png').content)).resize((48, 48), Image.LANCZOS))
+            #items_array.append(Image.open(BytesIO(requests.get(f'https://ddragon.leagueoflegends.com/cdn/{self.version}/img/tft-item/{item}.png').content)).resize((48, 48), Image.LANCZOS))
+            items_array.append(Image.open(BytesIO(requests.get(f'https://cdn.metatft.com/cdn-cgi/image/width=48,height=48,format=auto/https://cdn.metatft.com/file/metatft/items/{item}.png').content)).resize((48, 48), Image.LANCZOS))
 
 
         # Create a new image with the right dimensions
@@ -186,12 +199,24 @@ class tft_stuff_class():
         return image_binary
 
     def get_augment_img_desc(self, augment):
+        '''
         for aug_json in self.augments_json["data"].values():
             if aug_json["name"] == augment:
                 image_full = aug_json["image"]["full"]
                 description = aug_json["description"]
+                #return [f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}", description]
                 return [f"https://ddragon.leagueoflegends.com/cdn/15.13.1/img/tft-augment/{image_full}", description]
         return [None, None]
+        '''
+        db_name = 'tft'
+        cnx = mysql.connector.connect(user='root', password=open('tokens/db_pw.txt', 'r').readline().strip(),host='127.0.0.1', database=db_name)
+        with cnx.cursor() as cursor:
+            cursor.execute("SELECT augment_description, img_uri FROM augments where augment_name=%s", (augment, ))
+            row = cursor.fetchone()
+        if not row:
+            return [None, None]
+        description, img_uri = row
+        return [f"https://cdn.mobalytics.gg/assets/tft/images/hextech-augments/set15/{img_uri}.webp?v=68", description]
 
     def get_augment_stats_embed(self, augment, avp, games, user):
         augment_img, description = self.get_augment_img_desc(augment)

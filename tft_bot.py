@@ -62,8 +62,10 @@ async def ended_games_loop():
             game_id = active_game[1]
             tft_game = tft_stuff.get_game(game_id)
             if tft_game == False:
-                await asyncio.sleep(3)
-                continue
+                tft_game = tft_stuff.get_game(game_id, pbe=True)
+                if tft_game == False:
+                    await asyncio.sleep(3)
+                    continue
             puuid = active_game[0]
             game_date = datetime.fromtimestamp(tft_game['info']['game_datetime']/1000)
             units, placement, full_pic = tft_stuff.get_user_unit_info(puuid, tft_game)
@@ -97,6 +99,8 @@ async def catchup_missed_games():
 
         for game_id in reversed(missed_games):
             game = tft_stuff.get_game(game_id)
+            if game == False:
+                game = tft_stuff.get_game(game_id, pbe=True)
 
             game_date = datetime.fromtimestamp(game['info']['game_datetime']/1000)
 
