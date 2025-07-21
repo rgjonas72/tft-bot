@@ -1,0 +1,472 @@
+Augment
+Tier
+Augment Bonus
+a-hero-arrives!
+A Hero Arrives!
+3
+After 6 seconds, the left-most champion on your bench enters combat with 60% bonus Health, stunning enemies within 3-hexes for 2 seconds.
+
+and-i'll-be-the-head
+And I'll Be The Head
+3
+The Mighty Mech gains 800 Health, 35% Damage Amp, and 25% Durability. If you field all 7 Mighty Mech champions, reach level 9, and assemble the other 2 Mighty Mech Augments, activate MECHA-MERGE PROTOCOL.
+
+exaltedadventure_iii
+An Exalted Adventure
+3
+Gain Three 2-cost champions. If you 3-star two of them, gain an orb filled with loot. Gain a Lesser Champion Duplicator at the start of the next 2 Stages.
+
+bastioncrown3
+Bastion Circlet
+3
+Gain a Bastion Emblem, a Giant's Belt, and a Leona.
+
+bastioncrown3
+Bastion Crown
+3
+Gain a Bastion Emblem, an Evenshroud, and a Xin Zhao.
+
+crown_battleacademia_iii
+Battle Academia Circlet
+3
+Gain a Battle Academia Emblem and a Garen.
+
+crown_battleacademia_iii
+Battle Academia Crown
+3
+Gain a Battle Academia Emblem, a Spirit Visage, and a Garen.
+
+beltoverflow_iii
+Belt Overflow
+3
+Gain 5 Giants Belts. Your Giant's Belts grant + 60 Bonus Health.
+
+birthdaypresent3
+Birthday Present
+3
+Gain a 2-star Champion and 1 gold every time you level up. The Champion's cost tier is your level minus 4 (max: 5-cost)
+
+blazing-soul-iii
+Blazing Soul II
+3
+Combat Start: Your highest Attack Speed champion gains 35 ability power and 35% attack speed. Repeat on another ally every 3 seconds.
+
+bronzeforlife_iii
+Bronze For Life II
+3
+Your team gains 3.5% Damage Amp for each Bronze-tier trait.
+
+build-a-bud
+Build a Bud!
+3
+Gain a random 3-star-1cost champion. Gain 8 gold.
+
+buriedtreasures3
+Buried Treasures III
+3
+Gain a random item component at the start of the next 6 rounds (including this round).
+
+call-to-chaos
+Call to Chaos
+3
+Gain a powerful and random reward.
+
+caretakers-chosen
+Caretaker's Chosen
+3
+As you level, gain more powerful items. Level 4: Component anvil Level 6: Completed item anvil Level 7: Choose 1 of 5 Radiant items
+
+coronation_iii
+Coronation
+3
+Gain a Tactician's Crown. Tactician's Crown, Shield, and Cape grant the holder an additional 30% Attack Speed, 30% Attack Damage, and 30 Ability Power.
+
+crown_crystalgambit_iii
+Crystal Gambit Circlet
+3
+Gain a Crystal Gambit Emblem and a Janna.
+
+crown_crystalgambit_iii
+Crystal Gambit Crown
+3
+Gain a Crystal Gambit Emblem, an Adaptive Helm, and a Janna.
+
+cybernetic-bulk-iii
+Cybernetic Bulk III
+3
+Your champions holding an item gain 500 health.
+
+cybernetic3
+Cybernetic Implants III
+3
+Your champions holding an item gain 200 Health and 30% Attack Damage.
+
+cyberneticuplink3
+Cybernetic Uplink III
+3
+Your Champions holding an Item gain 180 Health and restore 3 mana per second.
+
+duelist-crown
+Duelist Circlet
+3
+Gain a Duelist Emblem, an Ashe, and a BF Sword.
+
+duelist-crown
+Duelist Crown
+3
+Gain a Duelist Emblem, a Guinsoo's Rageblade, and a Kayle.
+
+crown_edgelord_iii
+Edgelord Circlet
+3
+Gain an Edgelord Emblem, a Samira, and a Recurve Bow.
+
+crown_edgelord_iii
+Edgelord Crown
+3
+Gain an Edgelord Emblem, a Bloodthirster, and a Shen.
+
+executionercrown_iii.tft_set14
+Executioner Circlet
+3
+Gain an Executioner Emblem, an Akali, and a Sparring Gloves.
+
+executionercrown_iii.tft_set14
+Executioner Crown
+3
+Gain a Executioner Emblem, a Striker's Flail, and a Katarina.
+
+addicted-to-rolling-iii
+Expected Unexpectedness
+3
+Now and at the start of the next 2 stages, roll 3 dice. Gain various rewards based on their total.
+
+ascension3
+Final Ascension
+3
+Your team gains 15% Damage Amp. After 15 seconds, this increases to 45% Damage Amp.
+
+flexible_3
+Flexible
+3
+Gain 1 random elbmem. At the start of every stage, gain a random emblem, Your team gains 20 Health for each emblem they are holding.
+
+going-long
+Going Long
+3
+You no longer gain interest. Gain 15 gold now. Round start: gain 4 XP.
+
+hardcommit_iii
+Hard Commit
+3
+Gain a random emblem. Now and at the start of each stage, gain a 1-star champion of that trait with a cost equal to the stage (max 5) and 2 gold.
+
+crown_heavyweight_iii
+Heavyweight Circlet
+3
+Gain a Heavyweight Emblem, a Poppy, and a Giant's Belt.
+
+crown_heavyweight_iii
+Heavyweight Crown
+3
+Gain a Heavyweight Emblem, a Spirit Visage, and a Kobuko.
+
+hedge-fund-iii
+Hedge Fund
+3
+Gain 25 gold. Your max interest is increased to 10.
+
+hold-the-line
+Hold The Line
+3
+Combat Start: Champions in your back row gain 10 Ability Power and 9% Attack Damage for each champion in your front row.
+
+invested
+Invested+
+3
+Gain 26 gold. At the start of each round, gain 1 shop reroll for every 10 gold above 50 (max 80 gold).
+
+invested
+Invested++
+3
+Gain 45 gold. At the start of each round, gain 1 shop reroll for every 10 gold above 50 (max 80 gold).
+
+investmentstrategy_iii
+Investment Strategy II
+3
+Gain 5 gold. Your champions gain 9 permanent max health per interest you earn. Your max interest is increased to 7.
+
+isekai
+Isekai
+3
+Summon the magical hero Ekko from another universe to fight for you. This hero can be a Prodigy, Sorcerer or Strategist. Gain a Hand of Justice.
+
+juggernautcrown3
+Juggernaut Circlet
+3
+Gain a Juggernaut Emblem, a Sett, and a Giant's Belt.
+
+juggernautcrown3
+Juggernaut Crown
+3
+Get a Juggernaut Emblem, a Strerak's Gage, and an Aatrox.
+
+levelup
+Level Up!
+3
+When you buy XP, gain an additional 2. Gain 12 immediately.
+
+livingforge3
+Living Forge
+3
+Gain an Artifact anvil now and after every 10 player combats.
+
+crown_luchador_iii
+Luchador Circlet
+3
+Gain a Luchador Emblem and a Dr Mundo.
+
+crown_luchador_iii
+Luchador Crown
+3
+Gain a Luchador Emblem, a Titan's Resolve, and a Dr Mundo.
+
+luckygloves3
+Lucky Gloves
+3
+Thief's gloves will always give your champions ideal items. Gain 2 Sparring Gloves.
+
+luckygloves3
+Lucky Gloves+
+3
+Thief's Gloves will always give your champions ideal items. Gain 3 Sparring Gloves.
+
+maxcap_iii
+Max Cap
+3
+Your max level is 7. Gain 1 Tactician's shield which increases your team size by +1, and 40 gold.
+
+nine-lives
+Nine Lives
+3
+Set your player health to 9. On combat loss, you only lose 1 health and gain loot. You can't gain health.
+
+onebufftwobuff_iii
+One Buff, Two Buff
+3
+Gain a Red Buff, a Blue Buff, and a Champion Duplicator.
+
+pandorasbox3
+Pandora's Items III
+3
+Round start: Items on your bench are randomized. Gain 1 Random Radiant item.
+
+prismatic-destiny
+Prismatic Destiny
+3
+Gain a random Prismatic Augment and 8 gold.
+
+prismaticpipeline_iii
+Prismatic Pipeline
+3
+The next non-player combat round will drop an additional prismatic Orb full of amazing loot.
+
+goldenticket
+Prismatic Ticket
+3
+Each time your Shop is rerolled, you have a 45% chance to gain a free reroll.
+
+crown_prodigy_iii
+Prodigy Circlet
+3
+Gain a Prodigy Emblem, a Yuumi, and a Needlessly Large Rod.
+
+crown_prodigy_iii
+Prodigy Crown
+3
+Gain a Prodigy Emblem, a Spear of Shojin, and an Ezreal.
+
+protagonist
+Protagonist
+3
+Gain a random 1-cost Champion Augment, a 2-star copy of its champion, and a completed item Anvil. Gain a copy of the champion at the start of every turn.
+
+crown_protector_iii
+Protector Circlet
+3
+Gain a Protector Emblem, a K'Sante, and a Giant's Belt.
+
+crown_protector_iii
+Protector Crown
+3
+Gain a Protector Emblem, a Protector's Vow, and a Kennen.
+
+pumpingup3
+Pumping Up III
+3
+Your units gain 12% Attack Speed. Each round, increase this by 2%.
+
+qualityoverquantity_iii
+Quality Over Quantity
+3
+Units holding exactly 1 item upgrade that item to radiant. Units holding radiant items gain 4% Health. Gain 2 Magentic Removers. Thief's gloves counts as multiple items.
+
+radiant-refactor
+Radiant Refactor
+3
+Gain a Masterwork Upgrade and 1 component anvil. Masterwork Upgrade upgrades an item to Radiant!
+
+radiantrelic3
+Radiant Relics
+3
+Choose 1 of 5 radiant items. Gain a Magnetic remover
+
+roll-the-dice-iii
+Roll The Dice
+3
+Gain a Rascal's Gloves item. This equipds 2 random radiant items every round.
+
+shimmerscale-essence
+Shimmerscale Essence
+3
+Gain a Mogul's Mail. In 5 rounds, gain a Gamblers Blade. These items give gold as well as combat power.
+
+shopping-spree
+Shopping Spree
+3
+When you level up, gain a number of free shop refreshes equal to your level +1. Gain 2 gold.
+
+crown_sniper_iii
+Sniper Circlet
+3
+Gain a Sniper Emblem, a Jinx, and a Recurve Bow.
+
+crown_sniper_iii
+Sniper Crown
+3
+Gain a Sniper Emblem, an Infinity Edge, and a Jhin.
+
+crown_sorcerer_iii
+Sorcerer Circlet
+3
+Gain an Sorcerer Emblem, a Karma, and a Tear of the Goddess.
+
+crown_sorcerer_iii
+Sorcerer Crown
+3
+Gain a Sorcerer Emblem, a Blue Buff, and a Lux.
+
+crown_soulfighter_iii
+Soul Fighter Circlet
+3
+Gain a Soul Fighter Emblem and a Kalista.
+
+crown_soulfighter_iii
+Soul Fighter Crown
+3
+Gain a Soul Fighter Emblem, a Nashor's Tooth, and a Kalista.
+
+spoils-of-war-3
+Spoils of War III
+3
+Enemies have a 45% chance to drop loot when killed.
+
+sponging_iii
+Sponging
+3
+combat start: up to 6 champions with 1 or fewer items gain a copy of a random completed item from the nearest itemized ally.
+
+star-guardiancrown3
+Star Guardian Circlet
+3
+Gain a Star Guardian Emblem and a Rell.
+
+star-guardiancrown3
+Star Guardian Crown
+3
+Gain a Star Guardian Emblem, a Steadfast Heart, and a Rell.
+
+starter-kit-iii
+Starter Kit
+3
+Gain a 4-cost champion and a 2-star 1-cost champion that shares a trait with them. Gain 4 gold.
+
+crown_supremecells_iii
+Supreme Cells Circlet
+3
+Gain a Supreme Cells Emblem and a Kai'sa.
+
+crown_supremecells_iii
+Supreme Cells Crown
+3
+Gain a Supreme Cells Emblem, a Last Whisper, and a Kai'sa.
+
+tacticianskitchen_iii
+Tactician's Kitchen
+3
+Gain a random Emblem. After 6 player combats, gain a Tactician's Cape.
+
+thegolden-egg3
+The Golden Egg
+3
+Gain a massive golden egg that hatches in 10 rounds. Victorious players accelerate hatch timer by 1 round.
+
+tiniesttitan3
+Tiniest Titan
+3
+Gain 2 player health and 1 gold after every palyer combat. Your Tactician also moves faster.
+
+tiniesttitan3
+Tiniest Titan+
+3
+Gain 2 palyer health and 1 gold after every player combat. Your Tactician also moves faster. Gain 15 gold now.
+
+tombraider_iii
+Tomb Raider II
+3
+Every time a player is eliminated, choose one of their items to keep.
+
+trickster's-treat
+Trickster's Treat
+3
+Get a Trickster's Glass. Your Trickster's Glass summons clones every 9 seconds, but each additional clone has 40% Max Health and 120% Max Mana.
+
+trifecta-iii
+Trifecta II
+3
+Gain 3 3-cost champions. Allies gain 5% Attack speed. Combat start: 3 random 3-cost champions gain 300 Health and 25% Attack Speed.
+
+unlimited-power
+Unlimited Power
+3
+Gain a Rabadon's Deathcap, a Morellonomicon, a Needlessly Large Rod and a Magnetic Remover. Useful for Magic Carries!
+
+upward-mobility
+Upward Mobility
+3
+Buying XP costs 1 less. Gain 2 Health and 2 free rerolls whenever you level up.
+
+wandering-trainer-iii
+Wandering Trainer II
+3
+Gain a Training Dummy and 6 gold. It has 2 random emblems equipped.
+
+wandoverflow_iii
+Wand Overflow
+3
+Gain 5 Needlessly Large Rods. Your Needlessly Large Rods grant +5% Attack Speed.
+
+water-lotus-ii
+Water Lotus II
+3
+Your team gains 20% Critical Strike chance, and their Abilities can critically strike. If an Ability critically strikes, restore 15% of your Mana over 3 seconds.
+
+crown_wraith_iii
+Wraith Circlet
+3
+Gain a Wraith Emblem and a Zac.
+
+crown_wraith_iii
+Wraith Crown
+3
+Gain a Wraith Emblem, a Red Buff, and a Zac.

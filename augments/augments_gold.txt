@@ -1,0 +1,832 @@
+Augment
+Tier
+Augment Bonus
+adaptive-style
+Adaptive Style
+2
+On attack, Duelists gain 2 Attack Damage and Ability Power, stacking up to 20 times. Duelist Tanks instead gain 2 Armor and Magic Resist. Gain a Kai'Sa and Kayle.
+
+aim-for-the-top!
+Aim For The Top!
+2
+You are more likely to fight stronger players, and you know who you will fight. When you lose, gain 2 XP. Every 2 wins, gain a component.
+
+all-that-shimmers-ii
+All That Shimmers
+2
+Choose a gold-generating Artifact items and gain a Magnetic Remover
+
+all-that-shimmers-ii
+All That Shimmers+
+2
+Choose a gold-generating Artifact. Gain a magnetic Remover and 4 gold.
+
+a-magical-roll-ii
+A Magic Roll
+2
+Roll 3 dice. Gain rewards based on their total.
+
+another-one!
+Another One!
+2
+The next completed item you make grants an additional copy of it. Gain 3 gold now.
+
+another-one!
+Another One!+
+2
+The next completed item you make grants another copy of it. Gain 1 component.
+
+ascension2
+Ascension
+2
+After 15 seconds of combat, your units gain 60% Damage Amp.
+
+a-story-of-seven
+A Story of Seven
+2
+Collect Golden Balls by defeating players in combat. Collect all 7 for a reward, then restart the quest with more powerful rewards. Gain a 2-star 1-cost champion to start your journey.
+
+backupdancers_ii
+Backup Dancers
+2
+Combat start: Every 3 seconds, champions in your 3 rightmost bench slots grant your team 3.50% Attack Speed per slot.
+
+armorcladcrest_ii.tft_set14
+Bastion Crest
+2
+Gain a Bastion Emblem.
+
+crest_battleacademia_ii
+Battle Academia Crest
+2
+Gain a Battle Academia Emblem.
+
+bigfriend2
+Big Friend II
+2
+Your units that start combat next to an ally with over 1750 Health take 10% less damage for the rest of combat.
+
+big-grab-bag
+Big Grab Bag
+2
+Gain 3 random components, 2 gold, and 1 Reforger.
+
+blazing-soul-ii
+Blazing Soul I
+2
+Combat start: Your highest Attack Speed champion gains 20 Ability Power and 20% Attack Speed. Repeat on another ally every 3 seconds.
+
+blood-rage
+Blood Rage
+2
+Your units gain 5-35% Damage Amp based on their missing Health. Maximum Damage Amp gained at 30% Health.
+
+bronzeforlife_ii
+Bronze For Life I
+2
+Your team gains 2% Damage Amp for each Bronze-tier trait.
+
+tigerstance_ii
+Burning Bright
+2
+Gain an Udyr. Your strongest Udyr becomes an Attack Fighter and sends bouncing gusts of flame out with every attack that deal 50/75/120 damage. His spell no longer rapidly attacks, but instead grants him 20% stacking Attack Speed.
+
+calculatedloss2
+Calculated Loss
+2
+After losing your combat, gain 2 gold and a free Shop refresh.
+
+carepackage_ii
+Care Package
+2
+Now and at the start of each stage, receive a care package with loot and 3 gold.
+
+caretakers-favor
+Caretaker's Favor
+2
+Gain a component anvil when you reach level 5, 6, 7, and 8. The anvil offers 4 choices.
+
+class-president
+Class President
+2
+Combat start: Powered Up Battle Academia champions and allies adjacent to one gain 70 Health, 8% AD, and 8% AP. Battle Academia units gain double. Gain a Katarina
+
+clearmind2
+Clear Mind
+2
+If there are no champions on the bench at the end of player combat, gain 3XP.
+
+climbtheladder_ii
+Climb The Ladder II
+2
+Each time an ally dies, allies that share at least one trait with them gain 5 Ability Power, 5% Attack Damage, 5 Armor, and 5 Magic Resist.
+
+trickmirror_ii
+Cloning Facility
+2
+Empower the hex in the center of the third row. Summon a clone of the champion in it with 80% base Health and 10% increased Mana cost
+
+clutteredmind2
+Cluttered Mind
+2
+Gain 4 random 1-cost champions now. If your bench is full at the end of player combat, gain 3 XP.
+
+cookingpot_ii
+Cooking Pot
+2
+At the start of each turn, all units holding a Frying Pan or Spatula item grant the nearest champion 40 permanent Health. Gain a Frying Pan.
+
+t2
+Crossfire II
+2
+Enemies damaged by at least 3 allies become vulnerable, taking 40% bonus true damage.
+
+will-of-the-crown-ii
+Crown's Will
+2
+Gain a Needlessly Large Rod. Your units gain 10 Ability Power and 8 Armor.
+
+cry-me-a-river
+Cry Me A River
+2
+Gain a Tear of the Goddess. Your army gains 1 Mana Regen.
+
+crest_crystalgambit_ii
+Crystal Gambit Crest
+2
+Gain a Crystal Gambit Emblem.
+
+cybernetic-bulk-ii
+Cybernetic Bulk II
+2
+Your champions holding an item gain 300 health.
+
+cybernetic2
+Cybernetic Implants II
+2
+Your champions holding an item gain 120 Health and 20% Attack Damage.
+
+cyberneticuplink2
+Cybernetic Uplink II
+2
+Your champions holding an item gain 120 Health and restore 2 mana per second
+
+dazzling-display
+Dazzling Display
+2
+Enemies who take damage from Sorcerer Abilities deal 20 less damage for 6 seconds. Gain a Lux and a Lucian.
+
+deadlierblades_ii
+Deadlier Blades
+2
+Gain a Deathblade. Deathblades gain 4% Attack Damage per 3 takedowns the wearer gets.
+
+deadlier-caps
+Deadlier Caps
+2
+Gain a Rabadon's Deathcap. Deathcaps gain 2 Ability Power per 3 takedowns the wearer gets.
+
+deepening-shadows
+Deepening Shadows
+2
+At combat start and whenever the Shadow Realm strikes, Wraith champions gain 5% Attack Damage and 5 Ability Power. Gain a Jhin and Zac.
+
+diamond-hands
+Diamond Hands
+2
+Gain 30% more Gems from Crystal Gambit, but lose 20% of your total Gems when you win player combats. You can only cashout one more time on round 4-7.
+
+doubletrouble2
+Double Trouble
+2
+When you field exactly 2 copies of a champion, they both gain 30% Attack Damage and 30 Ability Power, Armor, and Magic Resist. When you 3-star, gain a 2-star copy.
+
+drop-blossom
+Drop Blossom
+2
+Gain a Neeko. Your strongest Neeko's Ability heals more (220/260/320), deals more damage (250/375/600), and increases its radius with every cast.
+
+duelist-crest
+Duelist Crest
+2
+Gain a Duelist Emblem.
+
+duo-queue
+Duo Queue
+2
+Gain 2 random 5-cost champions and 2 copies of a random component.
+
+crest_edgelord_ii
+Edgelord Crest
+2
+Gain an Edgelord Emblem.
+
+epoch
+Epoch
+2
+Now, and at the start of every stage, gain 4 XP and 2 free rerolls.
+
+epoch
+Epoch+
+2
+Now, and at the start of every stage, gain 8 XP and 3 free rerolls.
+
+escapevelocity_ii
+Escape Velocity
+2
+Gain 1 Velocity per reroll, and 10 when you level up. Crew units gain 1% Attack Speed for every 3 Velocity.
+
+evil-beyond-measure
+Evil Beyond Measure
+2
+Your champions deal 5% of their damage as True Damage for each Star level.
+
+explosive-growth
+Explosive Growth
+2
+Gain 8 experience a round for the next 4 rounds.
+
+explosive-growth
+Explosive Growth+
+2
+Gain 11 experience a round for the next 4 rounds.
+
+forwardthinking_ii
+Forward Thinking
+2
+Lose all your gold. After 5 player combats, gain back the original amount and another 70 gold.
+
+gaintheedge_ii
+Gain The Edge
+2
+Edgelords now gain up 230% of their Attack Speed bonus the lower health their target is, capping against enemies below 10% health. Gain a Shen and Xayah.
+
+game-plan
+Game Plan
+2
+Strategists mark 4 hexes. Allies standing in marked hexes gain 150 Health and 10% Damage Amp, Strategists gain 100% more. Gain a Janna and Ziggs.
+
+giveemthechair_ii
+Give 'em the Chair!
+2
+Gain a Dr. Mundo. Your strongest Dr. Mundo becomes a Ranged Marksman. He now throws chairs that deal heavy damage (120/180/280), but cost Health.
+
+glasscannon_ii
+Glass Cannon II
+2
+Units that start combat in the back row begin combat at 90% health but gain 20% Damage Amp.
+
+gold-destiny
+Gold Destiny
+2
+Gain a random Gold Augment and 6 gold.
+
+gold-destiny
+Gold Destiny+
+2
+Gain a random Gold Augment and 12 gold.
+
+golden-guillotine
+Golden Guillotine
+2
+Executioner kills have a 12% chance to drop loot, scaling with Critical Strike Chance. The value of the loot given can also critically strike, granting even more loot. Gain a Katarina and Kalista.
+
+goldfordummies_ii
+Gold For Dummies
+2
+Gain a Training Dummy. Every 10 seconds, all Training Dummies grant 1 gold.
+
+golemify_ii
+Golemify
+2
+Lose all champions on your board and bench. Gain a Golem with 60% of their combined Health and 50% of their combined Attack Damage. The Golem gains 1000 Health per stage.
+
+grandslam_ii
+Grand Slam
+2
+At combat start, all Luchadors leap into battle. Luchador leaps deal 300% of their base Attack Damage. Gain a Gnar.
+
+hard-bargain
+Hard Bargain
+2
+You cannot choose your Carousel rewards. Gain an additional 4 player health and 9 gold each carousel round. When you do not pick a Carousel Reward, you are given an unpicked champion and the item it carries
+
+healing-orbs-ii
+Healing Orbs II
+2
+When an enemy dies, the nearest ally is healed for 400.
+
+t2
+Heavy Is The Crown
+2
+Gain a Crown of Demacia, which provides significant bonuses to the wearer, but if they die, your army loses the round.
+
+crest_heavyweight_ii
+Heavyweight Crest
+2
+Gain a Heavyweight Emblem.
+
+hefty-rolls
+Hefty Rolls
+2
+Your team gains 7 Health and size for each time you've rolled this game.
+
+hero101_ii
+Hero 101
+2
+The first time you win 4 player combats, all Battle Academia champions gain 200 Health and 15% reduced max Mana. Gain a Garen and Ezreal.
+
+heroic-grab-bag
+Heroic Grab Bag
+2
+Gain 2 Lesser Champion Duplicators. Gain 7 gold.
+
+heroic-grab-bag
+Heroic Grab Bag+
+2
+Gain 2 Lesser Champion Duplicators. Gain 9 gold.
+
+heroic-grab-bag
+Heroic Grab Bag++
+2
+Gain 2 Lesser Champion Duplicators and 13 gold.
+
+high-voltage
+High Voltage
+2
+Gain an Ionic Spark. Your Ionic Sparks have +3 hex radius and do 15% more damage
+
+howlinggale_ii
+Howling Gale
+2
+For every 600 Mana your team spends, summon a whirlwind that knocks up enemies.
+
+hustler2
+Hustler
+2
+You earn no interest, but gain 3 gold at the start of every player combat round. Gain 3 gold now.
+
+i'll-be-the-arms
+I'll Be The Arms
+2
+The Mighty Mech gains 60% Attack Speed. Gain a Senna and Gangplank. If you field all 7 Mighty Mech champions, reach level 9, and assemble the other 2 Mighty Mech Augments, activate MECHA-MERGE PROTOCOL.
+
+i'll-be-the-legs
+I'll Be The Legs
+2
+The Mighty Mech gains 25 Armor and Magic Resist and 300 Health. Gain 3 Mighty Mech champions. If you field all 7 Mighty Mech champions, reach level 9, and assemble the other 2 Mighty Mech Augments, activate MECHA-MERGE PROTOCOL.
+
+investmentstrategy_ii
+Investment Strategy I
+2
+Your champions gain 7 permanent max health per interest you earn.
+
+item-collector-ii
+Item Collector II
+2
+Your team gains 20 Health. For each unique item they are holding, your team gains bonus 5 Health, 1 Attack Damage, and 1 Ability Power.
+
+juggernautcrest2
+Juggernaut Crest
+2
+Gain a Juggernaut Emblem.
+
+keepers2
+Keepers II
+2
+At the start of combat, your units grant adjacent allies a 230 Health shield for 8 seconds.
+
+know-your-enemy-ii
+Know Your Enemy
+2
+Your units deal 12% increased damage. If you and your opponent have any of the same traits activated, they deal 20% increased damage instead.
+
+knuckleduster_ii
+Knuckledusters
+2
+Gain a Vi. Your strongest Vi becomes an Attack Fighter. She now deals heavy single target damage for 240/360/560 and gains Attack Damage for item components equipped on your team.
+
+last-second-save
+Last Second Save
+2
+The first time each ally falls below 35% Health, they restore 25% maximum Health.
+
+laststand2
+Last Stand
+2
+The first time you would be eliminated, you escape death and your team permanently gains 150 Health, 10 Armour and Magic Resist, and 10% Omnivamp.
+
+learn-from-the-best
+Learn From The Best
+2
+Whenever you star-up a champion they permanently gain 50% of your unique owned Mentor champion's Mentor bonus. Gain a Yasuo.
+
+little-buddies
+Little Buddies
+2
+Your 4-cost and 5-cost champions gain 55 Health and 6% Attack Speed for every 1-cost and 2-cost champion on your board.
+
+long-distance-relationship-ii
+Long Distance Pals
+2
+At the start of combat, your two furthest champions share 22% of their Armor, Magic Resist, Attack Damage, and Ability Power with each other.
+
+crest_luchador_ii
+Luchador Crest
+2
+Gain a Luchador Emblem.
+
+will-of-the-flail-ii
+Mace's Will
+2
+Gain a Sparring Gloves. Your team gains 6% Attack Speed and 20% Critical Strike Chance.
+
+mirroredmonetization_ii
+Malicious Monetization
+2
+Gain 2 gold. For the next 3 rounds, enemy champions drop 2 gold when killed.
+
+mess-hall
+Mess Hall
+2
+After 12 seconds of combat, your champions gain 20% Attack Speed and attacks also hurl delicious projectiles that deal 140% Attack Damage as magic damage.
+
+moonlight_ii
+Moonlight
+2
+Combat start: 1 random 1-cost champion is upgraded to 3-star for that round and gains 45% Attack Damage and 45 Ability Power.
+
+new-contenders
+New Contenders
+2
+Grant 50% of Supreme Cell's bonus to all champions on your team. Any champion on your team can now become the Supreme Cell.
+
+anoblesacrifice_ii
+Noble Sacrifice
+2
+When your first ally dies each combat, grant your team 25 + 10% of that ally's Armor and Magic Resistance.
+
+noscoutnopivot_ii
+NO SCOUT NO PIVOT
+2
+Units can no longer be benched or sold after fighting in a player combat. After each player combat, units that fought gain 14 Health, 2% Attack Damage, and 2% Ability Power.
+
+overheal_ii
+Overheal
+2
+Every third attack deals an additional 110% damage and heals 50% of the damage. Excess healing is converted to a shield up to 300 Health.
+
+pairoffours_ii
+Pair of Fours
+2
+If your team has exactly 2 four-cost champions, they each gain 374 Health and 24.4% Attack Speed. Gain a random 4-cost.
+
+pandorasitems2
+Pandora's Items II
+2
+Round start: items on your bench are randomized. Gain 2 random components.
+
+patientstudy2
+Patient Study
+2
+After player combat, gain 2 XP if you won or 3 XP if you lost.
+
+pilfer_ii
+Pilfer
+2
+At the start of each round, gain a 1* copy of the first unit you killed last round.
+
+plot-armor
+Plot Armor
+2
+Your team gains 10 Armor and Magic Resist. After falling below 50% health, increase this to 40 for the rest of combat.
+
+portable-forge2
+Portable Forge
+2
+Choose 1 of 4 Artifacts.
+
+poweroffriendship_ii
+Power of Friendship
+2
+Star Guardians who start combat adjacent to at least one other Star Guardian gain 2 Mana Regeneration, 15 Armor, and 15 Magic Resist.
+
+secrettechniqueupload_ii
+Power Upload
+2
+You can give the Mighty Mech a Power Up. When it has Power Up the Mighty Mech gains 150 Health and 10% Damage Amp. Gain an Aatrox, a Senna, and a Power Remover.
+
+precise-shot
+Precise Shot
+2
+Every 4 seconds, all Sniper champions fire a shot that deals 175% of their Basic Attack Damage to the lowest health enemy in range. Gain a Jhin.
+
+preemptiveprotection_ii
+Preemptive Protection
+2
+Combat start: Protectors shield themselves and their closest ally for 14% of their maximum health. Shields stack. Gain a Rakan.
+
+preparation-ii
+Preparation II
+2
+Champions on your bench permanently gain 45 Health, 3% Attack Damage, and 3 Ability Power every round. Champions start with 1 stack of this effect, and can stack up to 4 times.
+
+prizefighter
+Prizefighter
+2
+Gain 2 item components. Every 5 wins gives you an item component.
+
+crest_prodigy_ii
+Prodigy Crest
+2
+Gain a Prodigy Emblem.
+
+crest_protector_ii
+Protector Crest
+2
+Gain a Protector Emblem.
+
+psychic-forge
+Psychic Forge
+2
+Round start Completed Items on benched units turn into one of their recommended items. Gain a random completed item.
+
+pumpingup2
+Pumping Up II
+2
+Your team gains 8% Attack Speed now. Each round after, they gain 1% more.
+
+pyromaniac_ii
+Pyromaniac
+2
+Gain a Red Buff. Your Burns deal 50% increased damage.
+
+quiet-quitting
+Quiet Quitting
+2
+For the next 3 player combats, you cannot buy or sell units. After, gain 16 gold and a Completed Item Anvil.
+
+raid-boss-2
+Raid Boss
+2
+Your strongest Bastion champion gains 20% max Health. When other Bastions die, they transfer 20% of their Armor and Magic Resist to it. Gain a Shen and Rell.
+
+raining-gold
+Raining Gold
+2
+Gain 8 gold now and 1 gold every round.
+
+raining-gold
+Raining Gold+
+2
+Gain 18 gold now and 1 gold every round.
+
+reinfourcement
+ReinFOURcement
+2
+The next 4-cost champion you buy is instantly upgraded to 2-star. Get 12 gold.
+
+replication-ii
+Replication
+2
+Choose 1 of 3 components. For the next 2 rounds, gain another copy of that component.
+
+ring-the-bell
+Ring The Bell
+2
+After 15 seconds, your Heavyweight champions gain 30% max Health and 30% Damage Amp. Gain a Kobuko and a Zac.
+
+salvagebin2
+Salvage Bin
+2
+Gain 1 random completed item now, and 1 component after 7 player combats. Selling champions breaks completed items into components (excluding Tactician's items and Emblems).
+
+salvagebin2
+Salvage Bin+
+2
+Gain 1 random completed item now, and 1 component after 3 player combats. Selling champions breaks completed items into components (excluding Tactician's items and Emblems).
+
+satedspellweaver_ii
+Sated Spellweaver
+2
+After casting an Ability, champions gain 15% Omnivamp for 3 seconds. Excess healing is converted to a shield up to 500 Health.
+
+scapegoat
+Scapegoat
+2
+Gain a Training Dummy and 4 gold. If it is the first to die each player combat, gain 1 gold.
+
+scavenger_ii
+Scavenger
+2
+The first 5 enemy champions that are killed each combat grant a champion on your team a temporary completed item.
+
+scoreboard-scrapper
+Scoreboard Scrapper
+2
+Every round, if you're in the bottom 4, your team permanently gains 1.5% Attack Damage and Ability Power. If you're in the top 4, they have 10% more Health.
+
+secondwind2
+Second Wind II
+2
+After 10 seconds of combat, your units heal 60% of their missing Health.
+
+shadow-homunculus
+Shadow Homunculus
+2
+The first 3 Wraith champions to die each combat summon a monstrosity from the Shadow Realm. Gain a Jhin and Zac.
+
+slammin
+Slammin
+2
+Gain 1 random component(s). After each player combat, if there are no items on your bench (other than consumables), gain 2 XP.
+
+slammin
+Slammin+
+2
+Gain 1 random component(s) and 10 XP now. After each player combat, if there are no items on your bench (other than consumables), gain 2 XP.
+
+crest_sniper_ii
+Sniper Crest
+2
+Gain a Sniper Emblem and a Zeri.
+
+solo-leveling
+Solo Leveling
+2
+For the next 5 combats, your team size is 1 but the champion you field has massively increased stats. Gain 1 XP for every kill they get. Afterwards, gain 2 item components.
+
+crest_sorcerer_ii
+Sorcerer Crest
+2
+Gain an Sorcerer Emblem.
+
+crest_soulfighter_ii
+Soul Fighter Crest
+2
+Gain a Soul Fighter Emblem.
+
+space-camp
+Space Camp
+2
+Whenever you star-up a Crew champion, gain a random bonus 1-2 cost Crew champion. Gain a Malphite.
+
+will-of-the-spear-ii
+Spear's Will
+2
+our team gains 10% Attack Damage and 5 Mana. Gain a B.F. Sword.
+
+spoils-of-war-2
+Spoils of War II
+2
+Enemies have a 30% chance to drop loot when killed.
+
+standunited2
+Stand United II
+2
+Your units gain 2 Attack Damage and Ability Power per Trait active across your team.
+
+star-guardiancrest2
+Star Guardian Crest
+2
+Gain a Star Guardian Emblem.
+
+stars-are-born-ii
+Stars are Born
+2
+The first Tier 1 and Tier 2 champion you buy are upgraded to 2 star. Gain 7 gold.
+
+sunfireboard
+Sunfire Board
+2
+At the start of combat, burn all enemies for 15% of their maximum HP over 20 seconds and reduce healing received by 50%.
+
+teacher's-council
+Teacher's Council
+2
+Mentor bonuses are increased by 50%, and granted to your team regardless of how many Mentors you play. Gain an Udyr.
+
+teaming-up-2
+Teaming Up II
+2
+Gain 1 random Support item and 2 random 4-cost champions.
+
+tesla-coil
+Tesla Coil
+2
+Each of your allies with 3 items equipped emits 2 arcs of lighting every 5 seconds, dealing 250-375 magic damage based on stage.
+
+awakenthegodseye_ii
+The God's Eye Opens
+2
+Every 4 seconds the God's Eye grants a random Soul Fighter 250 shield and 15% stacking Attack Speed for the rest of combat. Gain a Kalista and Naafiri.
+
+the-strongest-survive
+The Strongest Survive
+2
+Whenever an ally dies, they grant the Supreme Cell with the most damage this round 8% of their maximum health. Gain a Kai'Sa and Kennen.
+
+thorn-plated-armor
+Thorn-Plated Armor
+2
+Gain a Bramble Vest. Your Bramble Vests deal 1-180% more damage (based on Stage) and heal the holder for 30% of the damage dealt.
+
+time-skip
+Time Skip
+2
+Disable your Shop for the next 3 rounds. Then gain 28 XP.
+
+tinyteam_ii
+Tiny Team
+2
+When you field 3 or less Star Guardians, increase Star Guardian bonuses by 175%. Gain a Syndra and Rell.
+
+tombraider_ii
+Tomb Raider I
+2
+For the next 3 players eliminated, choose one of their items to keep.
+
+tons-of-stats-ii
+Tons of Stats!
+2
+Your team gains 35 Health, 6% Attack Damage, 6 Ability Power, 6 Armor, 6 Magic Resist, 6% Attack Speed, and 6 Mana.
+
+tournament-favorites
+Tournament Favorites
+2
+Soul Fighters gain Fame when they deal damage. Each Fame breakpoint grants loot. Gain a Naafiri and Kalista.
+
+tournament-titans
+Tournament Titans
+2
+Luchadors gain 5% Attack Speed. Whenever you win player combats, Luchadors grow in size and permanently gain 2 Attack Damage and 40 Health. Gain a Dr Mundo and Gnar.
+
+towerdefense_ii
+Tower Defense
+2
+Gain a Training Dummy equipped with a random emblem that fires ranged attacks at enemies. It upgrades as the game goes on.
+
+tradesector2
+Trade Sector
+2
+Gain a free Shop reroll every round. Gain 4 gold.
+
+transferstudents_ii
+Transfer Students
+2
+At the start of every stage and after every carousel round, gain 3 random 1-3 cost Battle Academia champions. Gain an Ezreal.
+
+treasurehunt_ii
+Treasure Hunt
+2
+Earn a locked chest each Stage between now and Stage 6. You can unlock each chest when you spend 20 Gold on shop rerolls. These chests persist until opened.
+
+trifecta-ii
+Trifecta I
+2
+Gain 2 3-cost champions. Combat Start: 3 random 3-cost champions gain 220 Health and 20% Attack Speed.
+
+ethereal-blades
+Twilight Assault
+2
+Gain a Shen. Your strongest Shen becomes a ranged Marksman gaining +3 Range. His ability no longer shields but instead deals additional damage (90/135/210).
+
+twomuchvalue_ii
+Two Much Value
+2
+Gain 1 reroll for every 2 unique two-cost champions fielded last combat. Gain 2 two-cost unit.
+
+unceasing
+Unceasing
+2
+Whenever an ally Juggernaut dies, all other Juggernauts heal 10% of their max Health and gain 2% more Durability. Gain an Aatrox and Dr. Mundo.
+
+dhampyr_ii
+Vampiric Vitality
+2
+You heal for 12% of the damage you deal to enemy Tacticians. Your units gain 12% Omnivamp.
+
+wandering-trainer-ii
+Wandering Trainer I
+2
+Gain a Training Dummy with 2 permanently attached Emblems. Gain 1 gold.
+
+warpath_ii
+Warpath
+2
+Gain a 2-star 2-cost champion. After dealing 80 player damage, gain a chest of high cost champions and items.
+
+water-lotus-i
+Water Lotus I
+2
+Your team gains 5% Critical Strike chance, and their Abilities can critically strike. If an Ability critically strikes, restore 9% of your Mana over 3 seconds.
+
+worth-the-wait
+Worth the Wait
+2
+Gain a random 1-cost unit. After 1 round(s), gain a copy of that unit at the beginning of each round for the rest of the game.
+
+crest_wraith_ii
+Wraith Crest
+2
+Gain a Wraith Emblem.

@@ -1,0 +1,367 @@
+Augment
+Tier
+Augment Bonus
+afk1
+AFK
+1
+You cannot perform actions for the next 3 rounds. Afterwards, gain 20 gold.
+
+bandofthieves1
+Band of Thieves I
+1
+Gain 1 Thief's Gloves.
+
+beggars-can-be-choosers
+Beggars can be Choosers
+1
+You get +3 Augment rerolls for all other augment choices. Gain 7 gold.
+
+bigfriend1
+Big Friend I
+1
+Your units that start combat next to an ally with over 1750 Health take 7% less damage for the rest of combat.
+
+branching-out-i
+Branching Out
+1
+Gain a random Emblem.
+
+branching-out-i
+Branching Out+
+1
+Gain a random Emblem and a Reforger. Reforgers allow you to remake any item.
+
+called-shot
+Called Shot
+1
+Set your win streak to +4. Gain 4 gold.
+
+caretakers-ally
+Caretaker's Ally
+1
+Gain a random 2-cost champion now. Gain the same one again every time you level up.
+
+chaotic-evolution
+Chaotic Evolution
+1
+Starring up a champion grants them one of the following: 120 Health, 6% Durability, 12 Ability Power, 12% Attack Damage, 12% Attack Speed. Bonuses stack.
+
+climbtheladder_i
+Climb The Ladder I
+1
+Each time an ally dies, allies that share at least one trait with them gain 3 Ability Power, 3% Attack Damage, 3 Armor, and 3 Magic Resist.
+
+componentbuffet
+Component Buffet
+1
+Whenever you would get a component, gain a component anvil instead. Gain a random component.
+
+corrosion_i
+Corrosion
+1
+Enemy champions in the first two rows lose 3 Armor and Magic Resist every 2 seconds.
+
+craftedcrafting_i
+Crafted Crafting
+1
+Whenever you craft a completed item, gain 2 rerolls.
+
+t1
+Crossfire
+1
+Enemies damaged by at least 3 allies become vulnerable, taking 30% bonus true damage.
+
+headstart_i
+Delayed Start
+1
+Sell your board and bench. Gain 4 random 2-star 1 cost champions. Disable your Shop for the next 3 rounds.
+
+diversifiedportfolio_i
+Diversified Portfolio
+1
+Gain 1 gold. Each round, gain 1 gold for every 3 non-unique traits active.
+
+diversifiedportfolio1_i
+Diversified Portfolio+
+1
+Gain 4 gold. Each round, gain 1 gold for every 3 non-unique traits active.
+
+dummify_i
+Dummify
+1
+Lose all champions on your board and bench. Gain a Training Dummy with 80% of their combined health. The dummy gains 1000 Health per stage.
+
+efficient-shopper
+Efficient Shopper
+1
+For the next 4 carousels, gain a second copy of the champion taken.
+
+exclusive-customization
+Exclusive Customization
+1
+Gain a Lucky Item Chest and a Magnetic Remover and 5 gold. Use a Lucky Item Chest on a champion to choose from an armory of recommended items!
+
+eyeforaneye_i
+Eye For An Eye
+1
+For every 15 ally champions that die, gain a random component (max 3).
+
+eyeforaneye_i
+Eye For An Eye+
+1
+Gain a random component. For every 16 ally champions that die, gain another component (max 2).
+
+find-your-center
+Find Your Center
+1
+Your champion that starts combat in the center of the front row gains 15% Damage Amp and 15% max Health.
+
+firesale_i
+Firesale
+1
+Each round, steal a random 3-cost or lower champion from the shop. Gain 1 gold.
+
+glasscannon_i
+Glass Cannon I
+1
+Units that start combat in the back row begin combat at 90% health but gain 13% Damage Amp.
+
+good-for-something-i
+Good for Something I
+1
+Champions that aren't holding items have a 50% chance to drop 1 gold on death.
+
+healing-orbs-i
+Healing Orbs I
+1
+When an enemy dies, the nearest ally is healed for 200.
+
+iron-assets-i
+Iron Assets
+1
+Gain a component anvil and 4 gold.
+
+item-collector-i
+Item Collector I
+1
+For each unique item they are holding, your team gains 1 Attack Damage and 1 Ability Power.
+
+item-grab-bag-1
+Item Grab Bag I
+1
+Gain 1 random completed item.
+
+keepers
+Keepers I
+1
+At the start of combat, your units grant adjacent allies a 145 health shield for 8 seconds.
+
+kingslayer_i
+Kingslayer
+1
+After winning player combat, gain 1 gold. If they had more health than you, gain 6 Gold instead. Gain 1 gold.
+
+lategamespecialist1
+Lategame Specialist
+1
+When you reach Level 9, gain 33 gold.
+
+latentforge1
+Latent Forge
+1
+After 8 player combats, gain an Artifact anvil.
+
+lineup-i
+Lineup
+1
+Your team gains 2 Armor and Magic Resist for each unit that starts combat in the front two rows.
+
+lit_fuse
+Lit Fuse
+1
+Units that start in the back two rows split 60 total Mana after 6 seconds of combat.
+
+lunch-money
+Lunch Money
+1
+Every 8 damage you deal to enemy tacticians gives you 2 gold.
+
+missed-connections-i
+Missed Connections
+1
+Gain a copy of each Tier One champion.
+
+ninethousandvolts_i
+Nine Thousand Volts
+1
+Gain a Kennen. Your strongest Kennen becomes a ranged Marksman. He throws piercing Shurikens that can stun and deal 160/240/360 true damage.
+
+onetwosthree1
+Ones, Twos, Three
+1
+Gain 2 1-cost champion, 2 2-cost champions, and 1 3-cost champion.
+
+one-two-five-i
+One, Two, Five!
+1
+Gain 1 random component, 2 gold, and 1 random 5-cost champion.
+
+over-encumbered
+Over Encumbered
+1
+For the next stage, you only get 2 bench slots. After, get 2 item components.
+
+pandorasbench1
+Pandora's Bench
+1
+At the start of every round, champions on the 3 rightmost bench slots transform into random champions of the same cost. Gain 2 gold.
+
+pandora
+Pandora's Items
+1
+Round start: items on your bench are randomized. Gain 1 random component.
+
+perfectform_i
+Perfect Form
+1
+Gain a Zac. Your strongest Zac becomes a Specialist. He now bounces around the battlefield dealing damage in a one hex radius.
+
+placebo_i
+Placebo
+1
+Your team gains 1% Attack Speed. Gain 8 gold.
+
+placebo_i
+Placebo+
+1
+Your team gains 1% attack speed. Gain 15 gold.
+
+pocket-recombobulator
+Pocket Recombobulator
+1
+Get 1 Pocket Recombobulators, a consumable that transform a 1 or 2-cost champion into one of a higher cost. They keep their Star level. Also receive 1 Reforgers.
+
+preparation1
+Preparation l
+1
+Champions on your bench permanently gain 30 Health, 2% Attack Damage, and 2 Ability Power every round. Champions start with 1 stack of this effect, and can stack up to 4 times.
+
+pumpingup1
+Pumping Up I
+1
+Your team gains 6% Attack Speed now. Each round after, they gain 0.5% more.
+
+recombobulator1
+Recombobulator
+1
+Champions on your board permanently transform into random champions 1 cost tier higher (max 5). Gain 2 Magnetic Removers.
+
+reroll-transfer-i
+Reroll Transfer
+1
+For every 1 unused Augment Reroll, gain 3 free shop rerolls. Gain 3 gold. Does not include the round this augment is selected.
+
+restartmission_i
+Restart Mission
+1
+Sell all champions on your board and bench. Gain 2 random 2-star 3-costs, 3 2-star 2-costs, and a 2-star 1-cost champion.
+
+riggedshop_i
+Rigged Shop+
+1
+Your next shop and every 4 shops will contain all 3-cost champions. Gain 5 rerolls.
+
+risky-moves-i
+Risky Moves
+1
+Your Tactician loses 20 Health, but after 7 player combats, gain 30 gold.
+
+rolling-for-days-1
+Rolling for Days I
+1
+Gain 11 free Shop refreshes. These Shop refreshes carry over between round.
+
+herosjourney_i
+Schoolyard Justice
+1
+Gain a Garen. Your strongest Garen becomes a Fighter. He no longer Heals, but deals more damage and executes weak enemies.
+
+secondwind1
+Second Wind I
+1
+After 10 seconds of combat, your units heal 40% of their missing Health.
+
+silver-destiny
+Silver Destiny
+1
+Gain a random Silver Augment and 4 gold.
+
+silver-destiny
+Silver Destiny+
+1
+Gain a random Silver Augment and 8 gold.
+
+silver-destiny
+Silver Destiny++
+1
+Gain a random Silver Augment and 10 gold.
+
+silver-spoon-i
+Silver Spoon
+1
+Gain 10 XP.
+
+t1
+Slice of Life
+1
+Twice per stage, gain a random champion. Its cost increases per stage. This effect ends after receiving 2 5-cost champions.
+
+spoils-of-war-1
+Spoils of War I
+1
+Enemies have a 25% chance to drop loot when killed.
+
+standunited1
+Stand United I
+1
+Your units gain 1.5% Attack Damage and 1.5 Ability Power for each non-unique Trait active across your team.
+
+lonesurvivor_i
+Survivor
+1
+After 3 players are eliminated, gain 92 gold.
+
+tablescraps_i
+Table Scraps
+1
+After the next 2 carousels, gain one unit that was not taken and its item. Gain 1 gold.
+
+building-an-army-i
+Team Building
+1
+Gain a Lesser Champion Duplicator. Gain another after 5 player combats.
+
+teaming-up-1-new
+Teaming Up I
+1
+Gain 1 random component and 2 random Tier 3 Units.
+
+tectonictitan_i
+Tectonic Titan
+1
+Gain a Malphite. Your strongest Malphite becomes a Fighter. He now charges at nearby enemies, knocking them up and dealing heavy damage for 200/300/450.
+
+titanictitan_i
+Titanic Titan
+1
+Increase your current and max player health by 25. On carousel rounds you are released earlier, but are much slower.
+
+underdogs1
+Underdogs
+1
+Whenever your team has fewer units alive than your opponent, your units regenerate 8% Health each second (maximum: 150).
+
+young-and-wild-and-free-i
+Young and Wild and Free
+1
+You can always move freely on Carousel rounds. Gain 5 gold.
