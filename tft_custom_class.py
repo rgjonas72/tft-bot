@@ -74,7 +74,7 @@ class tft_stuff_class():
     
     def get_game(self, game_id, pbe=False):
         if pbe:
-            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/PBE_{game_id}'
+            url = f'https://americas.api.riotgames.com/tft/match/v1/matches/PBE1_{game_id}'
         else:
             url = f'https://americas.api.riotgames.com/tft/match/v1/matches/NA1_{game_id}'
         response = self.call_api(url)
