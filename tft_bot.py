@@ -85,7 +85,7 @@ async def catchup_missed_games():
         user_first_game_id = user[4]
 
         game_ids = tft_stuff.get_game_ids(puuid)
-
+        print(game_ids)
         clean_ids = [int(game_id.split('_')[1]) for game_id in game_ids]
 
         if user_first_game_id in clean_ids:
