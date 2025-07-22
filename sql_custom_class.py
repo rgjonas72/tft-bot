@@ -70,6 +70,7 @@ class sql_stuff_class():
         return False
     
     def input_augments(self, game_id, puuid, augment1=None, augment2=None, augment3=None, augment4=None):
+        print(game_id, puuid)
         self.cnx.reconnect()
         if not augment1 and not augment2 and not augment3 and not augment4:
             return "No augments entered."
