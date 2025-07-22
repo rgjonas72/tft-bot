@@ -126,7 +126,7 @@ class sql_stuff_class():
     def add_new_game(self, puuid, game_id, patch, game_date=None, placement=None, augments=[None for _ in range(4)], units=[None for _ in range(13)], queue_id=None):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
-            cursor.execute("select exists(select * from games where game_id=%s)", (game_id,))
+            cursor.execute("select exists(select * from games where game_id=%s and puuid=%s)", (game_id,puuid,))
             result = cursor.fetchone()[0]
             if result == 0:
                 augments += [None] * (4 - len(augments)) # Extend augments length to 4
