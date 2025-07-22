@@ -92,6 +92,7 @@ class sql_stuff_class():
         return output
     
     def get_augments_by_gameid(self, game_id, puuid):
+        print(game_id, puuid)
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
         # Grab all saved augments
