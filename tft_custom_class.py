@@ -50,6 +50,7 @@ class tft_stuff_class():
             cursor.execute("SELECT augment_name FROM augments")
             rows = cursor.fetchall()
         augment_names = [row[0] for row in rows]
+        print(augment_names)
         return augment_names
     
     def get_current_game(self, puuid):
