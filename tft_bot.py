@@ -180,6 +180,8 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 @app_commands.autocomplete(augment=rps_autocomplete)
 @app_commands.choices(tier=[app_commands.Choice(name="Silver", value="Silver"), app_commands.Choice(name="Gold", value="Gold"), app_commands.Choice(name="Prismatic", value="Prismatic")])
 async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, tier: Optional[app_commands.Choice[str]]=None, more_filters: bool=False):
+    if tier:
+        tier = tier.value
     if more_filters:
         members = [m for m in interaction.guild.members if not m.bot]
         view = FilterView(members, augment, tier, client, sql_stuff, tft_stuff)
