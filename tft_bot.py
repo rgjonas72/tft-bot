@@ -142,9 +142,12 @@ async def rps_autocomplete(interaction: discord.Interaction, current: str) -> Li
 async def input_augments(interaction: discord.Interaction, augment1: Optional[str]=None, augment2: Optional[str]=None, augment3: Optional[str]=None, augment4: Optional[str]=None, game_id: Optional[int]=None):
     if not game_id:
         puuid_game_id = sql_stuff.get_user_latest_game(interaction.user.id)
-        if not puuid_game_id: interaction.response.send_message('No game ID provided and no default game found.')
+        if not puuid_game_id: interaction.response.send_message('No game ID provided and no default game found.', ephemeral=True)
         puuid, game_id = puuid_game_id
-
+    else:
+        puuid = sql_stuff.get_puuid_from_game_id(game_id, interaction.user.id)
+        if puuid is None:
+            interaction.response.send_message('Did not find one of your accounts in provided game ID.', ephemeral=True)
     output = sql_stuff.input_augments(game_id, puuid, augment1, augment2, augment3, augment4)
     await interaction.response.send_message(output)
 
@@ -172,12 +175,14 @@ async def update_bot_info(interaction: discord.Member, patch: Optional[str]=None
 @tree.command(name="augment_stats", description = "Check augment stats", guild=discord.Object(id=guild_id))
 @app_commands.describe(augment="Augment to check stats on",
                        user="Specify augment stats to user",
+                       tier="Filter by augment tier",
                        more_filters="Choose to enable more filtering")
 @app_commands.autocomplete(augment=rps_autocomplete)
-async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, more_filters: bool=False):
+@app_commands.choices(tier=[app_commands.Choice(name="Silver", value="Silver"), app_commands.Choice(name="Gold", value="Gold"), app_commands.Choice(name="Prismatic", value="Prismatic")])
+async def augment_stats(interaction: discord.Member, augment: Optional[str]=None, user: discord.Member=None, tier: Optional[app_commands.Choice[str]]=None, more_filters: bool=False):
     if more_filters:
         members = [m for m in interaction.guild.members if not m.bot]
-        view = FilterView(members, augment, client, sql_stuff, tft_stuff)
+        view = FilterView(members, augment, tier, client, sql_stuff, tft_stuff)
         await interaction.response.send_message(
             "Select users to include or exclude, then press Submit.",
             view=view,
@@ -191,7 +196,7 @@ async def augment_stats(interaction: discord.Member, augment: Optional[str]=None
         await interaction.response.send_message(embed=embed)
     else:
         #embed = sql_stuff.get_all_augment_stats()
-        pagination = sql_stuff.get_all_augment_stats(interaction, user)
+        pagination = sql_stuff.get_all_augment_stats(interaction, user, tier)
         await pagination.navegate()
         #await interaction.response.send_message(embed=embed)
 

@@ -174,6 +174,16 @@ class sql_stuff_class():
         game_ids = [row[0] for row in rows]
         return game_ids
 
+    def get_puuid_from_game_id(self, game_id, disc_id):
+        self.cnx.reconnect()
+        with self.cnx.cursor() as cursor:
+            cursor.execute("select puuid from games where game_id=%s and puuid in (select puuid from users where disc_id=%s)", (game_id, disc_id, ))
+            row = cursor.fetchone()
+        if row:
+            return row[0]
+        else:
+            return None
+
     def get_augment_stats(self, augment, user):
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
@@ -211,11 +221,15 @@ class sql_stuff_class():
         avp, games = row
         return avp, games
     
-    def get_all_augment_stats(self, interaction: discord.Interaction, user):
+    def get_all_augment_stats(self, interaction: discord.Interaction, user, tier):
+        if tier:
+            tier_str = f"AND augment in (select augment_name from augments where augment_tier='{tier}')"
+        else:
+            tier_str = ""
         self.cnx.reconnect()
         with self.cnx.cursor() as cursor:
             if user:
-                cursor.execute("""SELECT augment, AVG(placement), count(*) AS avg_placement
+                cursor.execute(f"""SELECT augment, AVG(placement), count(*) AS avg_placement
                     FROM (
                         SELECT aug1 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
                         UNION ALL
@@ -225,11 +239,11 @@ class sql_stuff_class():
                         UNION ALL
                         SELECT aug4 AS augment, placement FROM games where puuid in (select puuid from users where disc_id=%s)
                     ) AS all_augments
-                    WHERE augment IS NOT NULL
+                    WHERE augment IS NOT NULL {tier_str}
                     GROUP BY augment
                 order by avg_placement asc""", (*[user.id]*4,))
             else:
-                cursor.execute("""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
+                cursor.execute(f"""SELECT augment, round(AVG(placement), 1), count(*) AS avg_placement
                     FROM (
                         SELECT aug1 AS augment, placement FROM games
                         UNION ALL
@@ -239,7 +253,7 @@ class sql_stuff_class():
                         UNION ALL
                         SELECT aug4 AS augment, placement FROM games
                     ) AS all_augments
-                    WHERE augment IS NOT NULL
+                    WHERE augment IS NOT NULL {tier_str}
                     GROUP BY augment
                     order by avg_placement asc""")
             rows = cursor.fetchall()
@@ -255,10 +269,10 @@ class sql_stuff_class():
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
         df["AVP"] = df["AVP"].fillna("N/A")
-        pagination = self.get_all_augments_embed(df, interaction, user)
+        pagination = self.get_all_augments_embed(df, interaction, user, tier)
         return pagination
     
-    def get_all_augment_stats_filter(self, interaction: discord.Interaction, included_users, excluded_users, client):
+    def get_all_augment_stats_filter(self, interaction: discord.Interaction, included_users, excluded_users, tier, client):
         self.cnx.reconnect()
         if len(included_users) > 0:
             placeholders = ','.join(['%s'] * len(included_users))
@@ -272,6 +286,10 @@ class sql_stuff_class():
             filter_str = ""
             params = None
 
+        if tier:
+            tier_str = f"AND augment in (select augment_name from augments where augment_tier='{tier}')"
+        else:
+            tier_str = ""
 
         print(params)
         with self.cnx.cursor() as cursor:
@@ -285,7 +303,7 @@ class sql_stuff_class():
                         UNION ALL
                         SELECT aug4 AS augment, placement FROM games where true {filter_str} 
                     ) AS all_augments
-                    WHERE augment IS NOT NULL
+                    WHERE augment IS NOT NULL {tier_str}
                     GROUP BY augment
                 order by avg_placement asc""", params)
             rows = cursor.fetchall()
@@ -301,10 +319,10 @@ class sql_stuff_class():
         df = pd.DataFrame(full_report, columns=["Augment", "AVP", "Games"])
         df = df.sort_values(by=["AVP", "Games", "Augment"], na_position='last')
         df["AVP"] = df["AVP"].fillna("N/A")
-        pagination = self.get_all_augments_embed_filter(df, interaction, included_users, excluded_users, client)
+        pagination = self.get_all_augments_embed_filter(df, interaction, included_users, excluded_users, tier, client)
         return pagination
     
-    def get_all_augments_embed(self, df, interaction: discord.Interaction, user):
+    def get_all_augments_embed(self, df, interaction: discord.Interaction, user, tier):
         ar = df.to_numpy()
         """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
@@ -319,7 +337,11 @@ class sql_stuff_class():
         #data = out[1:]
         num_elements = 25
         async def get_page(page: int):
-            title = "Augment Stats"
+            if tier:
+                title = tier + " "
+            else:
+                title = ""
+            title += "Augment Stats"
             if user:
                 title += f' for {user.global_name}'
             emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
@@ -334,7 +356,7 @@ class sql_stuff_class():
 
         return Pagination(interaction, get_page)
     
-    def get_all_augments_embed_filter(self, df, interaction: discord.Interaction, included_users, excluded_users, client):
+    def get_all_augments_embed_filter(self, df, interaction: discord.Interaction, included_users, excluded_users, tier, client):
         ar = df.to_numpy()
         """
         out = ["{: <25} {: <4} {: <4}".format(*df.columns)]
@@ -349,13 +371,18 @@ class sql_stuff_class():
         #data = out[1:]
         num_elements = 25
         async def get_page(page: int):
-            title = "Augment Stats"
+            if tier:
+                title = tier + " "
+            else:
+                title = ""
+            title += "Augment Stats"
             print(included_users)
             print(excluded_users)
             if len(included_users) > 0:
                 title += ' | Includes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in included_users])
             elif len(excluded_users) > 0:
                 title += ' | Excludes data for: ' + ', '.join([client.get_user(disc_id).global_name for disc_id in excluded_users])
+                
             #if user:
             #    title += f' for {user.name}'
             emb = discord.Embed(title=title, description=f"```yaml\n{header}``` ```\n")
@@ -407,11 +434,12 @@ class ExcludeSelect(discord.ui.Select):
         await interaction.response.defer()  # No message, just acknowledge
 
 class FilterView(discord.ui.View):
-    def __init__(self, members: List[discord.Member], augment, client, sql_stuff, tft_stuff):
+    def __init__(self, members: List[discord.Member], augment, tier, client, sql_stuff, tft_stuff):
         super().__init__(timeout=120)
         self.sql_stuff = sql_stuff
         self.tft_stuff = tft_stuff
         self.augment = augment
+        self.tier = tier
         self.client = client
         self.included_users = []
         self.excluded_users = []
@@ -434,7 +462,7 @@ class FilterView(discord.ui.View):
             await interaction.response.send_message(embed=embed)
         else:
             #embed = sql_stuff.get_all_augment_stats()
-            pagination = self.sql_stuff.get_all_augment_stats_filter(interaction, included_mentions, excluded_mentions, self.client)
+            pagination = self.sql_stuff.get_all_augment_stats_filter(interaction, included_mentions, excluded_mentions, self.tier, self.client)
             await pagination.navegate()
         '''
         # You can now use these lists however you like
