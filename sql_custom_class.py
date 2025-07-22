@@ -223,7 +223,7 @@ class sql_stuff_class():
     
     def get_all_augment_stats(self, interaction: discord.Interaction, user, tier):
         if tier:
-            tier_str = f"AND augment in (select augment_name from augments where augment_tier='{tier}')"
+            tier_str = f'AND augment in (select augment_name from augments where augment_tier="{tier}")'
         else:
             tier_str = ""
         self.cnx.reconnect()
@@ -287,7 +287,7 @@ class sql_stuff_class():
             params = None
 
         if tier:
-            tier_str = f"AND augment in (select augment_name from augments where augment_tier='{tier}')"
+            tier_str = f'AND augment in (select augment_name from augments where augment_tier="{tier}")'
         else:
             tier_str = ""
 
